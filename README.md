@@ -1,9 +1,8 @@
-# Landing Page: Formatos Impresos (Imprenta Autorizada SUNAT)
+# Landing Page: Formatos Intergraficos (Imprenta Autorizada SUNAT)
 
 > Una landing page moderna, rápida y optimizada para la captación de clientes, desarrollada con Astro.js y TailwindCSS.
 
 ![Captura de la Landing Page](./public/MiniaturaFormatosIntergraficos.jpg)
-*(Te recomiendo reemplazar el enlace de arriba con una captura de pantalla real del sitio)*
 
 ## 📄 Descripción del Proyecto
 
