@@ -1,48 +1,57 @@
-# Astro Starter Kit: Basics
+# Landing Page: Formatos Impresos (Imprenta Autorizada SUNAT)
 
-```sh
-npm create astro@latest -- --template basics
-```
+> Una landing page moderna, rápida y optimizada para la captación de clientes, desarrollada con Astro.js y TailwindCSS.
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+![Captura de la Landing Page](./public/MiniaturaFormatosIntergraficos.jpg)
+*(Te recomiendo reemplazar el enlace de arriba con una captura de pantalla real del sitio)*
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 📄 Descripción del Proyecto
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+Este proyecto es una landing page diseñada estratégicamente para "Formatos Impresos", una imprenta peruana autorizada por la SUNAT. El objetivo principal del sitio es presentar los servicios de impresión de manera clara y profesional, generar confianza en los clientes potenciales y facilitar la solicitud de cotizaciones a través de un formulario de contacto optimizado.
 
-## 🚀 Project Structure
+La página está construida siguiendo las mejores prácticas de desarrollo web, enfocándose en la velocidad de carga, la optimización para motores de búsqueda (SEO) y una experiencia de usuario fluida en cualquier dispositivo (diseño responsivo).
 
-Inside of your Astro project, you'll see the following folders and files:
+## ✨ Características Principales
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+*   **Diseño Moderno y Responsivo:** Interfaz limpia y profesional que se adapta perfectamente a ordenadores de escritorio, tabletas y móviles.
+*   **Optimizada para la Velocidad:** Construida con Astro.js para un rendimiento máximo, lo que se traduce en tiempos de carga casi instantáneos.
+*   **Enfoque en la Conversión:** Todas las secciones están diseñadas para guiar al usuario hacia la acción principal: solicitar una cotización.
+*   **Formulario de Cotización Inteligente:**
+    *   **Integración con WhatsApp:** Al enviar el formulario, se genera un mensaje pre-formateado y se abre WhatsApp para que el cliente envíe la cotización directamente al número de la empresa.
+    *   **Asistente de Consulta RUC:** Un botón que redirige a la página oficial de consulta de SUNAT para facilitar la verificación de datos.
+*   **Componentes Reutilizables:** La estructura del proyecto está basada en componentes modulares de Astro, lo que facilita su mantenimiento y escalabilidad.
+*   **Sección de FAQ Interactiva:** Un acordeón de preguntas frecuentes para resolver las dudas más comunes de los clientes de forma rápida y eficiente.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## 🛠️ Tecnologías Utilizadas
 
-## 🧞 Commands
+*   **Framework:** [Astro.js](https://astro.build/)
+*   **Estilos:** [TailwindCSS](https://tailwindcss.com/)
+*   **Lenguaje:** HTML, CSS, y TypeScript (para scripting)
+*   **Gestor de Paquetes:** npm
+*   **Despliegue Recomendado:** Vercel, Netlify, o cualquier hosting de sitios estáticos.
 
-All commands are run from the root of the project, from a terminal:
+## 🚀 Cómo Empezar
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Si deseas ejecutar este proyecto en tu entorno local, sigue estos sencillos pasos:
 
-## 👀 Want to learn more?
+1.  **Clona el repositorio:**
+    ```bash
+    git clone <URL_DEL_REPOSITORIO>
+    ```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+2.  **Navega al directorio del proyecto:**
+    ```bash
+    cd formatos-intergraficos
+    ```
+
+3.  **Instala las dependencias:**
+    ```bash
+    npm install
+    ```
+
+4.  **Inicia el servidor de desarrollo:**
+    ```bash
+    npm run dev
+    ```
+
+    ¡Y listo! La página estará disponible en `http://localhost:4321`.
