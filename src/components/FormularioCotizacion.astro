@@ -1,0 +1,223 @@
+---
+// Componente Formulario de Cotización
+---
+
+<section id="cotizar" class="section-padding bg-white">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        Solicita tu Cotización
+      </h2>
+      <p class="text-xl text-gray-600">
+        Completa el formulario y te enviaremos una cotización personalizada en menos de 2 horas
+      </p>
+    </div>
+
+    <div class="bg-gray-50 rounded-2xl p-8 shadow-lg">
+      <form class="space-y-6" id="cotizacionForm">
+        <!-- Información Personal -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">
+              Nombre Completo *
+            </label>
+            <input 
+              type="text" 
+              id="nombre" 
+              name="nombre" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+              placeholder="Tu nombre completo"
+            >
+          </div>
+          
+          <div>
+            <label for="ruc" class="block text-sm font-medium text-gray-700 mb-2">
+              RUC *
+            </label>
+            <input 
+              type="text" 
+              id="ruc" 
+              name="ruc" 
+              required
+              pattern="[0-9]{11}"
+              maxlength="11"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+              placeholder="12345678901"
+            >
+          </div>
+        </div>
+
+        <!-- Información de Contacto -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+              Email *
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+              placeholder="tu@email.com"
+            >
+          </div>
+          
+          <div>
+            <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">
+              WhatsApp *
+            </label>
+            <input 
+              type="tel" 
+              id="whatsapp" 
+              name="whatsapp" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+              placeholder="+51 910 500 706"
+            >
+          </div>
+        </div>
+
+        <!-- Servicio y Cantidad -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="servicio" class="block text-sm font-medium text-gray-700 mb-2">
+              Servicio de Interés *
+            </label>
+            <select 
+              id="servicio" 
+              name="servicio" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+            >
+              <option value="">Selecciona un servicio</option>
+              <option value="boletas">Formatos Continuos a Medida</option>
+              <option value="proformas">Proformas Personalizadas</option>
+              <option value="vouchers">Vouchers POS</option>
+              <option value="todos">Todos los servicios</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="cantidad" class="block text-sm font-medium text-gray-700 mb-2">
+              Cantidad Aproximada *
+            </label>
+            <select 
+              id="cantidad" 
+              name="cantidad" 
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+            >
+              <option value="">Selecciona cantidad</option>
+              <option value="100-500">100 - 500 unidades</option>
+              <option value="500-1000">500 - 1,000 unidades</option>
+              <option value="1000-5000">1,000 - 5,000 unidades</option>
+              <option value="5000+">Más de 5,000 unidades</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Información Adicional -->
+        <div>
+          <label for="mensaje" class="block text-sm font-medium text-gray-700 mb-2">
+            Información Adicional
+          </label>
+          <textarea 
+            id="mensaje" 
+            name="mensaje" 
+            rows="4"
+            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors"
+            placeholder="Cuéntanos más sobre tu proyecto, especificaciones especiales, o cualquier consulta que tengas..."
+          ></textarea>
+        </div>
+
+        <!-- Checkbox de Privacidad -->
+        <!-- <div class="flex items-start">
+          <input 
+            type="checkbox" 
+            id="privacidad" 
+            name="privacidad" 
+            required
+            class="mt-1 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+          >
+          <label for="privacidad" class="ml-2 text-sm text-gray-600">
+            Acepto que mis datos sean utilizados para contactarme y enviarme la cotización. 
+            Puedo revocar este consentimiento en cualquier momento.
+          </label>
+        </div> -->
+
+        <!-- Botón de Envío -->
+        <div class="text-center">
+          <button 
+            type="submit"
+            class="btn-primary text-lg px-8 py-4 w-full md:w-auto"
+          >
+            <span class="flex items-center justify-center">
+              Enviar Cotización
+            </span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Información de Contacto Alternativo -->
+      <div class="mt-8 pt-8 border-t border-gray-200">
+        <div class="text-center">
+          <p class="text-gray-600 mb-4">¿Prefieres contactarnos directamente?</p>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="tel:+51999888777" class="flex items-center text-primary-600 hover:text-primary-700 font-semibold">
+              +51 910 500 706
+            </a>
+            <a href="https://wa.me/51999888777" target="_blank" class="flex items-center text-green-600 hover:text-green-700 font-semibold">
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.getElementById('cotizacionForm');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const currentForm = e.target as HTMLFormElement;
+      
+      const nombre = (currentForm.elements.namedItem('nombre') as HTMLInputElement).value;
+      const ruc = (currentForm.elements.namedItem('ruc') as HTMLInputElement).value;
+      const email = (currentForm.elements.namedItem('email') as HTMLInputElement).value;
+      const whatsapp = (currentForm.elements.namedItem('whatsapp') as HTMLInputElement).value;
+      
+      const servicioSelect = currentForm.elements.namedItem('servicio') as HTMLSelectElement;
+      const servicio = servicioSelect.options[servicioSelect.selectedIndex].text;
+      
+      const cantidadSelect = currentForm.elements.namedItem('cantidad') as HTMLSelectElement;
+      const cantidad = cantidadSelect.options[cantidadSelect.selectedIndex].text;
+      
+      const mensajeAdicional = (currentForm.elements.namedItem('mensaje') as HTMLTextAreaElement).value;
+
+      const whatsappNumber = '51965728013';
+
+      const message = `
+*Nueva Cotización de la Web*
+
+*Nombre:* ${nombre}
+*RUC:* ${ruc}
+*Email:* ${email}
+*WhatsApp:* ${whatsapp}
+*Servicio de Interés:* ${servicio}
+*Cantidad Aproximada:* ${cantidad}
+*Información Adicional:* ${mensajeAdicional}
+      `.trim().replace(/\n\s*\n/g, '\n');
+
+      const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+      window.open(whatsappURL, '_blank');
+      
+      currentForm.reset();
+    });
+  }
+</script> 

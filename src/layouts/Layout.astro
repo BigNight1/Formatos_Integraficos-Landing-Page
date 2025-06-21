@@ -1,22 +1,51 @@
+---
+export interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Impresión profesional de papel continuo, proformas y vouchers autorizados SUNAT para tu negocio. Entrega rápida, formatos legales y precios por volumen." } = Astro.props;
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/png" href="/LogoFormatos.png" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+		<meta name="theme-color" content="#ffffff" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		
+		<!-- SEO Meta Tags -->
+		<title>{title}</title>
+		<meta name="keywords" content="impresión, boletas, facturas, papel continuo, proformas, vouchers, SUNAT, autorizado, Perú, negocio" />
+		<meta name="author" content="Formatos Intergraficos Autorizados SUNAT" />
+		
+		<!-- Open Graph -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="es_PE" />
+		
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		
+		<!-- Canonical URL -->
+		<link rel="canonical" href={Astro.url} />
+		
+		<!-- Preconnect to Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	</head>
-	<body>
+	<body class="bg-white text-gray-900">
 		<slot />
 	</body>
 </html>
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+<style is:global>
+	@import '../styles/global.css';
 </style>

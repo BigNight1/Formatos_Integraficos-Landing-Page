@@ -1,0 +1,109 @@
+---
+// Componente FAQ
+---
+
+<section class="section-padding bg-gray-50">
+  <div class="max-w-4xl mx-auto">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        Preguntas Frecuentes
+      </h2>
+      <p class="text-xl text-gray-600">
+        Resolvemos las dudas más comunes sobre nuestros servicios
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Pregunta 1 -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <button class="faq-button w-full px-6 py-4 text-left ">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+              ¿Qué necesito para imprimir boletas autorizadas SUNAT?
+            </h3>
+          </div>
+        </button>
+        <div class="px-6 pb-4 hidden">
+          <p class="text-gray-600">
+            👉 Solo necesitas haber gestionado tu autorización de impresión a través del Formulario Virtual N.° 816 en SUNAT. Si aún no lo has hecho, ¡nosotros te asesoramos en todo el proceso!
+          </p>
+        </div>
+      </div>
+
+      <!-- Pregunta 2 -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <button class="faq-button w-full px-6 py-4 text-left ">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+              ¿Cuánto tiempo tarda la entrega?
+            </h3>
+          </div>
+        </button>
+        <div class="px-6 pb-4 hidden">
+          <p class="text-gray-600">
+            👉 Una vez aprobado el diseño final (arte), tu pedido estará listo en un plazo de 3 días hábiles.
+          </p>
+        </div>
+      </div>
+
+      <!-- Pregunta 3 -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <button class="faq-button w-full px-6 py-4 text-left ">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+              ¿Envían a provincia?
+            </h3>
+          </div>
+        </button>
+        <div class="px-6 pb-4 hidden">
+          <p class="text-gray-600">
+            👉 Sí, realizamos envíos a todo el Perú mediante courier confiable. El costo varía según la ubicación.
+          </p>
+        </div>
+      </div>
+
+      <!-- Pregunta 4 -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <button class="faq-button w-full px-6 py-4 text-left ">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+              ¿Los formatos cumplen con los requisitos de SUNAT?
+            </h3>
+          </div>
+        </button>
+        <div class="px-6 pb-4 hidden">
+          <p class="text-gray-600">
+            👉 Sí, trabajamos como imprenta autorizada por SUNAT y todos nuestros formatos cumplen con los requisitos legales exigidos.
+          </p>
+        </div>
+      </div>
+
+      <!-- Pregunta 5 -->
+      <div class="bg-white rounded-xl shadow-sm border border-gray-200">
+        <button class="faq-button w-full px-6 py-4 text-left ">
+          <div class="flex items-center justify-between">
+            <h3 class="text-lg font-semibold text-gray-900">
+              ¿Ofrecen descuentos por volumen?
+            </h3>
+          </div>
+        </button>
+        <div class="px-6 pb-4 hidden">
+          <p class="text-gray-600">
+            👉 ¡Claro que sí! Cuanto mayor sea la cantidad de formatos, menor es el costo por unidad. Pregunta por nuestros paquetes especiales.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.faq-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const content = button.nextElementSibling as HTMLElement;
+      if (content) {
+        content.classList.toggle('hidden');
+      }
+    });
+  });
+</script> 
