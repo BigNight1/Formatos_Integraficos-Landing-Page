@@ -2,7 +2,7 @@
 
 > Una landing page moderna, rápida y optimizada para la captación de clientes, desarrollada con Astro.js y TailwindCSS.
 
-![Captura de la Landing Page](./public/MiniaturaFormatosIntergraficos.jpg)
+![Captura de la Landing Page](./public/MiniaturaFormatosIntergraficos.webp)
 
 ## 📄 Descripción del Proyecto
 
