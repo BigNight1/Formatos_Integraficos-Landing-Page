@@ -1,0 +1,147 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { Icon } from 'astro-icon/components';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Proformas y Documentos Administrativos Impresos",
+  "description": "Impresión de proformas, cotizaciones, notas de pedido y recibos de caja chica personalizados con logo para empresas en Lima, Perú.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Formatos Intergraficos",
+    "url": "https://formatosintergraficos.pe"
+  },
+  "areaServed": "Lima, Peru",
+  "serviceType": "Impresión de documentos administrativos",
+  "url": "https://formatosintergraficos.pe/servicios/documentos-administrativos"
+};
+---
+
+<Layout 
+  title="Proformas y Documentos Administrativos | Lima, Perú"
+  description="Imprimimos proformas, cotizaciones y notas de pedido personalizadas con tu logo para empresas en Lima y todo el Perú. Diseño incluido. Cotiza gratis."
+>
+  <Header />
+  <main>
+    <!-- 1. HERO -->
+    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
+      <div class="max-w-4xl mx-auto text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          Proformas y documentos administrativos impresos con tu marca en Lima
+        </h1>
+        <p class="text-xl text-gray-700 leading-relaxed mb-8">
+          Imprimimos cotizaciones, notas de pedido, recibos de caja chica y más. Diseño personalizado con tu logo y colores corporativos para una imagen altamente profesional.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contacto#cotizar" class="btn-primary text-lg px-8 py-4">Cotizar ahora</a>
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-secondary text-lg px-8 py-4">WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ¿QUÉ SON Y PARA QUÉ SIRVEN? -->
+    <section class="section-padding bg-white">
+      <div class="max-w-3xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Documentos que refuerzan la imagen de tu negocio</h2>
+        <p class="text-lg text-gray-700">
+          Aunque no son comprobantes tributarios directos reportados a SUNAT, los documentos administrativos físicos son componentes esenciales en la cadena comercial, el control interno y la auditoría de cualquier empresa peruana formal.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. TIPOS DE DOCUMENTOS -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-5xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">¿Qué documentos administrativos imprimimos?</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-xl font-bold text-primary-600 mb-4">Proformas y Cotizaciones personalizadas</h3>
+            <p class="text-gray-700">
+              Impresas con tu logo, datos de la empresa, tabla de productos/servicios y condiciones. Entregar una proforma física bien diseñada transmite profesionalismo, seriedad y confianza ante tus clientes corporativos.
+            </p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-xl font-bold text-primary-600 mb-4">Notas de Pedido y Guías internas</h3>
+            <p class="text-gray-700">
+              Utilizadas para el control estricto de inventario, despachos internos de almacén y trazabilidad de pedidos, sin necesidad de emitir un comprobante tributario inmediato. Muy usadas en el comercio mayorista.
+            </p>
+          </div>
+          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-xl font-bold text-primary-600 mb-4">Recibos de Caja Chica</h3>
+            <p class="text-gray-700">
+              Fundamentales para el control de gastos menores en empresas con múltiples áreas. Incluyen correlativo, fecha, concepto y espacio para la firma del responsable autorizado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. RUBROS -->
+    <section class="section-padding bg-white">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-10">¿Qué negocios nos piden documentos administrativos?</h2>
+        <div class="flex flex-wrap justify-center gap-4">
+          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Distribuidoras</span>
+          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Colegios y universidades</span>
+          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Empresas de servicios</span>
+          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Constructoras</span>
+          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Clínicas y farmacias</span>
+          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Ferreterías</span>
+          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Empresas agrarias</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. VENTAJAS -->
+    <section class="section-padding bg-primary-900 text-white">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-10">Lo que incluye cada pedido</h2>
+        <ul class="space-y-4 text-lg text-gray-200">
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Diseño personalizado profesional con tu logo y colores</li>
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Papel bond o couche de alta calidad</li>
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Opción de duplicado o triplicado (papel autocopiativo)</li>
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Sin mínimos exagerados: trabajamos desde 1 millar</li>
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Entrega rápida en todo Lima en 24-48 horas</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. FAQ -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Preguntas frecuentes</h2>
+        <div class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Una proforma tiene validez legal ante SUNAT?</h3>
+            <p class="text-gray-600">Las proformas y cotizaciones no son comprobantes de pago formales, por lo que no requieren un Formulario 816 ni autorización directa de SUNAT. Sin embargo, son ampliamente aceptadas como documento previo a la venta en licitaciones y auditorías internas.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Pueden imprimir en duplicado o triplicado?</h3>
+            <p class="text-gray-600">Sí. Usamos papel autocopiativo de la mejor calidad para que obtengas un documento original y las copias exactas en una sola escritura. Esto es ideal para notas de pedido de almacén y recibos.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Incluye el diseño?</h3>
+            <p class="text-gray-600">Sí, el diseño de la estructura del documento y la diagramación con tu logo está incluido en todos nuestros pedidos sin ningún costo adicional.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CTA FINAL -->
+    <section class="section-padding bg-white text-center">
+      <div class="max-w-3xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Imprime tus documentos administrativos con calidad profesional</h2>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-primary text-lg px-8 py-4">Cotizar por WhatsApp</a>
+          <a href="/contacto#cotizar" class="btn-secondary text-lg px-8 py-4">Formulario de cotización</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>

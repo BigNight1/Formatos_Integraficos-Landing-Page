@@ -215,6 +215,15 @@
 
       const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
+      // Enviar evento de conversión a GA4
+      if (typeof window !== 'undefined' && 'gtag' in window) {
+        (window as any).gtag('event', 'generate_lead', {
+          event_category: 'Cotizacion',
+          event_label: servicio,
+          value: 1
+        });
+      }
+
       window.open(whatsappURL, '_blank');
       
       currentForm.reset();

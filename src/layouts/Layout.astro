@@ -5,6 +5,66 @@ export interface Props {
 }
 
 const { title, description = "Impresión profesional de papel continuo, proformas y vouchers autorizados SUNAT para tu negocio. Entrega rápida, formatos legales y precios por volumen." } = Astro.props;
+
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Formatos Intergraficos",
+    "image": "https://formatosintergraficos.pe/LogoFormatos.webp",
+    "@id": "https://formatosintergraficos.pe",
+    "url": "https://formatosintergraficos.pe",
+    "telephone": "+51910500706",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Pasaje 8 de octubre 252 - Parque Interno Hogar policial VMT",
+      "addressLocality": "Lima",
+      "addressRegion": "LMA",
+      "postalCode": "15801",
+      "addressCountry": "PE"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": -12.1611,
+      "longitude": -76.9422
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      "opens": "08:00",
+      "closes": "20:00"
+    },
+    "taxID": "20503580030"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Formatos Intergraficos",
+    "url": "https://formatosintergraficos.pe/"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "¿Qué necesito para imprimir boletas autorizadas SUNAT?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Solo necesitas haber gestionado tu autorización de impresión a través del Formulario Virtual N.° 816 en SUNAT. Si aún no lo has hecho, ¡nosotros te asesoramos en todo el proceso!"
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "¿Cuánto tiempo tarda la entrega?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Una vez aprobado el diseño final (arte), tu pedido estará listo en un plazo de 3 días hábiles."
+        }
+      }
+    ]
+  }
+];
 ---
 
 <!doctype html>
@@ -22,19 +82,28 @@ const { title, description = "Impresión profesional de papel continuo, proforma
 		
 		<!-- SEO Meta Tags -->
 		<title>{title}</title>
-		<meta name="keywords" content="impresión, boletas, facturas, papel continuo, proformas, vouchers, SUNAT, autorizado, Perú, negocio" />
-		<meta name="author" content="Formatos Intergraficos Autorizados SUNAT" />
+		<meta name="keywords" content="imprenta autorizada SUNAT Lima, impresión boletas, papel continuo, proformas, vouchers POS, VMT, Perú" />
+		<meta name="author" content="Formatos Intergraficos" />
+
+		<!-- Local SEO -->
+		<meta name="geo.region" content="PE-LMA" />
+		<meta name="geo.placename" content="Lima" />
+		<meta name="geo.position" content="-12.161;-76.942" />
 		
 		<!-- Open Graph -->
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:image" content={new URL("/MiniaturaFormatosIntergraficos.webp", Astro.site || Astro.url)} />
 		<meta property="og:locale" content="es_PE" />
+		<meta property="og:site_name" content="Formatos Intergraficos" />
 		
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={new URL("/MiniaturaFormatosIntergraficos.webp", Astro.site || Astro.url)} />
 		
 		<!-- Canonical URL -->
 		<link rel="canonical" href={Astro.url} />
@@ -51,6 +120,8 @@ const { title, description = "Impresión profesional de papel continuo, proforma
 			gtag('js', new Date());
 			gtag('config', 'G-XNJN3C82KP');
 		</script>
+		<!-- Schema JSON-LD -->
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>
 	</head>
 	
 	<body class="bg-white text-gray-900">

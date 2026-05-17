@@ -1,0 +1,142 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { Icon } from 'astro-icon/components';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Vouchers POS y Papel Térmico Personalizado",
+  "description": "Impresión de vouchers POS y papel térmico personalizado con logo para restaurantes, bodegas, minimarkets y más negocios en Lima, Perú.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Formatos Intergraficos",
+    "url": "https://formatosintergraficos.pe"
+  },
+  "areaServed": "Lima, Peru",
+  "serviceType": "Impresión de vouchers y papel térmico",
+  "url": "https://formatosintergraficos.pe/servicios/vouchers-pos"
+};
+---
+
+<Layout 
+  title="Vouchers POS y Papel Térmico en Lima | Formatos Intergraficos"
+  description="Vouchers POS y rollos térmicos personalizados con tu logo. Perfectos para restaurantes, bodegas y minimarkets. Entrega en Lima en 24h. Cotiza gratis."
+>
+  <Header />
+  <main>
+    <!-- 1. HERO -->
+    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
+      <div class="max-w-4xl mx-auto text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          Vouchers POS y papel térmico personalizado en Lima para tu negocio
+        </h1>
+        <p class="text-xl text-gray-700 leading-relaxed mb-8">
+          Imprimimos tickets y vouchers compactos para impresoras térmicas y ticketeras. Con tu logo, datos comerciales y la estructura reglamentada por SUNAT.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contacto#cotizar" class="btn-primary text-lg px-8 py-4">Cotizar ahora</a>
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-secondary text-lg px-8 py-4">WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ¿QUÉ SON LOS VOUCHERS POS? -->
+    <section class="section-padding bg-white">
+      <div class="max-w-3xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">¿Qué son los vouchers POS y cuándo usarlos?</h2>
+        <p class="text-lg text-gray-700">
+          Son recibos emitidos por terminales de punto de venta (POS) o ticketeras, comúnmente impresos en papel térmico. Están autorizados por SUNAT para entregarse a consumidores finales o, dependiendo del caso, para sustentar gastos según el tipo de comprobante.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. TIPOS DE VOUCHERS -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-5xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Tipos de vouchers que imprimimos</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold text-primary-600 mb-4">Tickets de máquinas registradoras</h3>
+            <p class="text-gray-700">
+              Autorizados por SUNAT siempre que cumplan con los requisitos de control tributario. Algunos pueden sustentar gasto/costo o crédito fiscal, mientras que otros sirven exclusivamente para consumidores finales. Imprimimos el rollo y diseño adecuado para tu tipo de negocio.
+            </p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold text-primary-600 mb-4">Vouchers de pago personalizados</h3>
+            <p class="text-gray-700">
+              Personalizados con tu logo, nombre de empresa, RUC y estructura legal. Este formato compacto es ideal y muy solicitado por restaurantes, bodegas y minimarkets. Utilizamos papel térmico de alta resistencia.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. RUBROS QUE MÁS LOS USAN -->
+    <section class="section-padding bg-white">
+      <div class="max-w-5xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-10">Negocios que usan nuestros vouchers POS</h2>
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Restaurantes y cevicherías</div>
+          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Bodegas y minimarkets</div>
+          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Farmacias</div>
+          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Colegios (recibos)</div>
+          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Cualquier negocio retail</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. VENTAJAS -->
+    <section class="section-padding bg-primary-900 text-white">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-10">¿Por qué nuestros vouchers POS?</h2>
+        <ul class="space-y-4 text-lg text-gray-200">
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Diseño personalizado con tu marca y logo</li>
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Papel térmico de alta durabilidad (no se borra rápido)</li>
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Compatibles con las principales ticketeras del mercado peruano</li>
+          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Precios preferenciales por volumen desde 1 millar</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 6. FAQ ESPECÍFICO -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Preguntas frecuentes sobre vouchers POS</h2>
+        <div class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Los vouchers POS están autorizados por SUNAT?</h3>
+            <p class="text-gray-600">Sí, siempre que cumplan los requisitos de control tributario vigentes. Como imprenta autorizada, nos aseguramos de que tus vouchers cuenten con la estructura legal requerida.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Qué impresora necesito para usar mis vouchers?</h3>
+            <p class="text-gray-600">Nuestros rollos son compatibles con las ticketeras térmicas más comunes en Perú, como las marcas Star, Epson TM y Bixolon. Si no sabes si tu impresora es compatible, ¡escríbenos!</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Puedo poner mi logo en el voucher?</h3>
+            <p class="text-gray-600">Sí. Incluimos el diseño personalizado con tu logo en todos los pedidos sin ningún costo adicional.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Cuál es el pedido mínimo?</h3>
+            <p class="text-gray-600">Trabajamos pedidos desde 1 millar. Recuerda que a mayor volumen, menor será el precio por unidad.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CTA FINAL -->
+    <section class="section-padding bg-white text-center">
+      <div class="max-w-3xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 mb-8">Pide tu cotización de vouchers POS</h2>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-primary text-lg px-8 py-4">Cotizar por WhatsApp</a>
+          <a href="/contacto#cotizar" class="btn-secondary text-lg px-8 py-4">Formulario de cotización</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>

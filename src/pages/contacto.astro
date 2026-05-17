@@ -1,0 +1,144 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import FormularioCotizacion from '../components/FormularioCotizacion.astro';
+import { Icon } from 'astro-icon/components';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "name": "Contacto - Formatos Intergraficos",
+  "url": "https://formatosintergraficos.pe/contacto",
+  "mainEntity": {
+    "@type": "LocalBusiness",
+    "name": "Formatos Intergraficos",
+    "telephone": "+51910500706",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Pasaje 8 de octubre 252 - Parque Interno Hogar policial VMT",
+      "addressLocality": "Lima",
+      "addressRegion": "Lima",
+      "addressCountry": "PE"
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+      "opens": "08:00",
+      "closes": "20:00"
+    }
+  }
+};
+---
+
+<Layout 
+  title="Cotiza tus Formatos Impresos en Lima | Contacto"
+  description="Solicita tu cotización de boletas, proformas o vouchers. Respondemos en menos de 2 horas. Llámanos o escríbenos por WhatsApp: +51 910 500 706."
+>
+  <Header />
+  <main>
+    <!-- 1. HERO -->
+    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
+      <div class="max-w-4xl mx-auto text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          Cotiza tus formatos impresos en Lima — respondemos en 2 horas
+        </h1>
+        <p class="text-xl text-gray-700">
+          Cuéntanos qué necesitas y te enviamos una propuesta personalizada sin ningún compromiso.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. OPCIONES DE CONTACTO -->
+    <section class="section-padding bg-white pb-0">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-10">¿Cómo prefieres contactarnos?</h2>
+        <div class="grid md:grid-cols-3 gap-8 mb-12">
+          <!-- WhatsApp -->
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="bg-gray-50 p-8 rounded-xl text-center hover:shadow-md transition-shadow group">
+            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform"><Icon name="lucide:smartphone" class="w-8 h-8" /></div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">WhatsApp Directo</h3>
+            <div class="text-lg font-bold text-primary-600 mb-2">+51 910 500 706</div>
+            <p class="text-gray-600 text-sm">La forma más rápida. Te respondemos de inmediato para cualquier duda.</p>
+          </a>
+          
+          <!-- Teléfono -->
+          <a href="tel:+51910500706" class="bg-gray-50 p-8 rounded-xl text-center hover:shadow-md transition-shadow group">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform"><Icon name="lucide:phone" class="w-8 h-8" /></div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Llamada Telefónica</h3>
+            <div class="text-lg font-bold text-primary-600 mb-2">+51 910 500 706</div>
+            <p class="text-gray-600 text-sm">Lunes a Sábado<br>8:00 am - 8:00 pm</p>
+          </a>
+
+          <!-- Visítanos -->
+          <div class="bg-gray-50 p-8 rounded-xl text-center">
+            <div class="w-16 h-16 bg-primary-100 text-primary-600 rounded-full flex items-center justify-center mx-auto mb-4"><Icon name="lucide:map-pin" class="w-8 h-8" /></div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Visítanos</h3>
+            <div class="text-md font-medium text-gray-800 mb-2">Pasaje 8 de octubre 252</div>
+            <p class="text-gray-600 text-sm">Parque Interno Hogar Policial<br>Villa María del Triunfo, Lima</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. FORMULARIO DE COTIZACIÓN -->
+    <!-- FormularioCotizacion tiene su propio H2 internamente ("Solicita tu Cotización") -->
+    <FormularioCotizacion />
+
+    <!-- 4. MAPA Y 5. DATOS RÁPIDOS -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+        <!-- Mapa -->
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">¿Dónde estamos?</h2>
+          <div class="w-full h-80 bg-gray-200 rounded-xl overflow-hidden mb-4 shadow-inner">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.0905050012257!2d-76.94768612418929!3d-12.174241288072603!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105b91ef1495f99%3A0x151b58a76f091e95!2sPje.%208%20de%20Octubre%20252%2C%20Lima%2015817!5e0!3m2!1ses-419!2spe!4v1778969676283!5m2!1ses-419!2spe" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Mapa de ubicación de Formatos Intergraficos"
+            ></iframe>
+          </div>
+          <p class="text-gray-700 text-lg">
+            Atendemos también pedidos por WhatsApp y enviamos a todo el Perú mediante courier de confianza.
+          </p>
+        </div>
+
+        <!-- Datos Rápidos -->
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6">Información rápida</h3>
+          <ul class="space-y-6">
+            <li class="flex items-start">
+              <Icon name="lucide:clock" class="w-8 h-8 mr-4 text-primary-600 flex-shrink-0" />
+              <div>
+                <strong class="block text-lg text-gray-900">Horario de atención</strong>
+                <span class="text-gray-600">Lunes a Sábado, de 8:00 am a 8:00 pm.</span>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <Icon name="lucide:zap" class="w-8 h-8 mr-4 text-yellow-500 flex-shrink-0" />
+              <div>
+                <strong class="block text-lg text-gray-900">Tiempo de respuesta</strong>
+                <span class="text-gray-600">Menos de 2 horas dentro del horario laboral.</span>
+              </div>
+            </li>
+            <li class="flex items-start">
+              <Icon name="lucide:truck" class="w-8 h-8 mr-4 text-primary-600 flex-shrink-0" />
+              <div>
+                <strong class="block text-lg text-gray-900">Cobertura y envíos</strong>
+                <span class="text-gray-600">Lima Metropolitana en 24-48h. A provincia mediante agencia en 3-5 días hábiles.</span>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>

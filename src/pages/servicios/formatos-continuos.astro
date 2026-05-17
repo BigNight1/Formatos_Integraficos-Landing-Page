@@ -1,0 +1,193 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { Icon } from 'astro-icon/components';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "name": "Formatos Continuos Autorizados SUNAT",
+  "description": "Impresión de formatos continuos en papel bond o autocopiativo para impresoras matriciales. Guías de remisión, boletas de contingencia, notas de crédito y más. Autorizados por SUNAT.",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Formatos Intergraficos",
+    "url": "https://formatosintergraficos.pe"
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "Peru"
+  },
+  "serviceType": "Impresión de formatos continuos autorizados SUNAT",
+  "url": "https://formatosintergraficos.pe/servicios/formatos-continuos"
+};
+---
+
+<Layout 
+  title="Formatos Continuos SUNAT en Lima | Papel Matricial a Medida"
+  description="Imprimimos formatos continuos autorizados por SUNAT: guías de remisión, boletas de contingencia y más. Papel bond o autocopiativo. Entrega en Lima en 24h."
+>
+  <Header />
+  <main>
+    <!-- 1. HERO -->
+    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
+      <div class="max-w-4xl mx-auto text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          Formatos Continuos autorizados SUNAT en Lima
+        </h1>
+        <p class="text-xl text-gray-700 leading-relaxed mb-8">
+          Imprimimos en papel bond o autocopiativo (duplicado/triplicado), compatibles con impresoras de matriz de puntos. Ideales para empresas que manejan alto volumen de despachos o facturación física.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contacto#cotizar" class="btn-primary text-lg px-8 py-4">Cotizar ahora</a>
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-secondary text-lg px-8 py-4">WhatsApp</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ¿QUÉ SON LOS FORMATOS CONTINUOS? -->
+    <section class="section-padding bg-white">
+      <div class="max-w-3xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">¿Qué son los formatos continuos y para qué sirven?</h2>
+        <p class="text-lg text-gray-700">
+          El papel continuo con perforaciones laterales está diseñado específicamente para impresoras matriciales. Disponibles en bond tradicional o papel autocopiativo, son la solución perfecta cuando tu operación requiere un original y copias físicas en una sola impresión de forma rápida y secuencial.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. TIPOS DE DOCUMENTOS -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">Documentos que imprimimos en formato continuo</h2>
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold text-primary-600 mb-4">Guías de Remisión (Remitente y Transportista)</h3>
+            <p class="text-gray-700">
+              Los documentos físicos más solicitados. Aceptados para traslados y contingencias. Adaptados a los nuevos requisitos SUNAT 2024. Disponibles en duplicado o triplicado autocopiativo.
+            </p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold text-primary-600 mb-4">Boletas de Venta y Facturas por Contingencia</h3>
+            <p class="text-gray-700">
+              Obligatorias cuando hay cortes de luz, caídas de internet o fallas en el Sistema de Emisión Electrónica (SEE). Incluyen la leyenda legal obligatoria: "Comprobante de pago emitido en contingencia".
+            </p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold text-primary-600 mb-4">Notas de Crédito y Notas de Débito</h3>
+            <p class="text-gray-700">
+              Para modificar o anular operaciones que requieren soporte físico continuo. Impresas con correlativo, datos del emisor y receptor según el reglamento de SUNAT.
+            </p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
+            <h3 class="text-2xl font-bold text-primary-600 mb-4">Liquidaciones de Compra</h3>
+            <p class="text-gray-700">
+              Para adquisiciones a personas naturales sin RUC. Frecuentes en sectores agrarios, pesca artesanal, artesanías y comercio de productos primarios.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. RUBROS QUE MÁS LOS USAN -->
+    <section class="section-padding bg-white">
+      <div class="max-w-5xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-10">¿Qué negocios usan formatos continuos?</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="p-6 bg-gray-50 rounded-xl">
+            <div class="font-semibold text-gray-900">Transporte y logística</div>
+            <div class="text-sm text-gray-600 mt-2">(Guías de remisión)</div>
+          </div>
+          <div class="p-6 bg-gray-50 rounded-xl">
+            <div class="font-semibold text-gray-900">Distribuidoras</div>
+            <div class="text-sm text-gray-600 mt-2">(Mayoristas)</div>
+          </div>
+          <div class="p-6 bg-gray-50 rounded-xl">
+            <div class="font-semibold text-gray-900">Empresas agrarias</div>
+            <div class="text-sm text-gray-600 mt-2">(Liquidaciones)</div>
+          </div>
+          <div class="p-6 bg-gray-50 rounded-xl">
+            <div class="font-semibold text-gray-900">Negocios retail</div>
+            <div class="text-sm text-gray-600 mt-2">(Contingencia)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ¿POR QUÉ ELEGIRNOS? -->
+    <section class="section-padding bg-primary-900 text-white">
+      <div class="max-w-5xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-12">¿Por qué imprimir tus formatos continuos con nosotros?</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="flex items-start">
+            <Icon name="lucide:check" class="w-8 h-8 mr-4 text-green-600 flex-shrink-0" />
+            <div>
+              <h4 class="text-xl font-bold mb-2">Autorización SUNAT vigente</h4>
+              <p class="text-gray-300">Tus documentos tendrán 100% de validez legal.</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <Icon name="lucide:check" class="w-8 h-8 mr-4 text-green-600 flex-shrink-0" />
+            <div>
+              <h4 class="text-xl font-bold mb-2">+20 años de experiencia</h4>
+              <p class="text-gray-300">Especialistas en la impresión de formatos legales.</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <Icon name="lucide:check" class="w-8 h-8 mr-4 text-green-600 flex-shrink-0" />
+            <div>
+              <h4 class="text-xl font-bold mb-2">Diseño incluido</h4>
+              <p class="text-gray-300">Adaptamos el formato a tu RUC, logo y datos comerciales.</p>
+            </div>
+          </div>
+          <div class="flex items-start">
+            <Icon name="lucide:check" class="w-8 h-8 mr-4 text-green-600 flex-shrink-0" />
+            <div>
+              <h4 class="text-xl font-bold mb-2">Entrega rápida</h4>
+              <p class="text-gray-300">Entregamos en 24-48 horas en todo Lima metropolitana.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. FAQ ESPECÍFICO -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Preguntas frecuentes sobre formatos continuos</h2>
+        <div class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Los formatos continuos siguen siendo válidos ante SUNAT?</h3>
+            <p class="text-gray-600">Sí. Las guías de remisión en papel continuo están vigentes y son los documentos físicos más aceptados para traslados. Además, las boletas y facturas físicas siguen siendo obligatorias en caso de contingencia eléctrica o de internet.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Qué impresora necesito para usar formatos continuos?</h3>
+            <p class="text-gray-600">Necesitas una impresora de matriz de puntos (matricial), como las Epson LX-350, LX-300 o similares. Si tienes dudas sobre compatibilidad, escríbenos y te asesoramos.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Puedo pedir el formato con mi logo y datos de mi empresa?</h3>
+            <p class="text-gray-600">Sí, todos nuestros formatos incluyen el servicio de diseño personalizado con tu RUC, razón social, logo y datos obligatorios requeridos por SUNAT.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Qué es el papel autocopiativo?</h3>
+            <p class="text-gray-600">Es un papel especial que transfiere la escritura o la impresión de la aguja matricial a las copias adyacentes sin necesidad de usar papel carbón extra. Perfecto para duplicados y triplicados.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CTA FINAL -->
+    <section class="section-padding bg-white text-center">
+      <div class="max-w-3xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Solicita tu cotización de formatos continuos</h2>
+        <p class="text-xl text-gray-700 mb-8">Cuéntanos qué tipo de formato necesitas, qué cantidad y si requieres diseño personalizado. Te respondemos en menos de 2 horas.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-primary text-lg px-8 py-4">Cotizar por WhatsApp</a>
+          <a href="/contacto#cotizar" class="btn-secondary text-lg px-8 py-4">Formulario de cotización</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>

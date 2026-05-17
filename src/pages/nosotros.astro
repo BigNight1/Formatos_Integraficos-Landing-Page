@@ -1,0 +1,153 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": "Quiénes Somos - Formatos Intergraficos",
+  "url": "https://formatosintergraficos.pe/nosotros",
+  "description": "Imprenta autorizada SUNAT con más de 20 años de experiencia en Lima, Perú. Fundada por Zenón Walter Armas Quispialaya.",
+  "mainEntity": {
+    "@type": "LocalBusiness",
+    "name": "Formatos Intergraficos",
+    "founder": {
+      "@type": "Person",
+      "name": "Zenón Walter Armas Quispialaya"
+    },
+    "foundingDate": "2004",
+    "numberOfEmployees": {
+      "@type": "QuantitativeValue",
+      "minValue": 1,
+      "maxValue": 10
+    },
+    "taxID": "20503580030",
+    "url": "https://formatosintergraficos.pe"
+  }
+};
+---
+
+<Layout 
+  title="Quiénes Somos | Formatos Intergraficos - 20 Años de Experiencia"
+  description="Somos una imprenta autorizada por SUNAT con más de 20 años imprimiendo boletas, proformas y formatos continuos en Lima. Fundada por Zenón Armas Quispialaya."
+>
+  <Header />
+  <main>
+    <!-- 2. SECCIÓN HERO -->
+    <section class="section-padding bg-gray-50 pt-20">
+      <div class="max-w-4xl mx-auto text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          20 años imprimiendo con la autorización de SUNAT que tu negocio necesita
+        </h1>
+        <p class="text-xl text-gray-700 leading-relaxed">
+          Somos Formatos Intergraficos, una imprenta peruana con más de dos décadas de trayectoria. Fundada por Zenón Walter Armas Quispialaya, nos dedicamos a que tu negocio cumpla con la ley sin complicaciones.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. SECCIÓN HISTORIA -->
+    <section class="section-padding bg-white">
+      <div class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-6">Nuestra historia</h2>
+          <p class="text-lg text-gray-700 mb-4">
+            Nuestra historia comienza hace más de 20 años en Villa María del Triunfo, Lima. Fundada por <strong>Zenón Walter Armas Quispialaya</strong> con la visión de ofrecer formatos impresos de calidad para los emprendedores locales.
+          </p>
+          <p class="text-lg text-gray-700">
+            Con el tiempo, pasamos de atender pequeños negocios locales a servir a grandes empresas en todo el Perú, siempre manteniendo nuestro compromiso con la legalidad, calidad y rapidez que nos caracteriza.
+          </p>
+        </div>
+        <div class="flex justify-center">
+          <img src="/LogoFormatos.webp" alt="Logo de Formatos Intergraficos - Imprenta Autorizada SUNAT Lima" class="w-full max-w-sm rounded-lg shadow-lg">
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SECCIÓN MISIÓN Y VALORES -->
+    <section class="section-padding bg-primary-50">
+      <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">¿Qué nos mueve?</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h3 class="text-xl font-bold text-primary-600 mb-4">Cumplimiento legal sin complicaciones</h3>
+            <p class="text-gray-700">Te ayudamos a que tu negocio cumpla con todos los requisitos de SUNAT de manera sencilla y rápida, evitando multas o problemas en fiscalizaciones.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h3 class="text-xl font-bold text-primary-600 mb-4">Calidad que resiste el uso diario</h3>
+            <p class="text-gray-700">Utilizamos papel de alta durabilidad, tanto bond como térmico o autocopiativo, para que tu operación diaria nunca se detenga por un mal formato.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-sm">
+            <h3 class="text-xl font-bold text-primary-600 mb-4">Servicio en todo el Perú</h3>
+            <p class="text-gray-700">Llegamos a donde estés. Entregas en Lima en 24-48 horas y envíos a provincia entre 3 y 5 días. Tu negocio no puede esperar.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. SECCIÓN CLIENTES / RUBROS -->
+    <section class="section-padding bg-white">
+      <div class="max-w-5xl mx-auto px-4 text-center">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-10">Negocios que confían en nosotros</h2>
+        <div class="flex flex-wrap justify-center gap-4 mb-10">
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Restaurantes</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Empresas de Transporte</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Farmacias</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Bodegas</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Empresas Agrarias</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Colegios</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Universidades</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Minimarkets</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Ferreterías</span>
+          <span class="px-6 py-3 bg-gray-100 text-gray-800 rounded-full font-medium">Distribuidoras</span>
+        </div>
+        <p class="text-xl text-gray-700 font-medium">Si tu negocio emite comprobantes o maneja documentación interna, tenemos el formato correcto para ti.</p>
+      </div>
+    </section>
+
+    <!-- 6. SECCIÓN DATOS DE CONFIANZA -->
+    <section class="section-padding bg-gray-900 text-white">
+      <div class="max-w-7xl mx-auto px-4">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl md:text-4xl font-bold mb-4">Datos que nos respaldan</h2>
+          <p class="text-xl text-gray-300">
+            RUC: <a href="https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias" target="_blank" rel="noopener noreferrer" class="text-primary-400 hover:text-primary-300 underline">20503580030</a>
+          </p>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          <div>
+            <div class="text-4xl font-bold text-primary-500 mb-2">20+</div>
+            <div class="text-lg">Años de experiencia</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-primary-500 mb-2">5000 +</div>
+            <div class="text-lg">Clientes satisfechos</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-primary-500 mb-2">100%</div>
+            <div class="text-lg">Autorizado SUNAT</div>
+          </div>
+          <div>
+            <div class="text-4xl font-bold text-primary-500 mb-2">Perú</div>
+            <div class="text-lg">Envíos a nivel nacional</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. SECCIÓN CTA FINAL -->
+    <section class="section-padding bg-white text-center">
+      <div class="max-w-3xl mx-auto px-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">¿Listo para trabajar con nosotros?</h2>
+        <p class="text-xl text-gray-700 mb-8">Únete a los cientos de negocios que ya imprimen sus formatos legales y administrativos con total tranquilidad.</p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/contacto#cotizar" class="btn-primary text-lg px-8 py-4">Solicitar cotización</a>
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-secondary text-lg px-8 py-4">WhatsApp directo</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>

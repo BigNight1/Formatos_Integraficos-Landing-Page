@@ -1,0 +1,167 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Cómo verifico si una imprenta está autorizada por SUNAT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ingresa al portal de SUNAT y consulta el RUC de la imprenta. Si aparece como autorizada para emitir comprobantes de pago, puedes trabajar con ella legalmente."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el Formulario Virtual 816 de SUNAT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es el formulario que debes completar en el portal de SUNAT para autorizar a una imprenta a producir tus comprobantes de pago físicos. Sin este trámite, los documentos impresos no tienen validez legal."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Me ayudan con el proceso del Formulario 816?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sí. En Formatos Intergraficos te guiamos paso a paso para completar tu autorización antes de iniciar la impresión, sin costo adicional."
+      }
+    }
+  ]
+};
+---
+
+<Layout 
+  title="Imprenta Autorizada SUNAT en Lima | Formulario 816"
+  description="¿Necesitas imprimir boletas o guías legales? Somos imprenta autorizada por SUNAT. Te explicamos el proceso del Formulario 816 y te ayudamos a cumplirlo."
+>
+  <Header />
+  <main>
+    <!-- 1. HERO -->
+    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
+      <div class="max-w-4xl mx-auto text-center px-4">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          ¿Qué significa ser una imprenta autorizada por SUNAT y por qué importa?
+        </h1>
+        <p class="text-xl text-gray-700 leading-relaxed mb-8">
+          No todas las imprentas pueden imprimir tus boletas o guías legalmente. Nosotros sí. Somos una imprenta autorizada con RUC 20503580030 y más de 20 años cumpliendo estrictamente los requisitos de SUNAT.
+        </p>
+        <div class="flex justify-center">
+          <a href="/servicios/formatos-continuos" class="btn-primary text-lg px-8 py-4">Ver nuestros servicios</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. ¿QUÉ ES UNA IMPRENTA AUTORIZADA SUNAT? -->
+    <section class="section-padding bg-white">
+      <div class="max-w-3xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">¿Qué es una imprenta autorizada por SUNAT?</h2>
+        <p class="text-lg text-gray-700">
+          SUNAT es rigurosa con la documentación tributaria. Solo permite que empresas formalmente registradas, evaluadas y <strong>autorizadas</strong> impriman comprobantes de pago físicos (como boletas de venta, facturas y guías de remisión). Si tu imprenta no cuenta con esta autorización activa, tus documentos no tienen validez legal y carecen de efecto tributario.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. EL FORMULARIO 816 -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">¿Qué es el Formulario Virtual N.° 816 y cómo funciona?</h2>
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
+          <ol class="space-y-6 text-lg text-gray-700 list-decimal list-inside">
+            <li class="pb-4 border-b border-gray-100">
+              <strong class="text-gray-900">El contribuyente (tú) ingresa al portal SUNAT</strong> usando su Clave SOL.
+            </li>
+            <li class="pb-4 border-b border-gray-100">
+              <strong class="text-gray-900">Llena el Formulario Virtual 816</strong> solicitando la autorización de impresión e indicando el RUC de la imprenta.
+            </li>
+            <li class="pb-4 border-b border-gray-100">
+              <strong class="text-gray-900">SUNAT verifica</strong> de forma automática que la imprenta seleccionada esté efectivamente autorizada.
+            </li>
+            <li class="pt-2">
+              <strong class="text-gray-900">Una vez aprobado</strong>, la imprenta puede proceder de inmediato con la impresión de los formatos.
+            </li>
+          </ol>
+          <div class="mt-8 p-4 bg-primary-50 rounded-lg border-l-4 border-primary-500 text-primary-800">
+            <strong>Nota importante:</strong> Si aún no has gestionado tu autorización, nosotros te asesoramos en todo el proceso sin ningún costo adicional.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. RIESGOS -->
+    <section class="section-padding bg-white">
+      <div class="max-w-5xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold text-gray-900 mb-10">Riesgos de imprimir con una imprenta no autorizada</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="p-6 bg-red-50 rounded-xl border border-red-100">
+            <div class="text-red-500 text-3xl mb-4">❌</div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Sin validez legal</h3>
+            <p class="text-gray-700">Tus comprobantes no tendrán validez legal ante SUNAT, lo que los convierte en papel sin valor tributario.</p>
+          </div>
+          <div class="p-6 bg-red-50 rounded-xl border border-red-100">
+            <div class="text-red-500 text-3xl mb-4">❌</div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Multas severas</h3>
+            <p class="text-gray-700">Emitir documentos no válidos puede resultar en fuertes multas y sanciones durante una fiscalización.</p>
+          </div>
+          <div class="p-6 bg-red-50 rounded-xl border border-red-100">
+            <div class="text-red-500 text-3xl mb-4">❌</div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Rechazo de clientes</h3>
+            <p class="text-gray-700">Tus clientes no podrán utilizar esos documentos para sustentar gastos, lo que afectará la confianza en tu negocio.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. NUESTRA AUTORIZACIÓN -->
+    <section class="section-padding bg-primary-900 text-white">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-6">Nuestra autorización SUNAT</h2>
+        <div class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-bold text-2xl mb-8 shadow-lg">
+          RUC: <a href="https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias" target="_blank" rel="noopener noreferrer" class="hover:underline">20503580030</a>
+        </div>
+        <p class="text-xl text-gray-200">
+          Puedes verificar nuestra autorización directamente en el portal oficial de SUNAT consultando nuestro RUC. Llevamos más de 20 años operando ininterrumpidamente como imprenta autorizada en Lima Metropolitana.
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. FAQ -->
+    <section class="section-padding bg-gray-50">
+      <div class="max-w-4xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Preguntas frecuentes sobre imprentas autorizadas SUNAT</h2>
+        <div class="space-y-6">
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Cómo verifico si una imprenta está autorizada por SUNAT?</h3>
+            <p class="text-gray-600">Ingresa al portal de SUNAT y consulta el RUC de la imprenta. Si en la sección de datos secundarios aparece habilitada para emitir e imprimir comprobantes de pago, puedes trabajar con ella con total seguridad.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Necesito gestionar el Formulario 816 antes de hacer mi pedido?</h3>
+            <p class="text-gray-600">Sí, es un requisito obligatorio pero únicamente para formatos tributarios (boletas, facturas, guías de remisión). Para documentos administrativos o de control interno como proformas o notas de pedido, no es necesario.</p>
+          </div>
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Me ayudan con el proceso del Formulario 816?</h3>
+            <p class="text-gray-600">Sí. Sabemos que el portal puede ser confuso, así que te guiamos paso a paso para que tu autorización esté lista rápidamente antes de iniciar la impresión. Simplemente escríbenos por WhatsApp.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. CTA FINAL -->
+    <section class="section-padding bg-white text-center">
+      <div class="max-w-3xl mx-auto px-4">
+        <h2 class="text-3xl font-bold text-gray-900 mb-6">Empieza a imprimir con respaldo legal</h2>
+        <p class="text-xl text-gray-700 mb-8">No te arriesgues. Asegura la legalidad de tus comprobantes trabajando con una imprenta seria y de trayectoria comprobada.</p>
+        <div class="flex justify-center">
+          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-primary text-lg px-8 py-4">Cotizar con imprenta autorizada</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>
