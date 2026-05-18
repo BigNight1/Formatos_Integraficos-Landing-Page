@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://formatosintergraficos.pe/sitemap-index.xml
+Sitemap: https://formatosintergraficos.pe/sitemap.xml
