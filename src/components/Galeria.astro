@@ -1,0 +1,341 @@
+---
+import galleryData from '../data/gallery-data.json';
+import { Icon } from 'astro-icon/components';
+
+// Definimos los filtros que irán en la barra horizontal
+const filters = [
+  { label: 'Todos', value: 'all' },
+  { label: 'Formatos Continuos', value: 'Formatos Continuos' },
+  { label: 'Guías de Remisión', value: 'Guías de Remisión' },
+  { label: 'Comprobantes de Pago', value: 'Comprobantes de Pago' },
+  { label: 'Tickets de Control', value: 'Tickets de Control' },
+  { label: 'Formatos de Control', value: 'Formatos de Control' },
+  { label: 'Minería', value: 'Minería' },
+  { label: 'Logística y Transporte', value: 'Logística y Transporte' }
+];
+---
+
+<section id="galeria" class="section-padding bg-gray-50 scroll-mt-20">
+  <div class="max-w-7xl mx-auto">
+    <!-- 1. Encabezado -->
+    <div class="text-center mb-10">
+      <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+        Galería
+      </h2>
+      <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-2">
+        Algunos de los formatos y trabajos realizados para distintos sectores.
+      </p>
+      <p class="text-xs text-gray-400 max-w-md mx-auto italic">
+        Trabajos autorizados y diseñados a medida.
+      </p>
+    </div>
+
+    <!-- 2. Barra de filtros (horizontal) -->
+    <div class="flex justify-center mb-12">
+      <div class="flex flex-wrap justify-center gap-3 max-w-5xl px-2 py-1.5 bg-white rounded-xl shadow-sm border border-gray-200">
+        {filters.map((filter, index) => (
+          <button
+            type="button"
+            class={`filter-btn px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer ${
+              index === 0
+                ? 'bg-primary-600 text-white border-transparent'
+                : 'bg-white text-gray-700 hover:text-primary-600 hover:bg-gray-50 border border-gray-200'
+            }`}
+            data-filter={filter.value}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <!-- 3. Grid principal -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 transition-all duration-300" id="galleryGrid">
+      {galleryData.map((item) => (
+        <div 
+          class="gallery-item-wrapper transition-all duration-300 transform scale-100 opacity-100" 
+          data-category={item.category} 
+          data-tags={JSON.stringify(item.tags)}
+        >
+          <figure 
+            class="gallery-card bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md hover:scale-[1.03] transition-all duration-300 cursor-pointer flex flex-col h-full group"
+            data-id={item.id}
+          >
+            <!-- Imagen con skeleton loading -->
+            <div class="relative overflow-hidden bg-gray-200 animate-pulse aspect-[4/3] w-full border-b border-gray-100">
+              <img 
+                src={item.image} 
+                alt={item.alt} 
+                loading="lazy"
+                class="gallery-img w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:scale-105 transition-transform duration-500" 
+                onload="this.parentElement.classList.remove('animate-pulse', 'bg-gray-200'); this.classList.remove('opacity-0');"
+              />
+              
+              <!-- Hover Overlay Inferior -->
+              <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between">
+                <span class="text-white text-xs font-semibold tracking-wider uppercase">Ver Detalles</span>
+                <Icon name="lucide:external-link" class="w-4 h-4 text-white" />
+              </div>
+            </div>
+            
+            <!-- Info Section -->
+            <figcaption class="p-5 flex flex-col flex-grow justify-between bg-white">
+              <div>
+                <h3 class="text-lg font-bold text-gray-900 mb-1 leading-snug group-hover:text-primary-600 transition-colors">
+                  {item.title}
+                </h3>
+                <p class="text-sm text-gray-500 font-medium mb-2">
+                  {item.client}
+                </p>
+                <p class="text-xs text-gray-400 mb-4">
+                  {item.category}
+                </p>
+              </div>
+              <div class="flex justify-between items-center mt-auto border-t border-gray-100 pt-3">
+                <span class="text-xs text-primary-600 font-semibold group-hover:underline">Ampliar info →</span>
+                <div class="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 transition-colors border border-gray-200 bg-gray-50 cursor-pointer" title="Ver detalles y zoom">
+                  <Icon name="lucide:search" class="w-4 h-4" />
+                </div>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- 5. Modal al hacer click -->
+<div 
+  id="galleryModal" 
+  class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm transition-all duration-300 opacity-0"
+  aria-modal="true"
+  role="dialog"
+>
+  <!-- Modal Content Container -->
+  <div 
+    id="modalContainer"
+    class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 transform scale-95 transition-transform duration-300 flex flex-col md:flex-row"
+  >
+    <!-- Botón Cerrar Flotante -->
+    <button 
+      id="closeModalBtn" 
+      class="absolute top-4 right-4 z-10 p-2 rounded-full bg-black/50 text-white hover:bg-black/80 hover:scale-105 transition-all cursor-pointer"
+      aria-label="Cerrar modal"
+    >
+      <Icon name="lucide:x" class="w-6 h-6" />
+    </button>
+
+    <!-- Izquierda: Imagen del trabajo -->
+    <div class="md:w-3/5 bg-gray-50 flex items-center justify-center p-4 md:p-8 min-h-[300px] max-h-[50vh] md:max-h-[80vh]">
+      <img 
+        id="modalImage" 
+        src="" 
+        alt="" 
+        class="max-w-full max-h-full object-contain rounded-lg shadow-sm"
+      />
+    </div>
+
+    <!-- Derecha: Detalles -->
+    <div class="md:w-2/5 p-6 md:p-8 flex flex-col justify-between border-t md:border-t-0 md:border-l border-gray-100">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <span 
+            id="modalCategory" 
+            class="text-xs font-bold text-primary-600 bg-primary-50 px-2.5 py-1 rounded"
+          ></span>
+        </div>
+
+        <h3 
+          id="modalTitle" 
+          class="text-2xl font-bold text-gray-900 mb-2 leading-tight"
+        ></h3>
+        
+        <p 
+          id="modalClient" 
+          class="text-sm font-semibold text-gray-500 mb-6 italic"
+        ></p>
+        
+        <div class="space-y-4 mb-8">
+          <div>
+            <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Descripción del Trabajo</h4>
+            <p id="modalDescription" class="text-gray-700 text-sm leading-relaxed"></p>
+          </div>
+          <div>
+            <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-1">Tipo de Impresión</h4>
+            <p id="modalPrintType" class="text-gray-900 text-sm font-medium"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón de CTA Directo a Whatsapp -->
+      <a 
+        id="modalWhatsappBtn" 
+        href="#" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="btn-primary w-full text-center flex items-center justify-center gap-2 py-3.5 shadow-md shadow-primary-200"
+      >
+        <Icon name="lucide:smartphone" class="w-5 h-5" />
+        Solicitar algo similar
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  import galleryData from '../data/gallery-data.json';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // --- 1. Lógica de Filtrado ---
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item-wrapper');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Actualizar estados visuales de los botones de filtro
+        filterButtons.forEach(b => {
+          b.classList.remove('bg-primary-600', 'text-white', 'border-transparent');
+          b.classList.add('bg-white', 'text-gray-700', 'border-gray-200', 'hover:text-primary-600', 'hover:bg-gray-50');
+        });
+        btn.classList.add('bg-primary-600', 'text-white', 'border-transparent');
+        btn.classList.remove('bg-white', 'text-gray-700', 'border-gray-200', 'hover:text-primary-600', 'hover:bg-gray-50');
+
+        const filter = btn.getAttribute('data-filter');
+
+        galleryItems.forEach(item => {
+          const itemTags = JSON.parse(item.getAttribute('data-tags') || '[]');
+          const itemCategory = item.getAttribute('data-category') || '';
+
+          const isMatch = filter === 'all' || itemCategory === filter || itemTags.includes(filter);
+
+          if (isMatch) {
+            // Mostrar elemento
+            (item as HTMLElement).style.display = 'block';
+            // Retardo mínimo para activar la animación de opacidad y escala
+            requestAnimationFrame(() => {
+              item.classList.remove('opacity-0', 'scale-95');
+              item.classList.add('opacity-100', 'scale-100');
+            });
+          } else {
+            // Ocultar elemento con desvanecimiento
+            item.classList.remove('opacity-100', 'scale-100');
+            item.classList.add('opacity-0', 'scale-95');
+            
+            // Retrasar el display:none para permitir que termine la animación (300ms)
+            const handleTransitionEnd = () => {
+              if (item.classList.contains('opacity-0')) {
+                (item as HTMLElement).style.display = 'none';
+              }
+              item.removeEventListener('transitionend', handleTransitionEnd);
+            };
+            item.addEventListener('transitionend', handleTransitionEnd);
+          }
+        });
+      });
+    });
+
+    // --- 2. Lógica del Modal ---
+    const cards = document.querySelectorAll('.gallery-card');
+    const modal = document.getElementById('galleryModal');
+    const modalContainer = document.getElementById('modalContainer');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    
+    // Elementos internos del modal
+    const modalImage = document.getElementById('modalImage') as HTMLImageElement;
+    const modalCategory = document.getElementById('modalCategory');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalClient = document.getElementById('modalClient');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalPrintType = document.getElementById('modalPrintType');
+    const modalWhatsappBtn = document.getElementById('modalWhatsappBtn') as HTMLAnchorElement;
+
+    const openModal = (id: string) => {
+      const itemData = galleryData.find(item => item.id === id);
+      if (!itemData || !modal || !modalContainer) return;
+
+      // Cargar datos en el modal
+      if (modalImage) {
+        modalImage.src = itemData.image;
+        modalImage.alt = itemData.alt;
+      }
+      if (modalCategory) modalCategory.textContent = itemData.category;
+      if (modalTitle) modalTitle.textContent = itemData.title;
+      if (modalClient) modalClient.textContent = `Cliente de referencia: ${itemData.client}`;
+      if (modalDescription) modalDescription.textContent = itemData.description;
+      if (modalPrintType) modalPrintType.textContent = itemData.printType;
+
+      // Configurar enlace de WhatsApp
+      const whatsappNumber = '51910500706';
+      const textMessage = `Hola Formatos Intergráficos, me gustaría cotizar un trabajo similar a: *${itemData.title}* (${itemData.printType}) que vi en su galería de la web.`;
+      if (modalWhatsappBtn) {
+        modalWhatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(textMessage)}`;
+      }
+
+      // Mostrar modal
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      
+      // Retardo para animaciones
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+        modalContainer.classList.remove('scale-95');
+        modalContainer.classList.add('scale-100');
+      });
+
+      // Bloquear scroll de fondo
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeModal = () => {
+      if (!modal || !modalContainer) return;
+
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      modalContainer.classList.remove('scale-100');
+      modalContainer.classList.add('scale-95');
+
+      const handleCloseTransition = () => {
+        if (modal.classList.contains('opacity-0')) {
+          modal.classList.remove('flex');
+          modal.classList.add('hidden');
+        }
+        modal.removeEventListener('transitionend', handleCloseTransition);
+      };
+      modal.addEventListener('transitionend', handleCloseTransition);
+
+      // Desbloquear scroll
+      document.body.style.overflow = '';
+    };
+
+    // Registrar clics en las tarjetas
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.getAttribute('data-id');
+        if (id) openModal(id);
+      });
+    });
+
+    // Cerrar con botón X
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', closeModal);
+    }
+
+    // Cerrar al hacer clic fuera del contenedor
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+    }
+
+    // Cerrar con tecla Escape
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  });
+</script>

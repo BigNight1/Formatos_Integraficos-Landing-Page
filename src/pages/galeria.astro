@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import GaleriaComponent from '../components/Galeria.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Galería de Trabajos Realizados - Formatos Intergráficos",
+  "url": "https://formatosintergraficos.pe/galeria",
+  "description": "Portafolio de formatos continuos, tickets de balanza, boletas y comandas impresas a medida para sectores como minería, notarías, restaurantes e industria.",
+  "mainEntity": {
+    "@type": "LocalBusiness",
+    "name": "Formatos Intergráficos",
+    "image": "https://formatosintergraficos.pe/LogoFormatos.webp",
+    "telephone": "+51910500706",
+    "url": "https://formatosintergraficos.pe"
+  }
+};
+---
+
+<Layout 
+  title="Galería de Trabajos Realizados | Formatos Intergráficos"
+  description="Explora nuestra galería de trabajos. Formatos continuos, tickets de balanza, boletas, comandas y comprobantes autorizados SUNAT para diversos rubros en Lima."
+>
+  <Header />
+  <main>
+    <!-- Separador sutil superior para compensar el header sticky -->
+    <div class="h-6 bg-gray-50"></div>
+    <GaleriaComponent />
+  </main>
+  <Footer />
+</Layout>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>
