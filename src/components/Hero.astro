@@ -1,49 +1,212 @@
 ---
 // Componente Hero
+import { Icon } from 'astro-icon/components';
+
+const carouselImages = [
+  { src: '/Trabajos_realizados.webp', alt: 'Formatos continuos impresos y formularios químicos corporativos' },
+  { src: '/maquinaria.webp', alt: 'Modelos de liquidación de compra y proformas continuas' },
+  { src: '/hombre_trabajando_formatos.webp', alt: 'Vouchers POS y talonarios de control' }
+];
 ---
 
-<section class="bg-gradient-to-br from-primary-50 to-blue-100 section-padding">
-  <div class="max-w-7xl mx-auto text-center">
-    <div class="max-w-4xl mx-auto">
-      <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-        Imprenta autorizada SUNAT en Lima: <span class="text-primary-600">Formatos Intergraficos</span>
-      </h1>
-      <p class="text-xl md:text-2xl text-gray-700 mb-8 leading-relaxed">
-        Impresión profesional de papel continuo, proformas y vouchers para tu negocio
-      </p>
-      <p class="text-lg text-gray-600 mb-10 max-w-3xl mx-auto">
-        Somos una imprenta autorizada que te ayuda a cumplir con los requisitos legales de SUNAT. 
-        Imprimimos proformas y vouchers con la mejor calidad y entrega rápida.
-      </p>
+<section id="hero-section" class="relative bg-gradient-to-br from-primary-50 via-white to-blue-50/70 overflow-hidden border-b border-gray-100 lg:min-h-screen lg:flex lg:flex-col">
+  <!-- Decorative background shapes for a premium look -->
+  <div class="absolute inset-0 z-0 opacity-40 pointer-events-none">
+    <div class="absolute top-0 right-0 w-96 h-96 bg-primary-200 rounded-full filter blur-3xl -mr-16 -mt-16 animate-pulse" style="animation-duration: 8s;"></div>
+    <div class="absolute bottom-16 left-0 w-80 h-80 bg-blue-100 rounded-full filter blur-3xl -ml-20 -mb-20"></div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-10 lg:pt-20 lg:pb-16 lg:flex-1 lg:flex lg:items-center">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
       
-      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-        <a href="#cotizar" class="btn-primary text-lg px-8 py-4">
-          Solicitar Cotización
-        </a>
-        <a href="#servicios" class="btn-secondary text-lg px-8 py-4">
-          Ver Servicios
-        </a>
+      <!-- Columna Izquierda (Contenido y Acción) -->
+      <div class="flex flex-col items-start text-left max-w-2xl mx-auto lg:mx-0">
+        <!-- Etiqueta superior -->
+        <span class="inline-block text-xs font-semibold tracking-wider text-gray-700 uppercase mb-4 bg-gray-100/80 px-3.5 py-1.5 rounded-full border border-gray-200/50">
+          ✓ +20 Años de Experiencia en Perú
+        </span>
+
+        <!-- Título Principal (H1) -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-primary-950 tracking-tight leading-[1.15] mb-6">
+          Imprenta Autorizada SUNAT en Lima: <span class="text-primary-600 bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent">Formatos Intergráficos</span> y Continuos
+        </h1>
+
+        <!-- Subtítulo -->
+        <p class="text-lg text-gray-600 mb-8 leading-relaxed max-w-xl">
+          Impresión profesional de comprobantes, proformas y vouchers con entrega rápida y la calidad legal que tu empresa necesita.
+        </p>
+
+        <!-- Botón de Acción (CTA) -->
+        <div class="w-full sm:w-auto">
+          <a
+            id="hero-cta-button"
+            href="#cotizar"
+            class="inline-block text-center text-lg font-bold text-gray-900 bg-amber-400 hover:bg-amber-500 hover:scale-[1.02] active:scale-[0.98] px-10 py-4.5 rounded-xl shadow-lg shadow-amber-200/60 hover:shadow-xl hover:shadow-amber-200/80 transition-all duration-200 w-full sm:w-auto cursor-pointer border-b-2 border-amber-500/30"
+          >
+            Solicitar Cotización Gratis
+          </a>
+        </div>
       </div>
-      
-      <!-- Indicadores de confianza -->
-      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
-        <div class="text-center">
-          <div class="text-3xl font-bold text-primary-600 mb-2">500+</div>
-          <div class="text-sm text-gray-600">Clientes Satisfechos</div>
-        </div>
-        <div class="text-center">
-          <div class="text-3xl font-bold text-primary-600 mb-2">24h</div>
-          <div class="text-sm text-gray-600">Entrega Rápida</div>
-        </div>
-        <div class="text-center">
-          <div class="text-3xl font-bold text-primary-600 mb-2">100%</div>
-          <div class="text-sm text-gray-600">Autorizado SUNAT</div>
-        </div>
-        <div class="text-center">
-          <div class="text-3xl font-bold text-primary-600 mb-2">10+</div>
-          <div class="text-sm text-gray-600">Años de Experiencia</div>
+
+      <!-- Columna Derecha (Visual con Carousel) -->
+      <div class="relative flex justify-center lg:justify-end">
+        <div class="relative w-full max-w-lg lg:max-w-md xl:max-w-lg">
+          <!-- Background glow / decorative ring -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-primary-500 to-blue-400 rounded-3xl transform rotate-2 scale-[1.03] opacity-10 filter blur-sm"></div>
+          
+          <!-- Image container with Carousel -->
+          <div class="relative bg-white p-2.5 rounded-3xl shadow-xl border border-gray-150 aspect-[4/3] w-full group overflow-hidden">
+            <!-- Carousel slides -->
+            <div id="hero-carousel-container" class="relative w-full h-full rounded-2xl overflow-hidden bg-gray-50">
+              {carouselImages.map((img, index) => (
+                <div
+                  class={`absolute inset-0 w-full h-full transition-opacity duration-700 ease-in-out ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
+                  data-carousel-slide={index}
+                >
+                  <img
+                    src={img.src}
+                    alt={img.alt}
+                    class="w-full h-full object-cover rounded-2xl"
+                    width="800"
+                    height="600"
+                    loading={index === 0 ? "eager" : "lazy"}
+                  />
+                </div>
+              ))}
+            </div>
+
+
+          </div>
+
+          <!-- Floating Badges -->
+          <!-- Badge 1: Top Left - Entrega en 24h -->
+          <div class="absolute -top-3 -left-3 md:-left-5 z-30 bg-white/95 backdrop-blur-sm border border-gray-200/80 text-gray-800 text-xs font-bold py-2.5 px-4 rounded-full shadow-lg flex items-center gap-1.5 animate-float hover:scale-105 transition-transform duration-200 select-none">
+            <span class="flex h-2.5 w-2.5 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <span>Entrega en 24h</span>
+          </div>
+
+          <!-- Badge 2: Bottom Right - 100% Autorizado SUNAT -->
+          <div class="absolute -bottom-3 -right-3 md:-right-5 z-30 bg-primary-600 border border-primary-750 text-white text-xs font-bold py-2.5 px-4 rounded-full shadow-lg flex items-center gap-1.5 animate-float-delayed hover:scale-105 transition-transform duration-200 select-none">
+            <Icon name="lucide:shield-check" class="w-4.5 h-4.5 text-white" />
+            <span>100% Autorizado SUNAT</span>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</section> 
+
+  <!-- Barra de Confianza (Franja horizontal de ancho completo) -->
+  <div class="w-full bg-gray-50/80 backdrop-blur-sm border-t border-gray-150 py-6 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 divide-y-0 divide-x-0 md:divide-x divide-gray-200/60">
+        
+        <!-- 500+ Clientes Satisfechos -->
+        <div id="trust-item-clients" class="flex items-center justify-center gap-3 px-2 py-1 md:py-2">
+          <div class="w-9 h-9 rounded-full bg-primary-50 flex items-center justify-center shrink-0">
+            <Icon name="lucide:users" class="w-5 h-5 text-primary-600" />
+          </div>
+          <span class="text-xs md:text-sm lg:text-base font-semibold text-gray-750">500+ Clientes Satisfechos</span>
+        </div>
+
+        <!-- Entrega Rápida en Lima -->
+        <div id="trust-item-delivery" class="flex items-center justify-center gap-3 px-2 py-1 pt-3 md:pt-2 md:border-t-0">
+          <div class="w-9 h-9 rounded-full bg-primary-50 flex items-center justify-center shrink-0">
+            <Icon name="lucide:truck" class="w-5 h-5 text-primary-600" />
+          </div>
+          <span class="text-xs md:text-sm lg:text-base font-semibold text-gray-750">Entrega Rápida en Lima</span>
+        </div>
+
+        <!-- 100% Autorizado SUNAT -->
+        <div id="trust-item-sunat" class="flex items-center justify-center gap-3 px-2 py-1 pt-3 md:pt-2 md:border-t-0">
+          <div class="w-9 h-9 rounded-full bg-primary-50 flex items-center justify-center shrink-0">
+            <Icon name="lucide:shield-check" class="w-5 h-5 text-primary-600" />
+          </div>
+          <span class="text-xs md:text-sm lg:text-base font-semibold text-gray-750">100% Autorizado SUNAT</span>
+        </div>
+
+        <!-- +10 Años de Experiencia -->
+        <div id="trust-item-experience" class="flex items-center justify-center gap-3 px-2 py-1 pt-3 md:pt-2 md:border-t-0">
+          <div class="w-9 h-9 rounded-full bg-primary-50 flex items-center justify-center shrink-0">
+            <Icon name="lucide:award" class="w-5 h-5 text-primary-600" />
+          </div>
+          <span class="text-xs md:text-sm lg:text-base font-semibold text-gray-750">+20 Años de Experiencia</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
+
+  .animate-float {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 4s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const slides = document.querySelectorAll('[data-carousel-slide]');
+
+    if (!slides.length) return;
+
+    let currentIndex = 0;
+    let autoplayTimer: any = null;
+    const intervalTime = 4000;
+
+    const showSlide = (index: number) => {
+      if (index < 0) {
+        currentIndex = slides.length - 1;
+      } else if (index >= slides.length) {
+        currentIndex = 0;
+      } else {
+        currentIndex = index;
+      }
+
+      slides.forEach((slide, idx) => {
+        if (idx === currentIndex) {
+          slide.classList.remove('opacity-0', 'z-0', 'pointer-events-none');
+          slide.classList.add('opacity-100', 'z-10');
+        } else {
+          slide.classList.remove('opacity-100', 'z-10');
+          slide.classList.add('opacity-0', 'z-0', 'pointer-events-none');
+        }
+      });
+    };
+
+    const nextSlide = () => showSlide(currentIndex + 1);
+
+    const startAutoplay = () => {
+      stopAutoplay();
+      autoplayTimer = setInterval(nextSlide, intervalTime);
+    };
+
+    const stopAutoplay = () => {
+      if (autoplayTimer) {
+        clearInterval(autoplayTimer);
+        autoplayTimer = null;
+      }
+    };
+
+    startAutoplay();
+  });
+</script>
+
+
+

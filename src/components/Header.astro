@@ -2,13 +2,16 @@
 // Componente Header
 const currentPath = Astro.url.pathname;
 const isActive = (path: string) => {
-  if (path === '/' && currentPath === '/') return true;
-  if (path !== '/' && currentPath.startsWith(path)) return true;
+  if (path === "/" && currentPath === "/") return true;
+  if (path !== "/" && currentPath.startsWith(path)) return true;
   return false;
 };
-const cotizarHref = (currentPath === '/' || currentPath === '/contacto' || currentPath === '/contacto/') 
-  ? '#cotizar' 
-  : '/contacto#cotizar';
+const cotizarHref =
+  currentPath === "/" ||
+  currentPath === "/contacto" ||
+  currentPath === "/contacto/"
+    ? "#cotizar"
+    : "/contacto#cotizar";
 ---
 
 <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
@@ -17,47 +20,110 @@ const cotizarHref = (currentPath === '/' || currentPath === '/contacto' || curre
       <!-- Logo y título -->
       <a href="/" class="flex items-center space-x-3 shrink-0">
         <div class="w-10 h-10 rounded-lg flex items-center justify-center">
-          <img src="/LogoFormatos.webp" alt="Logo de Formatos Intergraficos - Imprenta Autorizada SUNAT" class="w-full h-full object-contain">
+          <img
+            src="/LogoFormatos.webp"
+            alt="Logo de Formatos Intergraficos - Imprenta Autorizada SUNAT"
+            class="w-full h-full object-contain"
+          />
         </div>
         <div class="hidden sm:block">
-          <div class="text-xl font-bold text-gray-900 leading-tight">Formatos Impresos SAC</div>
+          <div class="text-xl font-bold text-gray-900 leading-tight">
+            Formatos Impresos SAC
+          </div>
           <div class="text-xs text-gray-600">Autorizados SUNAT</div>
         </div>
       </a>
 
       <!-- Desktop Navigation -->
       <nav class="hidden lg:flex items-center space-x-6">
-        <a href="/" class={`text-sm font-medium transition-colors ${isActive('/') ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}>Inicio</a>
-        
+        <a
+          href="/"
+          class={`text-sm font-medium transition-colors ${isActive("/") ? "text-primary-600" : "text-gray-700 hover:text-primary-600"}`}
+          >Inicio</a
+        >
+
         <!-- Dropdown Servicios -->
         <div class="relative group">
-          <button class={`flex items-center text-sm font-medium transition-colors ${currentPath.includes('/servicios') ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}>
+          <button
+            class={`flex items-center text-sm font-medium transition-colors ${currentPath.includes("/servicios") ? "text-primary-600" : "text-gray-700 hover:text-primary-600"}`}
+          >
             Servicios
-            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            <svg
+              class="w-4 h-4 ml-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"></path></svg
+            >
           </button>
-          <div class="absolute left-0 mt-2 w-64 bg-white border border-gray-100 rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+          <div
+            class="absolute left-0 mt-2 w-64 bg-white border border-gray-100 rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+          >
             <div class="py-2">
-              <a href="/servicios/formatos-continuos" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">Formatos Continuos</a>
-              <a href="/servicios/vouchers-pos" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">Vouchers POS</a>
-              <a href="/servicios/documentos-administrativos" class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors">Documentos Administrativos</a>
+              <a
+                href="/servicios/formatos-continuos"
+                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                >Formatos Continuos</a
+              >
+              <a
+                href="/servicios/vouchers-pos"
+                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                >Vouchers POS</a
+              >
+          <a
+                href="/servicios/documentos-administrativos"
+                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                >Documentos Administrativos</a
+              >
+              <a
+                href="/autorizado-sunat"
+                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                >Autorizado SUNAT</a
+              >
             </div>
           </div>
         </div>
 
-        <a href="/autorizado-sunat" class={`text-sm font-medium transition-colors ${isActive('/autorizado-sunat') ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}>Autorizado SUNAT</a>
-        <a href="/nosotros" class={`text-sm font-medium transition-colors ${isActive('/nosotros') ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}>Nosotros</a>
-        <a href="/galeria" class={`text-sm font-medium transition-colors ${isActive('/galeria') ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}>Galería</a>
-        <a href="/contacto" class={`text-sm font-medium transition-colors ${isActive('/contacto') ? 'text-primary-600' : 'text-gray-700 hover:text-primary-600'}`}>Contacto</a>
-        
-        <a href={cotizarHref} class="btn-primary text-sm py-2 px-4 ml-2">Cotizar →</a>
+        <a
+          href="/nosotros"
+          class={`text-sm font-medium transition-colors ${isActive("/nosotros") ? "text-primary-600" : "text-gray-700 hover:text-primary-600"}`}
+          >Nosotros</a
+        >
+        <a
+          href="/contacto"
+          class={`text-sm font-medium transition-colors ${isActive("/contacto") ? "text-primary-600" : "text-gray-700 hover:text-primary-600"}`}
+          >Contacto</a
+        >
+
+        <a href={cotizarHref} class="btn-primary text-sm py-2 px-4 ml-2"
+          >Cotizar →</a
+        >
       </nav>
 
       <!-- Mobile Button -->
       <div class="lg:hidden flex items-center gap-3">
         <a href={cotizarHref} class="btn-primary text-sm py-2 px-4">Cotizar</a>
-        <button id="mobile-menu-button" class="text-gray-600 hover:text-gray-900 focus:outline-none p-1">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        <button
+          id="mobile-menu-button"
+          class="text-gray-600 hover:text-gray-900 focus:outline-none p-1"
+        >
+          <svg
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"></path>
           </svg>
         </button>
       </div>
@@ -65,48 +131,97 @@ const cotizarHref = (currentPath === '/' || currentPath === '/contacto' || curre
   </div>
 
   <!-- Mobile Menu -->
-  <div id="mobile-menu" class="lg:hidden hidden bg-white border-t border-gray-200">
+  <div
+    id="mobile-menu"
+    class="lg:hidden hidden bg-white border-t border-gray-200"
+  >
     <div class="px-4 pt-2 pb-6 space-y-1">
-      <a href="/" class={`block px-3 py-3 rounded-md text-base font-medium ${isActive('/') ? 'text-primary-600 bg-primary-50' : 'text-gray-700 hover:bg-gray-50'}`}>Inicio</a>
-      
+      <a
+        href="/"
+        class={`block px-3 py-3 rounded-md text-base font-medium ${isActive("/") ? "text-primary-600 bg-primary-50" : "text-gray-700 hover:bg-gray-50"}`}
+        >Inicio</a
+      >
+
       <div>
-        <button id="mobile-servicios-button" class={`w-full flex justify-between items-center px-3 py-3 rounded-md text-base font-medium ${currentPath.includes('/servicios') ? 'text-primary-600 bg-primary-50' : 'text-gray-700 hover:bg-gray-50'}`}>
+        <button
+          id="mobile-servicios-button"
+          class={`w-full flex justify-between items-center px-3 py-3 rounded-md text-base font-medium ${currentPath.includes("/servicios") ? "text-primary-600 bg-primary-50" : "text-gray-700 hover:bg-gray-50"}`}
+        >
           Servicios
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+            ><path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M19 9l-7 7-7-7"></path></svg
+          >
         </button>
-        <div id="mobile-servicios-menu" class="hidden pl-4 pr-2 py-2 space-y-1 bg-gray-50 rounded-md mt-1 mb-2">
-          <a href="/servicios/formatos-continuos" class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white">Formatos Continuos</a>
-          <a href="/servicios/vouchers-pos" class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white">Vouchers POS</a>
-          <a href="/servicios/documentos-administrativos" class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white">Documentos Administrativos</a>
+        <div
+          id="mobile-servicios-menu"
+          class="hidden pl-4 pr-2 py-2 space-y-1 bg-gray-50 rounded-md mt-1 mb-2"
+        >
+          <a
+            href="/servicios/formatos-continuos"
+            class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white"
+            >Formatos Continuos</a
+          >
+          <a
+            href="/servicios/vouchers-pos"
+            class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white"
+            >Vouchers POS</a
+          >
+          <a
+            href="/servicios/documentos-administrativos"
+            class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white"
+            >Documentos Administrativos</a
+          >
+          <a
+            href="/autorizado-sunat"
+            class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white"
+            >Autorizado SUNAT</a
+          >
         </div>
       </div>
 
-      <a href="/autorizado-sunat" class={`block px-3 py-3 rounded-md text-base font-medium ${isActive('/autorizado-sunat') ? 'text-primary-600 bg-primary-50' : 'text-gray-700 hover:bg-gray-50'}`}>Autorizado SUNAT</a>
-      <a href="/nosotros" class={`block px-3 py-3 rounded-md text-base font-medium ${isActive('/nosotros') ? 'text-primary-600 bg-primary-50' : 'text-gray-700 hover:bg-gray-50'}`}>Nosotros</a>
-      <a href="/galeria" class={`block px-3 py-3 rounded-md text-base font-medium ${isActive('/galeria') ? 'text-primary-600 bg-primary-50' : 'text-gray-700 hover:bg-gray-50'}`}>Galería</a>
-      <a href="/contacto" class={`block px-3 py-3 rounded-md text-base font-medium ${isActive('/contacto') ? 'text-primary-600 bg-primary-50' : 'text-gray-700 hover:bg-gray-50'}`}>Contacto</a>
+      <a
+        href="/nosotros"
+        class={`block px-3 py-3 rounded-md text-base font-medium ${isActive("/nosotros") ? "text-primary-600 bg-primary-50" : "text-gray-700 hover:bg-gray-50"}`}
+        >Nosotros</a
+      >
+      <a
+        href="/contacto"
+        class={`block px-3 py-3 rounded-md text-base font-medium ${isActive("/contacto") ? "text-primary-600 bg-primary-50" : "text-gray-700 hover:bg-gray-50"}`}
+        >Contacto</a
+      >
     </div>
   </div>
 </header>
 
 <script>
   // Mobile menu toggle
-  const mobileMenuButton = document.getElementById('mobile-menu-button');
-  const mobileMenu = document.getElementById('mobile-menu');
-  
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+
   if (mobileMenuButton && mobileMenu) {
-    mobileMenuButton.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+    mobileMenuButton.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
     });
   }
 
   // Mobile servicios dropdown toggle
-  const mobileServiciosButton = document.getElementById('mobile-servicios-button');
-  const mobileServiciosMenu = document.getElementById('mobile-servicios-menu');
+  const mobileServiciosButton = document.getElementById(
+    "mobile-servicios-button",
+  );
+  const mobileServiciosMenu = document.getElementById("mobile-servicios-menu");
 
   if (mobileServiciosButton && mobileServiciosMenu) {
-    mobileServiciosButton.addEventListener('click', () => {
-      mobileServiciosMenu.classList.toggle('hidden');
+    mobileServiciosButton.addEventListener("click", () => {
+      mobileServiciosMenu.classList.toggle("hidden");
     });
   }
 </script>

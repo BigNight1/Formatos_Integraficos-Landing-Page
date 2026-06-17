@@ -67,6 +67,8 @@ const filters = [
                 src={item.image} 
                 alt={item.alt} 
                 loading="lazy"
+                width="400"
+                height="300"
                 class="gallery-img w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:scale-105 transition-transform duration-500" 
                 onload="this.parentElement.classList.remove('animate-pulse', 'bg-gray-200'); this.classList.remove('opacity-0');"
               />
