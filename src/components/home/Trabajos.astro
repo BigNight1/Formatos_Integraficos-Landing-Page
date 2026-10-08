@@ -12,6 +12,13 @@
  *
  * Las fotos son verticales, así que se recortan desde arriba (object-position:
  * top) para que se vea la cabecera del formato, que es lo que lo identifica.
+ *
+ * ⚠️ Se usan las versiones `-crop.webp`, NO las originales. Los escaneos traen
+ *    márgenes blancos y con el recorte de la caja (16/10 y 4/3) el encuadre caía
+ *    en ese vacío: se veía el documento pequeño y cortado. Las `-crop` son las
+ *    mismas fotos con el margen blanco quitado (sharp `trim`), así que el
+ *    documento llena el marco. La galería sigue usando las originales, porque su
+ *    marco es 3/4 y ahí el margen no molesta.
  */
 ---
 
@@ -25,7 +32,7 @@
     <div class="fi-trabajos__grid">
       <figure class="fi-trabajos__big">
         <img
-          src="/images/gallery/Horus-Factura-FC.webp"
+          src="/images/gallery/Horus-Factura-FC-crop.webp"
           alt="Factura comercial impresa en formato continuo autocopiativo"
           width="900"
           height="1600"
@@ -37,7 +44,7 @@
       <div class="fi-trabajos__col">
         <figure class="fi-trabajos__small">
           <img
-            src="/images/gallery/Sarepta-GuiaRemisionRemitente-FC.webp"
+            src="/images/gallery/Sarepta-GuiaRemisionRemitente-FC-crop.webp"
             alt="Guía de remisión remitente continua en triplicado autocopiativo"
             width="900"
             height="1600"
@@ -48,7 +55,7 @@
 
         <figure class="fi-trabajos__small">
           <img
-            src="/images/gallery/EmpresaMineraFidamiS.A-Ticketdebalanza-FC.webp"
+            src="/images/gallery/EmpresaMineraFidamiS.A-Ticketdebalanza-FC-crop.webp"
             alt="Ticket de balanza continuo para control de pesaje"
             width="900"
             height="1600"
