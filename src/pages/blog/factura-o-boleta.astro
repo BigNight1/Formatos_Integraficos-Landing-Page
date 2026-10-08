@@ -1,0 +1,208 @@
+---
+/**
+ * /blog/factura-o-boleta · rediseño v2
+ * Fuente: design-refs/diseno/Articulo.dc.html
+ *
+ * CAMBIOS respecto al canvas:
+ *  1. El autor era "Carlos Ramírez" (FICTICIO). Se usa el nombre real del fundador
+ *     que ya declaraba el sitio anterior.
+ *  2. Se QUITÓ "Revisado por un contador colegiado": era una credencial inventada y
+ *     el brief daba la opción de quitarla. Publicar una revisión que no ocurrió es
+ *     peor que no ponerla. Si un contador la revisa de verdad, se añade con su
+ *     nombre y número de colegiatura.
+ *  3. La guía relacionada "/blog/medidas-de-boleta" todavía no existe → se muestra
+ *     sin enlace para no generar un 404.
+ *
+ * ⚠️ Fechas literales ("7 de octubre de 2026"): mantenerlas a mano.
+ * ⚠️ CONTENIDO A VALIDAR CON UN CONTADOR (regla de los S/ 700, la corrección con
+ *    nota de crédito).
+ *
+ * Source Serif 4 se pide por el slot "head" del Layout.
+ */
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const FUNDADOR = 'Zenón Walter Armas Quispialaya';
+const INICIALES = 'ZA';
+const base = 'https://formatosintergraficos.pe';
+const url = `${base}/blog/factura-o-boleta`;
+
+const tabla = [
+  { k: 'Quién la recibe', f: 'Cliente con RUC', b: 'Consumidor final' },
+  { k: 'Crédito fiscal del IGV', f: 'Sí, para el comprador', b: 'No' },
+  { k: 'Datos del comprador', f: 'Razón social y RUC obligatorios', b: 'Solo si supera S/ 700 (nombre y DNI)' },
+  { k: 'IGV', f: 'Se detalla por separado', b: 'Incluido en el precio' },
+  { k: 'Copias habituales', f: 'Original + 2 (adquirente, emisor, SUNAT)', b: 'Original + 1 (adquirente, emisor)' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Factura o boleta: cuál emitir y cuándo',
+    description:
+      'La diferencia entre factura y boleta en una tabla, con ejemplos de bodegas, servicios y ventas a empresas, y la regla de los S/ 700.',
+    inLanguage: 'es-PE',
+    mainEntityOfPage: url,
+    author: { '@type': 'Person', name: FUNDADOR },
+    publisher: { '@type': 'Organization', name: 'Formatos Intergráficos', url: base },
+    datePublished: '2026-10-07',
+    dateModified: '2026-10-07',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Guías', item: `${base}/blog` },
+      { '@type': 'ListItem', position: 3, name: 'Factura o boleta', item: url },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Factura o Boleta: Cuál Emitir y Cuándo"
+  description="Factura si tu cliente tiene RUC y necesita crédito fiscal; boleta si vendes a consumidor final. La diferencia en una tabla, con la regla de los S/ 700."
+>
+  <Fragment slot="head">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+  </Fragment>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site ar">
+    <Header active="blog" />
+
+    <main class="ar-main">
+      <article class="ar-art">
+        <header class="ar-head">
+          <nav class="ar-bc" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+            <a href="/blog">Guías</a> <span aria-hidden="true">›</span>
+            <span aria-current="page">Factura o boleta</span>
+          </nav>
+          <span class="ar-tag">Comprobantes</span>
+          <h1 class="ar-h1">Factura o boleta: cuál emitir y cuándo</h1>
+          <div class="ar-meta">
+            <span class="ar-autor">
+              <span class="ar-avatar" aria-hidden="true">{INICIALES}</span>
+              {FUNDADOR} · Formatos Intergráficos
+            </span>
+            <span>7 de octubre de 2026 · 5 min</span>
+          </div>
+        </header>
+
+        <section class="ar-respuesta">
+          <h2>Respuesta corta</h2>
+          <p>
+            Emite <strong>factura</strong> cuando tu cliente tiene RUC y necesita el comprobante para
+            su contabilidad (crédito fiscal del IGV o sustento de gasto). Emite <strong>boleta de
+            venta</strong> cuando vendes a un consumidor final que no necesita ese sustento.
+          </p>
+        </section>
+
+        <div class="ar-cuerpo">
+          <p>
+            Es la pregunta que más nos hacen los negocios que empiezan. La confusión es normal: los dos
+            son comprobantes de pago autorizados por SUNAT, llevan serie y numeración y se imprimen
+            casi igual. La diferencia está en <em>quién</em> los recibe y <em>para qué</em> los usa.
+          </p>
+
+          <h2>Diferencias en una tabla</h2>
+          <div class="ar-tabla__scroll">
+            <table class="ar-tabla">
+              <thead>
+                <tr>
+                  <th scope="col" />
+                  <th scope="col">Factura</th>
+                  <th scope="col">Boleta de venta</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  tabla.map((r) => (
+                    <tr>
+                      <th scope="row">{r.k}</th>
+                      <td>{r.f}</td>
+                      <td>{r.b}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Ejemplos reales</h2>
+          <ul class="ar-lista">
+            <li>
+              <strong>Bodega que vende a vecinos:</strong> boleta. Si una empresa le compra con RUC y
+              pide factura, necesita también tener facturas.
+            </li>
+            <li>
+              <strong>Ferretería que vende a constructoras:</strong> mayormente facturas, porque sus
+              clientes usan el IGV como crédito fiscal.
+            </li>
+            <li>
+              <strong>Restaurante:</strong> los dos. Boleta para comensales y factura para empresas que
+              pagan almuerzos de trabajo.
+            </li>
+          </ul>
+
+          <h2>La regla de los S/ 700</h2>
+          <p>
+            En la boleta no es obligatorio identificar al comprador, salvo cuando el importe supera
+            S/ 700: ahí debes anotar su nombre y documento de identidad. Por eso nuestras boletas
+            siempre llevan espacio para esos datos.
+          </p>
+
+          <h2>¿Y si emito el comprobante equivocado?</h2>
+          <p>
+            Si entregaste una boleta y el cliente necesitaba factura, no se corrige con una nota de
+            crédito sobre la boleta para “convertirla”: lo correcto es consultar con tu contador el
+            procedimiento para anular y emitir el comprobante que corresponde.
+          </p>
+        </div>
+
+        <aside class="ar-cta ns-sobre-rojo">
+          <span class="ar-cta__texto">
+            <strong>¿Necesitas las dos?</strong>
+            <span>Imprimimos facturas y boletas con el mismo diseño, cada una con su serie.</span>
+          </span>
+          <span class="ar-cta__botones">
+            <a class="ar-cta__a" href="/facturas">Ver facturas</a>
+            <a class="ar-cta__b" href="/boletas-de-venta">Ver boletas</a>
+          </span>
+        </aside>
+
+        <section class="ar-bio">
+          <span class="ar-bio__avatar" aria-hidden="true">{INICIALES}</span>
+          <span class="ar-bio__texto">
+            <strong>{FUNDADOR}</strong>
+            <span>
+              Fundador de Formatos Intergráficos. Más de 20 años imprimiendo comprobantes autorizados
+              para negocios de Lima y provincias.
+            </span>
+          </span>
+        </section>
+
+        <nav class="ar-relacionadas" aria-label="Guías relacionadas">
+          <strong>Sigue leyendo</strong>
+          <a href="/autorizado-sunat">Cómo autorizar la impresión de comprobantes en SUNAT →</a>
+          <a href="/blog/medidas-de-boleta">½ oficio o A4: qué medida de boleta elegir →</a>
+        </nav>
+      </article>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<style>
+  /* Los estilos de la plantilla de artículo se movieron a src/styles/global.css
+     (bloque "ARTÍCULOS DEL BLOG") para que las 6 páginas de /blog/* los compartan.
+     No volver a ponerlos aquí: si se cambian en un solo sitio, se cambian en todas. */
+</style>

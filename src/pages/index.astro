@@ -1,29 +1,68 @@
 ---
+/**
+ * Home · rediseño v2 (estilo B "Círculo de tinta")
+ * Fuente: design-refs/diseno/Home.dc.html — 13 secciones + header y footer.
+ *
+ * Title y meta description según el plan SEO del brief
+ * (formatos-intergraficos-rediseno-seo.md).
+ */
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import Beneficios from '../components/Beneficios.astro';
-import Servicios from '../components/Servicios.astro';
-import FAQ from '../components/FAQ.astro';
-import FormularioCotizacion from '../components/FormularioCotizacion.astro';
 import Footer from '../components/Footer.astro';
+import FormularioCotizacion from '../components/FormularioCotizacion.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import Hero from '../components/home/Hero.astro';
+import TrustBar from '../components/home/TrustBar.astro';
+import Comprobantes from '../components/home/Comprobantes.astro';
+import Precios from '../components/home/Precios.astro';
+import Proceso from '../components/home/Proceso.astro';
+import Requisitos from '../components/home/Requisitos.astro';
+import Especificaciones from '../components/home/Especificaciones.astro';
+import Trabajos from '../components/home/Trabajos.astro';
+import Testimonios from '../components/home/Testimonios.astro';
+import Cobertura from '../components/home/Cobertura.astro';
+import Faq from '../components/home/Faq.astro';
+import Guias from '../components/home/Guias.astro';
+
+import { faqs } from '../data/home';
+
+// Schema FAQPage: las 10 preguntas que realmente se muestran en la página.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
 ---
 
-<Layout 
-  title="Formatos Intergraficos Autorizados SUNAT - Impresión Profesional de Boletas, Proformas y Vouchers"
-  description="Impresión profesional de papel continuo, proformas y vouchers autorizados SUNAT para tu negocio. Entrega rápida, formatos legales y precios por volumen. Servicio en todo Perú."
+<Layout
+  title="Imprenta Autorizada SUNAT en Lima | Boletas y Facturas"
+  description="Boletas, facturas y guías de remisión en formato continuo, con tu logo y numeración SUNAT. Entrega en 24 h en Lima. Cotiza gratis."
 >
-  <Header />
-  <main>
-     <Hero /> 
-    <Beneficios />
-    <Servicios />
-    <FAQ />
-    <FormularioCotizacion />
-  </main>
-  <Footer />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
 
+  <div class="fi-site">
+    <Header active="inicio" />
+
+    <main>
+      <Hero />
+      <TrustBar />
+      <Comprobantes />
+      <Precios />
+      <Proceso />
+      <Requisitos />
+      <Especificaciones />
+      <Trabajos />
+      <Testimonios />
+      <Cobertura />
+      <Faq />
+      <Guias />
+      <FormularioCotizacion />
+    </main>
+
+    <Footer />
+  </div>
 </Layout>

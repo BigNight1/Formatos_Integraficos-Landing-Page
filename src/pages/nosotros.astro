@@ -1,161 +1,603 @@
 ---
+/**
+ * /nosotros · rediseño v2
+ * Fuente: design-refs/diseno/Nosotros.dc.html
+ *
+ * CAMBIO respecto al diseño: el canvas ponía "Carlos Ramírez", que el brief marca
+ * como FICTICIO. El sitio actual ya tenía el nombre real del fundador en su schema
+ * (AboutPage → founder), así que se usa ese en lugar de inventar una persona.
+ * ⚠️ Falta que el dueño confirme el CARGO exacto (aquí se pone "Fundador", que es
+ *    lo que declaraba el sitio anterior; el diseño decía "Gerente general").
+ *
+ * ⚠️ FICTICIO / A CONFIRMAR: el texto de la carta, los hitos de 2008/2014/2021,
+ *    "12 personas en el equipo" y "3 M formatos al año".
+ *    OJO: el sitio anterior declaraba 1–10 empleados y "5000+ clientes"; el diseño
+ *    dice 12 personas y "500+ empresas". Hay que unificar las cifras.
+ * FOTOS: ya no queda ningún placeholder.
+ *    Retrato del fundador → /WalterArmas.webp
+ *    Prensa offset       → /prensa-offset.webp (real)
+ *    Equipo compaginado  → /equipo-compaginado.webp (real)
+ *    ⚠️ La grande de "Nuestro taller" sigue siendo /maquinaria.webp, que parece
+ *       de banco de imágenes: es una línea industrial automatizada y no cuadra
+ *       con un taller de barrio. Conviene sustituirla por una foto propia de la
+ *       línea de formatos continuos.
+ *
+ * Source Serif 4 solo lo cargan 3 páginas: se pide por el slot "head" del Layout.
+ */
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import galleryData from '../data/gallery-data.json';
-import { Icon } from 'astro-icon/components';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "AboutPage",
-  "name": "Quiénes Somos - Formatos Intergraficos",
-  "url": "https://formatosintergraficos.pe/nosotros",
-  "description": "Imprenta autorizada SUNAT con más de 20 años de experiencia en Lima, Perú. Conoce los trabajos que hemos realizado para distintas empresas.",
-  "mainEntity": {
-    "@type": "LocalBusiness",
-    "name": "Formatos Intergraficos",
-    "founder": {"@type": "Person", "name": "Zenón Walter Armas Quispialaya"},
-    "foundingDate": "2004",
-    "numberOfEmployees": {"@type": "QuantitativeValue", "minValue": 1, "maxValue": 10},
-    "taxID": "20503580030",
-    "url": "https://formatosintergraficos.pe"
-  }
-};
+const FUNDADOR = 'Zenón Walter Armas Quispialaya';
+const base = 'https://formatosintergraficos.pe';
 
 const stats = [
-  { value: '20+', label: 'Años de experiencia' },
-  { value: '5000+', label: 'Clientes satisfechos' },
-  { value: '100%', label: 'Autorizado SUNAT' },
-  { value: '24h', label: 'Entrega en Lima' }
+  { n: '2004', t: 'año de fundación' },
+  { n: '500+', t: 'empresas atendidas' },
+  { n: '12', t: 'personas en el equipo' },
+  // "juegos impresos al año" → formatos (3 M = 3 000 millares)
+  { n: '3 M', t: 'formatos impresos al año' },
 ];
 
-const sectors = [
-  'Transporte', 'Restaurantes', 'Farmacias', 'Bodegas',
-  'Minería', 'Colegios', 'Notarías', 'Distribuidoras',
-  'Agrario', 'Ferreterías'
+const hitos = [
+  { y: '2004', t: 'Abrimos el taller en Villa María del Triunfo con una prensa offset.' },
+  { y: '2008', t: 'Nos inscribimos en el registro de imprentas autorizadas por SUNAT.' },
+  { y: '2014', t: 'Sumamos la línea de formatos continuos para impresoras matriciales.' },
+  { y: '2021', t: 'Empezamos a imprimir vouchers POS y rollos de papel térmico.' },
+  { y: '2026', t: 'Más de 500 empresas de Lima y provincias confían en nosotros.' },
+];
+
+const compromisos = [
+  { t: 'Prueba antes de imprimir', d: 'Revisas el diseño, la serie y la numeración antes de que pase a máquina.' },
+  { t: 'Garantía de reimpresión', d: 'Si el error es nuestro, reimprimimos sin costo y sin discusión.' },
+  { t: 'Entrega puntual', d: '24 a 48 horas en Lima. Si nos vamos a demorar, te avisamos antes.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: 'Nosotros · Formatos Intergráficos',
+    url: `${base}/nosotros`,
+    description:
+      'Imprenta autorizada SUNAT con más de 20 años imprimiendo comprobantes de pago y formatos continuos en Villa María del Triunfo, Lima.',
+    mainEntity: {
+      '@type': 'Organization',
+      name: 'Formatos Intergráficos',
+      foundingDate: '2004',
+      taxID: '20503580030',
+      url: base,
+      founder: { '@type': 'Person', name: FUNDADOR },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Nosotros', item: `${base}/nosotros` },
+    ],
+  },
 ];
 ---
 
-<Layout 
-  title="Nosotros | Formatos Intergraficos - Trabajos Realizados"
-  description="Conoce la experiencia de Formatos Intergraficos: más de 20 años como imprenta autorizada SUNAT en Lima. Mira los trabajos que hemos realizado para distintas empresas del Perú."
+<Layout
+  title="Nosotros | Imprenta en VMT con +20 Años"
+  description="Imprenta cercana en Villa María del Triunfo autorizada por SUNAT. Más de 20 años imprimiendo comprobantes de pago y formatos continuos en Lima."
 >
-  <Header />
-  <main>
-    <!-- HERO -->
-    <section class="relative bg-gradient-to-br from-gray-50 via-white to-primary-50/40 pt-28 pb-16 lg:pt-32 lg:pb-20 overflow-hidden">
-      <div class="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full blur-3xl opacity-30 -mr-20 -mt-20 pointer-events-none"></div>
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="flex flex-col items-center text-center max-w-3xl mx-auto">
-          <span class="inline-block text-xs font-semibold tracking-wider text-gray-600 uppercase mb-5 bg-white px-4 py-2 rounded-full border border-gray-200 shadow-sm">
-            Formatos Intergraficos
-          </span>
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.1] mb-6">
-            Detrás de cada formato,<br>
-            <span class="text-primary-600">años de experiencia</span>
-          </h1>
-          <p class="text-lg lg:text-xl text-gray-600 leading-relaxed mb-10 max-w-2xl">
-            Somos una imprenta autorizada SUNAT con más de 20 años trabajando para empresas de todo el Perú.
-            Este es nuestro trabajo.
-          </p>
-        </div>
+  <Fragment slot="head">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+  </Fragment>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
 
-        <!-- Stats row -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-          {stats.map(s => (
-            <div class="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-100 px-4 py-5 text-center shadow-sm">
-              <div class="text-2xl md:text-3xl font-extrabold text-primary-600">{s.value}</div>
-              <div class="text-xs md:text-sm text-gray-500 mt-1">{s.label}</div>
+  <div class="fi-site ns">
+    <Header active="nosotros" />
+
+    <main>
+      <!-- HERO -->
+      <section class="ns-hero">
+        <div class="fi-deco">
+          <div class="ns-hero__circle" aria-hidden="true"></div>
+        </div>
+        <div class="ns-wrap ns-hero__inner">
+          <nav class="ns-bc" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+            <span aria-current="page">Nosotros</span>
+          </nav>
+          <div class="ns-hero__row">
+            <div class="ns-hero__copy">
+              <h1 class="ns-h1">Más de 20 años imprimiendo comprobantes en Lima</h1>
+              <p class="ns-hero__lead">
+                Somos una imprenta cercana de Villa María del Triunfo, autorizada por SUNAT,
+                especializada en comprobantes de pago y formatos continuos para empresas de todo el
+                Perú.
+              </p>
             </div>
-          ))}
+            <figure class="ns-hero__figure">
+              <img
+                src="/hombre_trabajando_formatos.webp"
+                alt="Equipo de Formatos Intergráficos trabajando en la prensa offset del taller"
+                width="480"
+                height="480"
+                fetchpriority="high"
+              />
+            </figure>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- TRABAJOS REALIZADOS -->
-    <section class="py-16 lg:py-24 bg-white">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
-            Trabajos que hemos realizado
-          </h2>
-          <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-            Empresas de distintos rubros confían en nosotros para sus formatos impresos. 
-            Cada trabajo es un reflejo de nuestro compromiso con la calidad.
-          </p>
+      <!-- CIFRAS -->
+      <section class="ns-stats ns-sobre-rojo" aria-label="Cifras de la empresa">
+        <div class="ns-wrap ns-stats__inner">
+          {
+            stats.map((s) => (
+              <span class="ns-stat">
+                <strong>{s.n}</strong>
+                <span>{s.t}</span>
+              </span>
+            ))
+          }
         </div>
+      </section>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {galleryData.map(item => (
-            <a
-              href={`https://wa.me/51910500706?text=${encodeURIComponent('Hola, vi el trabajo de ' + item.title + ' en su web y me gustaría cotizar algo similar.')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group block bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-            >
-              <div class="aspect-[4/3] overflow-hidden bg-gray-100">
-                <img
-                  src={item.image}
-                  alt={item.alt}
-                  loading="lazy"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  width="400"
-                  height="300"
-                />
-              </div>
-              <div class="p-5">
-                <span class="inline-block text-xs font-semibold text-primary-600 bg-primary-50 px-2.5 py-1 rounded-full mb-2">
-                  {item.category}
-                </span>
-                <h3 class="text-base font-bold text-gray-900 mb-1 group-hover:text-primary-600 transition-colors">
-                  {item.title}
-                </h3>
-                <p class="text-sm text-gray-500">{item.client}</p>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- RUBROS -->
-    <section class="py-14 bg-gray-50">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">
-          Rubros que atendemos
-        </h2>
-        <div class="flex flex-wrap justify-center gap-3">
-          {sectors.map(s => (
-            <span class="px-5 py-2.5 bg-white text-gray-700 rounded-full text-sm font-medium border border-gray-200 shadow-sm hover:border-primary-200 hover:text-primary-600 transition-colors cursor-default">
-              {s}
+      <!-- CARTA -->
+      <section class="ns-sec ns-sec--paper">
+        <div class="ns-wrap ns-carta">
+          <div class="ns-carta__autor">
+            <img
+              class="ns-carta__foto"
+              src="/WalterArmas.webp"
+              alt={`${FUNDADOR}, fundador de Formatos Intergráficos, en el taller`}
+              width="700"
+              height="938"
+              loading="lazy"
+            />
+            <span class="ns-carta__nombre">
+              <strong>{FUNDADOR}</strong>
+              <span>Fundador</span>
             </span>
-          ))}
+          </div>
+          <div class="ns-carta__texto">
+            <h2 class="ns-h2">Una carta de quien imprime tus comprobantes</h2>
+            <p>
+              Empezamos en 2004 con una sola máquina y un compromiso: que ningún cliente tenga
+              problemas con SUNAT por un comprobante mal impreso. Veinte años después seguimos
+              revisando cada prueba de diseño como el primer día.
+            </p>
+            <p>
+              Sabemos que para un negocio un error en la serie o en el pie de imprenta no es un
+              detalle: es un tiraje entero que no se puede usar. Por eso te enviamos siempre la
+              prueba antes de imprimir, y si el error es nuestro, reimprimimos sin costo.
+            </p>
+            <p>Gracias por confiar en nosotros.</p>
+            <p class="ns-carta__firma"><strong>{FUNDADOR}</strong> · Fundador</p>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- CTA -->
-    <section class="py-16 lg:py-20 bg-white">
-      <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          ¿Necesitas un trabajo similar?
-        </h2>
-        <p class="text-lg text-gray-600 mb-8">
-          Cuéntanos qué necesitas y te daremos una cotización en menos de 2 horas.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold text-lg px-8 py-4 rounded-xl shadow-lg shadow-primary-200 hover:shadow-xl transition-all">
-            <Icon name="lucide:message-circle" class="w-5 h-5" />
-            Cotizar por WhatsApp
-          </a>
-          <a href="/contacto#cotizar" class="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-primary-600 font-semibold text-lg px-8 py-4 rounded-xl border-2 border-primary-600 transition-all">
-            Formulario web
-          </a>
+      <!-- HISTORIA -->
+      <section class="ns-sec">
+        <div class="ns-wrap ns-historia">
+          <h2 class="ns-h2">Nuestra historia</h2>
+          <ol class="ns-historia__grid">
+            {
+              hitos.map((h) => (
+                <li>
+                  <span class="ns-hito__y">{h.y}</span>
+                  <span class="ns-hito__t">{h.t}</span>
+                </li>
+              ))
+            }
+          </ol>
         </div>
-      </div>
-    </section>
-  </main>
-  <Footer />
+      </section>
+
+      <!-- TALLER -->
+      <section class="ns-sec ns-sec--paper">
+        <div class="ns-wrap ns-taller">
+          <h2 class="ns-h2">Nuestro taller</h2>
+          <div class="ns-taller__grid">
+            <figure class="ns-taller__big">
+              <img
+                src="/maquinaria.webp"
+                alt="Línea de producción de formatos continuos con bobinas de papel"
+                width="900"
+                height="563"
+                loading="lazy"
+              />
+              <figcaption>Línea de formatos continuos</figcaption>
+            </figure>
+            <div class="ns-taller__col">
+              <img
+                class="ns-taller__foto"
+                src="/prensa-offset.webp"
+                alt="Operario revisando una hoja impresa en la prensa offset del taller"
+                width="800"
+                height="537"
+                loading="lazy"
+              />
+              <img
+                class="ns-taller__foto"
+                src="/equipo-compaginado.webp"
+                alt="Manos compaginando talonarios de papel autocopiativo en la mesa del taller"
+                width="900"
+                height="604"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPROMISOS -->
+      <section class="ns-sec">
+        <div class="ns-wrap ns-compromisos">
+          {
+            compromisos.map((c) => (
+              <div class="ns-compromiso">
+                <h3>{c.t}</h3>
+                <p>{c.d}</p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
 </Layout>
 
-<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>
+<style>
+  .ns-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .ns-sec {
+    padding: 104px clamp(16px, 4vw, 64px);
+  }
+  .ns-sec--paper {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .ns-h1 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(48px, 6vw, 96px);
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+  .ns-h2 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 4.4vw, 64px);
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .ns-bc {
+    font-size: 13px;
+    color: var(--fi-texto-apagado);
+  }
+  .ns-bc a {
+    text-decoration: none;
+  }
+  .ns-bc span[aria-current] {
+    color: var(--fi-texto-claro);
+  }
+
+  .ns-hero {
+    padding: 40px clamp(16px, 4vw, 64px) 96px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ns-hero__circle {
+    position: absolute;
+    right: -6%;
+    top: 40px;
+    width: min(56vw, 720px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--fi-rojo);
+  }
+  .ns-hero__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .ns-hero__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    align-items: center;
+  }
+  .ns-hero__copy {
+    flex: 1 1 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 620px;
+  }
+  .ns-hero__lead {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .ns-hero__figure {
+    flex: 1 1 380px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+  }
+  .ns-hero__figure img {
+    width: min(100%, 480px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: 30% 50%;
+    border-radius: 50%;
+  }
+
+  .ns-stats {
+    background: var(--fi-rojo);
+    color: #ffffff;
+    padding: 28px clamp(16px, 4vw, 64px);
+  }
+  .ns-stats__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .ns-stat {
+    display: flex;
+    flex-direction: column;
+  }
+  .ns-stat strong {
+    font-family: var(--fi-display);
+    font-weight: 700;
+    font-size: 44px;
+    line-height: 1;
+  }
+  .ns-stat span {
+    font-size: 14px;
+  }
+
+  .ns-carta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    align-items: flex-start;
+  }
+  .ns-carta__autor {
+    flex: 1 1 280px;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .ns-carta__nombre {
+    /* El diseño separaba nombre y cargo con un <br>; sin esto quedaban en la
+       misma línea y la columna medía 20px menos. */
+    display: flex;
+    flex-direction: column;
+    font-size: 15px;
+  }
+  .ns-carta__nombre span {
+    color: var(--fi-texto-oscuro-2);
+  }
+  .ns-carta__texto {
+    flex: 2 1 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    font-family: var(--fi-serif);
+    font-size: 20px;
+    line-height: 1.7;
+  }
+  .ns-carta__texto p {
+    margin: 0;
+  }
+  .ns-carta__firma {
+    font-family: var(--fi-sans);
+    font-size: 16px;
+  }
+
+  /* Fotos reales del taller. Ocupan exactamente el mismo hueco que los
+     placeholders a los que sustituyen, así que el alto de la sección no cambia.
+     `height: 0` + `flex: 1 1 0` es lo que lo consigue: una <img> aporta su altura
+     intrínseca al contenedor, y sin anularla la columna crecía 80 px y estiraba
+     la sección. Con la base a 0 las dos se reparten la altura del diseño.
+     `object-fit: cover` evita que se deformen. */
+  .ns-taller__foto {
+    flex: 1 1 0;
+    height: 0;
+    min-height: 200px;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    background: var(--fi-papel-2);
+  }
+  /* Retrato del fundador. Mantiene el 4/5 del hueco del canvas, así que el alto
+     de la sección no cambia; se recorta desde arriba para no cortarle la cabeza. */
+  .ns-carta__foto {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    background: var(--fi-papel-2);
+  }
+
+  .ns-historia {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .ns-historia__grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+  .ns-historia__grid li {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 18px;
+    border-top: 3px solid var(--fi-rojo);
+  }
+  .ns-hito__y {
+    font-family: var(--fi-display);
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1;
+  }
+  .ns-hito__t {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+
+  .ns-taller {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .ns-taller__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .ns-taller__big {
+    flex: 2 1 480px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ns-taller__big img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    display: block;
+  }
+  .ns-taller__big figcaption {
+    font-size: 14px;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .ns-taller__col {
+    flex: 1 1 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ns-compromisos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .ns-compromiso {
+    padding: 32px;
+    background: var(--fi-carbon-2);
+    border: 1px solid var(--fi-borde-oscuro-2);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .ns-compromiso h3 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 32px;
+    text-transform: uppercase;
+  }
+  .ns-compromiso p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+
+  /* ================= MÓVIL (añadido) ================= */
+  @media (max-width: 1023px) {
+    /* La foto va arriba y el titular debajo: el círculo se ancla a la foto */
+    .ns-hero__row {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+    .ns-hero__circle {
+      right: auto;
+      left: 50%;
+      top: 0;
+      bottom: auto;
+      transform: translateX(-50%);
+      width: min(90vw, 420px);
+      opacity: 0.55;
+    }
+    .ns-hero {
+      padding-bottom: 64px;
+    }
+    .ns-carta {
+      gap: 36px;
+    }
+    .ns-carta__autor {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ns-sec {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
+    .ns-hero {
+      padding: 32px 20px 56px;
+    }
+    .ns-h1 {
+      font-size: clamp(34px, 10vw, 52px);
+    }
+    .ns-h2 {
+      font-size: clamp(30px, 8.5vw, 42px);
+    }
+    .ns-hero__lead {
+      font-size: 16px;
+    }
+    .ns-stats__inner {
+      gap: 20px 16px;
+    }
+    .ns-stat {
+      flex: 1 1 40%;
+      min-width: 40%;
+    }
+    .ns-stat strong {
+      font-size: 34px;
+    }
+    .ns-carta__texto {
+      font-size: 18px;
+    }
+    .ns-historia__grid {
+      grid-template-columns: 1fr;
+    }
+    .ns-taller__grid {
+      flex-direction: column;
+    }
+    .ns-compromisos {
+      grid-template-columns: 1fr;
+    }
+    .ns-compromiso {
+      padding: 24px;
+    }
+    .ns-compromiso h3 {
+      font-size: 26px;
+    }
+  }
+</style>

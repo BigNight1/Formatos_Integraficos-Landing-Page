@@ -1,80 +1,252 @@
 ---
-// Componente Footer
+/**
+ * Footer unificado del rediseño v2.
+ * Fuente: design-refs/diseno/Footer.dc.html (el componente completo, no el
+ * footer reducido que la Home traía embebido).
+ *
+ * ⚠️ FICTICIO pendiente de reemplazo (ver formatos-intergraficos-rediseno-seo.md):
+ *   - "Autorización SUNAT N.º 0458-2026" → número/código real, y el enlace debe
+ *     apuntar a la consulta exacta de imprentas autorizadas, no a sunat.gob.pe.
+ *   - "Garantía: si hay un error nuestro, reimprimimos sin costo" → solo si es real.
+ *   - "Pago contra entrega para clientes recurrentes" → condiciones reales.
+ */
+import { WHATSAPP } from '../data/home';
+
+const columnas = [
+  {
+    titulo: 'Comprobantes',
+    enlaces: [
+      { label: 'Boletas de venta', url: '/boletas-de-venta' },
+      { label: 'Facturas', url: '/facturas' },
+      { label: 'Guías de remisión', url: '/guias-de-remision' },
+      { label: 'Notas de crédito y débito', url: '/notas-de-credito-debito' },
+      { label: 'Liquidaciones de compra', url: '/liquidaciones-de-compra' },
+      { label: 'Retención y percepción', url: '/retencion-percepcion' },
+    ],
+  },
+  {
+    titulo: 'Otros formatos',
+    enlaces: [
+      { label: 'Formatos continuos', url: '/servicios/formatos-continuos' },
+      { label: 'Proformas y documentos', url: '/servicios/documentos-administrativos' },
+      { label: 'Vouchers POS', url: '/servicios/vouchers-pos' },
+      { label: 'Letras de cambio', url: '/servicios/letras-de-cambio' },
+      { label: 'Recibos por honorarios', url: '/servicios/recibos-por-honorarios' },
+      { label: 'Documentos aduaneros', url: '/servicios/documentos-aduaneros' },
+    ],
+  },
+  {
+    titulo: 'Empresa',
+    enlaces: [
+      { label: 'Nosotros', url: '/nosotros' },
+      { label: 'Precios', url: '/precios' },
+      { label: 'Autorización SUNAT', url: '/autorizado-sunat' },
+      { label: 'Galería', url: '/galeria' },
+      { label: 'Guías', url: '/blog' },
+    ],
+  },
+];
+
+const anio = new Date().getFullYear();
 ---
 
-<footer class="bg-gray-900 text-white">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-      <!-- Información de la empresa -->
-      <div class="lg:col-span-2">
-        <div class="flex items-center space-x-3 mb-4">
-          <div class="w-10 h-10  rounded-lg flex items-center justify-center">
-            <img src="/LogoFormatos.webp" alt="Logo de Formatos Intergraficos - Imprenta Autorizada SUNAT en Lima" class="w-full h-full object-contain">
-          </div>
-          <div>
-            <div class="text-xl font-bold">Formatos Intergraficos</div>
-            <p class="text-sm text-gray-400">Autorizados SUNAT</p>
-            <p class="text-sm text-gray-400">RUC: 20503580030</p>
-          </div>
-        </div>
-        <p class="text-gray-300 mb-6 max-w-md">
-          Somos una imprenta autorizada por SUNAT especializada en la impresión de formatos oficiales. 
-          Ayudamos a los negocios peruanos a cumplir con sus obligaciones legales.
-        </p>
-       
+<footer class="fi-footer">
+  <!-- Barra de garantías -->
+  <div class="fi-footer__bar">
+    <div class="fi-footer__barinner">
+      <div class="fi-footer__sells">
+        <span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+          <span><strong>Garantía:</strong> si hay un error nuestro, reimprimimos sin costo</span>
+        </span>
+        <span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="6" width="18" height="12" rx="2"></rect>
+            <path d="M3 10h18"></path>
+          </svg>
+          <span><strong>Pago contra entrega</strong> para clientes recurrentes</span>
+        </span>
       </div>
-
-      <!-- Servicios -->
-      <div>
-        <p class="text-lg font-semibold mb-4">Nuestros Servicios</p>
-        <ul class="space-y-2 text-gray-300">
-          <li>
-            <a href="/servicios/formatos-continuos" class="hover:text-white transition-colors">Formatos Continuos a Medida</a>
-          </li>
-          <li>
-            <a href="/servicios/documentos-administrativos" class="hover:text-white transition-colors">Proformas Personalizadas</a>
-          </li>
-          <li>
-            <a href="/servicios/vouchers-pos" class="hover:text-white transition-colors">Vouchers POS</a>
-          </li>
-          <li>
-            <a href="/autorizado-sunat" class="hover:text-white transition-colors">Formatos Autorizados SUNAT</a>
-          </li>
-          <li>
-            <a href="/galeria" class="hover:text-white transition-colors">Galería de Trabajos</a>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Contacto -->
-      <div>
-        <p class="text-lg font-semibold mb-4">Contacto</p>
-        <div class="space-y-3 text-gray-300">
-          <div class="flex items-center">
-            <!-- Icono eliminado -->
-            <span>Pasaje 8 de octubre 252 - Parque Interno Hogar policial VMT</span>
-          </div>
-          <div class="flex items-center">
-            <!-- Icono eliminado -->
-            <a href="tel:+51910500706" class="hover:text-white transition-colors">+51 910 500 706</a>
-          </div>
-         
-          <div class="flex items-center">
-            <!-- Icono eliminado -->
-            <span>Lun-Sab: 8:00-20:00</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Línea divisoria -->
-    <div class="border-t border-gray-800 mt-8 pt-8">
-      <div class="flex flex-col md:flex-row justify-center items-center">
-        <p class="text-gray-400 text-sm">
-          © 2026 Formatos Intergraficos Autorizados SUNAT. Todos los derechos reservados.
-        </p>
-        
-      </div>
+      <a class="fi-footer__cta" href={WHATSAPP} target="_blank" rel="noopener noreferrer">Cotizar por WhatsApp</a>
     </div>
   </div>
-</footer> 
+
+  <div class="fi-footer__main">
+    <div class="fi-footer__cols">
+      <div class="fi-footer__brand">
+        <span class="fi-footer__logo">Formatos Intergráficos</span>
+        <p class="fi-footer__tagline">
+          Imprenta autorizada SUNAT en Lima con más de 20 años imprimiendo comprobantes de pago y
+          formatos continuos.
+        </p>
+        <p class="fi-footer__legal">
+          RUC 20503580030<br />
+          Autorización SUNAT N.º 0458-2026 ·
+          <a href="https://www.sunat.gob.pe" target="_blank" rel="noopener noreferrer">verificar en SUNAT</a>
+        </p>
+      </div>
+
+      {
+        columnas.map((col) => (
+          <nav class="fi-footer__col" aria-label={col.titulo}>
+            <strong>{col.titulo}</strong>
+            {col.enlaces.map((e) => (
+              <a href={e.url}>{e.label}</a>
+            ))}
+          </nav>
+        ))
+      }
+
+      <address class="fi-footer__col fi-footer__address">
+        <strong>Visítanos</strong>
+        <span>
+          Pasaje 8 de Octubre 252<br />
+          Parque Interno Hogar Policial<br />
+          Villa María del Triunfo, Lima
+        </span>
+        <a href="tel:+51910500706">910 500 706</a>
+        <span class="fi-footer__horario">Lun a Sáb 8:00 – 20:00</span>
+      </address>
+    </div>
+
+    <p class="fi-footer__copy">© {anio} Formatos Intergráficos · Imprenta autorizada SUNAT en Lima</p>
+  </div>
+</footer>
+
+<style>
+  .fi-footer {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    font-family: var(--fi-sans);
+    /* Lo usan también páginas que no van dentro de .fi-site: fija su línea base. */
+    line-height: normal;
+    box-sizing: border-box;
+  }
+
+  .fi-footer__bar {
+    background: var(--fi-rojo);
+    padding: 28px clamp(16px, 4vw, 64px);
+  }
+  .fi-footer__barinner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .fi-footer__sells {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    font-size: 15px;
+    color: #ffffff;
+  }
+  .fi-footer__sells > span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fi-footer__cta {
+    padding: 14px 22px;
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    font-weight: 700;
+    font-size: 15px;
+    text-decoration: none;
+  }
+  .fi-footer__cta:hover {
+    background: #ffffff;
+    color: var(--fi-carbon);
+  }
+
+  .fi-footer__main {
+    padding: 56px clamp(16px, 4vw, 64px) 36px;
+  }
+  .fi-footer__cols {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    justify-content: space-between;
+  }
+
+  .fi-footer__brand {
+    flex: 1 1 280px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 380px;
+  }
+  .fi-footer__logo {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 26px;
+    text-transform: uppercase;
+  }
+  .fi-footer__tagline {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fi-texto-apagado);
+  }
+  .fi-footer__legal {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .fi-footer__legal a {
+    text-decoration: underline;
+  }
+
+  .fi-footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    font-style: normal;
+  }
+  .fi-footer__col strong {
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fi-texto-apagado);
+    font-weight: 400;
+  }
+  .fi-footer__col a {
+    text-decoration: none;
+  }
+  .fi-footer__col a:hover {
+    color: var(--fi-rosa);
+  }
+  .fi-footer__address {
+    line-height: 1.6;
+  }
+  .fi-footer__horario {
+    color: var(--fi-texto-apagado);
+  }
+
+  .fi-footer__copy {
+    max-width: 1280px;
+    margin: 40px auto 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--fi-borde-oscuro);
+    font-size: 13px;
+    color: var(--fi-texto-apagado-2);
+  }
+
+  @media (max-width: 1023px) {
+    .fi-footer__sells {
+      gap: 16px;
+    }
+    .fi-footer__cta {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

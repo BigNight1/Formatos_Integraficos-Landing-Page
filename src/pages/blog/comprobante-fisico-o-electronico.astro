@@ -1,0 +1,235 @@
+---
+/**
+ * /blog/comprobante-fisico-o-electronico · rediseño v2
+ *
+ * FUENTES (oficiales):
+ *  · Obligados a emitir comprobantes electrónicos: página de SUNAT/gob.pe
+ *    https://www.gob.pe/es/25177-obligados-a-emitir-comprobantes-de-pago-electronico
+ *    y norma base RS 279-2019/SUNAT.
+ *  · Novedad de 2026: RS 000075-2026/SUNAT, vigente desde el 1.6.2026.
+ *  · Concurrencia y contingencia: RS 300-2014/SUNAT y páginas de SUNAT
+ *    https://cpe.sunat.gob.pe/informacion_general/procedimiento_contingencia y
+ *    https://www.gob.pe/25526-concurrencia-en-la-emision-de-comprobantes-de-pago-fisicos
+ *  · Representación impresa: RS 182-2016/SUNAT (definición y art. 15).
+ *  · Lista cerrada de comprobantes de pago: RCP, RS 007-99/SUNAT, art. 2.
+ *  · Sanción por emitir documentos no previstos: Código Tributario, art. 174, num. 1.
+ *
+ * ⚠️ DECISIÓN DE REDACCIÓN: los umbrales se dan en UIT, no en soles. El valor de la
+ *    UIT cambia cada año y las páginas oficiales siguen mostrando equivalencias en
+ *    soles de ejercicios anteriores. Poner una cifra en soles sería publicar un dato
+ *    que caduca. Igual se evita repetir el calendario histórico de designaciones
+ *    (2021-2022): lo que importa hoy es si estás en la lista, y eso se consulta.
+ *
+ * ⚠️ PENDIENTE DE CONTADOR: el texto literal de las leyendas de contingencia está
+ *    tomado de gob.pe (en el portal de SUNAT aparecen como imagen), y la cadena
+ *    normativa exacta de la emisión física en contingencia conviene confirmarla.
+ */
+
+import Articulo from '../../components/Articulo.astro';
+
+const supuestos = [
+  {
+    t: 'Estás en una zona sin internet',
+    d: 'Si tu domicilio fiscal o un local están en una zona de baja o nula conexión, puedes emitir en formato físico. SUNAT publica la lista de distritos, por ubigeo: no es una apreciación tuya, es una lista.',
+  },
+  {
+    t: 'Estás en el Nuevo RUS',
+    d: 'Mientras figures afecto al Nuevo RUS, no estás comprendido en la designación de emisor electrónico. Al salir del régimen, cambia: hoy la designación corre desde el primer día del mes siguiente a aquel en que dejas de figurar como afecto.',
+  },
+  {
+    t: 'No puedes emitir por una causa ajena a ti',
+    d: 'Es la contingencia propiamente dicha. SUNAT la define como la imposibilidad de emitir electrónicamente por circunstancias excepcionales y ajenas al emisor: el ejemplo que da la propia entidad es un corte de luz por un desastre natural.',
+  },
+];
+
+const faqs = [
+  {
+    q: '¿La representación impresa de una factura electrónica reemplaza al comprobante electrónico?',
+    a: 'No. Y es importante entenderlo bien: si el comprobante se emitió electrónicamente, las obligaciones del emisor y del adquirente se verifican sobre el comprobante electrónico, no sobre el papel. La representación impresa es adicional. La imprime el propio emisor, no una imprenta autorizada, y no lleva número de autorización de impresión ni pie de imprenta.',
+  },
+  {
+    q: 'Si se cae el internet, ¿puedo emitir comprobantes en papel?',
+    a: 'Sí, mediante el procedimiento de contingencia, y con condiciones. Los comprobantes deben llevar dos leyendas: que el emisor es electrónico obligado y que el comprobante se emitió en contingencia. La cantidad que puedes imprimir está limitada, y tienes un plazo corto para informar a SUNAT de lo que emitiste. Además, la ley protege el caso fortuito: los incumplimientos que deriven de fuerza mayor no constituyen infracción.',
+  },
+  {
+    q: '¿Cuántos comprobantes puedo imprimir en contingencia?',
+    a: 'La autorización se limita al 10 % del promedio mensual de lo que emitiste en el sistema electrónico para ese mismo tipo de comprobante en los seis meses anteriores, o a 100 formatos por tipo de comprobante y establecimiento, lo que resulte mayor. En la práctica, si el corte se alarga, hay que pedir una nueva autorización.',
+  },
+  {
+    q: '¿Cuánto tiempo tengo para informar a SUNAT lo que emití en contingencia?',
+    a: 'Hasta el sétimo día calendario contado desde el día siguiente al de la emisión. Es un plazo corto y se pasa fácil si el corte te agarra en un cierre de mes, así que conviene tenerlo en el procedimiento interno.',
+  },
+  {
+    q: '¿Una proforma o una nota de venta sirven como comprobante de pago?',
+    a: 'No. El Reglamento de Comprobantes de Pago tiene una lista cerrada de lo que se considera comprobante de pago, y las proformas, notas de pedido y notas de venta no están en ella. No se reportan a SUNAT ni necesitan autorización de impresión. Ahora bien: usarlas como si fueran comprobantes para sustentar gasto o crédito fiscal sí es una infracción, porque el Código Tributario sanciona emitir documentos no previstos como comprobantes de pago.',
+  },
+  {
+    q: '¿Esto cambió en 2026?',
+    a: 'Sí, en un punto. Desde el 1 de junio de 2026, quien se inscribe en el RUC en el Régimen General, el RER o el RMT queda designado como emisor electrónico desde el mismo día de la inscripción, y quien deja de estar afecto al Nuevo RUS lo queda desde el primer día del mes siguiente. Antes había más espera. Si te inscribiste hace poco, asume que ya emites electrónicamente.',
+  },
+];
+---
+
+<Articulo
+  titulo="Comprobante físico o electrónico: cuándo te sigue sirviendo el físico"
+  metaTitle="Comprobante Físico o Electrónico: Cuándo Usar Cada Uno"
+  metaDescription="Quién está obligado a emitir electrónico, en qué casos sigue valiendo el papel, cómo funciona la contingencia y qué documentos no son comprobantes de pago."
+  tag="SUNAT"
+  slug="comprobante-fisico-o-electronico"
+  fecha="8 de octubre de 2026"
+  fechaISO="2026-10-08"
+  min={6}
+  schemaDescription="Quién está obligado a emitir comprobantes electrónicos en Perú, los supuestos en que sigue siendo válido el comprobante físico y el procedimiento de contingencia."
+  respuesta="Hoy la regla general es el <strong>comprobante electrónico</strong>, y el papel queda para tres casos concretos: que estés en el <strong>Nuevo RUS</strong>, que tu local esté en una <strong>zona sin conexión</strong> a internet, o que no puedas emitir por una <strong>causa ajena a ti</strong> (contingencia). El comprobante físico no desapareció: sigue vivo en esos tres supuestos y tiene reglas propias."
+  faqs={faqs}
+  cta={{
+    titulo: 'Los dos siguen necesitando papel',
+    texto: 'El comprobante electrónico se entrega como representación impresa, y la contingencia se imprime. Trabajamos ambos formatos.',
+    botones: [
+      { label: 'Ver comprobantes', url: '/precios' },
+      { label: 'Ver autorización SUNAT', url: '/autorizado-sunat' },
+    ],
+  }}
+  relacionadas={[
+    { label: 'Cómo llenar una guía de remisión sin errores', url: '/blog/como-llenar-guia-de-remision' },
+    { label: 'Qué es el pie de imprenta y por qué tu comprobante lo necesita', url: '/blog/pie-de-imprenta' },
+    { label: 'Factura o boleta: cuál emitir y cuándo', url: '/blog/factura-o-boleta' },
+  ]}
+>
+  <p>
+    "¿Todavía se usan comprobantes en papel?" es la pregunta que más nos llega de negocios que
+    están empezando y no saben si pedir talonarios o darlo todo por perdido. La respuesta tiene
+    matices, y los matices son justo lo que conviene tener claro antes de decidir.
+  </p>
+
+  <h2>Quién está obligado a emitir electrónico</h2>
+  <p>
+    La obligación no llegó de golpe: SUNAT designó a los emisores electrónicos por tramos de ingresos
+    y por actividad, en un calendario que se completó entre 2021 y 2022. El criterio de ingresos fue
+    el siguiente:
+  </p>
+  <ul class="ar-lista">
+    <li><strong>Ingresos iguales o mayores a 75 UIT</strong> al año.</li>
+    <li><strong>Entre 23 y menos de 75 UIT.</strong></li>
+    <li><strong>Menos de 23 UIT.</strong></li>
+  </ul>
+  <p>
+    A esos tramos se sumaron designaciones por actividad: arrendamiento de inmuebles, crédito
+    hipotecario, exportación de bienes y de servicios, liquidaciones de compra, proveedores del
+    Estado, servicios públicos, y quienes salieron del Nuevo RUS hacia otro régimen.
+  </p>
+  <p class="ar-nota">
+    <strong>Sobre los montos:</strong> los umbrales se expresan en UIT a propósito. El valor en soles
+    de la UIT <em>cambia cada año</em>, así que cualquier cifra en soles que leas por ahí está
+    desactualizada en cuanto cambia el ejercicio. Si necesitas el equivalente de hoy, es la UIT
+    vigente multiplicada por 75 o por 23.
+  </p>
+  <p>
+    Lo práctico es esto: <strong>si estás en el Régimen General, el RER o el RMT, lo más probable es
+    que ya seas emisor electrónico</strong>. La excepción son los afectos al Nuevo RUS, que quedaron
+    fuera de la designación. Si tienes dudas, se consulta en SUNAT Operaciones en Línea en dos
+    minutos.
+  </p>
+
+  <h2>El cambio de 2026 que sí importa</h2>
+  <p>
+    Desde el <strong>1 de junio de 2026</strong> se adelantó la designación para dos casos:
+  </p>
+  <ul class="ar-lista">
+    <li>
+      <strong>Te inscribes en el RUC</strong> en el Régimen General, el RER o el RMT: quedas designado
+      como emisor electrónico <strong>desde el mismo día de la inscripción</strong>. Antes había meses
+      de espera.
+    </li>
+    <li>
+      <strong>Dejas de estar afecto al Nuevo RUS:</strong> la designación corre desde el
+      <strong>primer día del mes siguiente</strong> a aquel en que dejas de figurar como afecto.
+    </li>
+  </ul>
+  <p>
+    Si abriste el negocio este año, asume que emites electrónicamente desde el primer día y organiza
+    tu facturación en consecuencia. El papel que necesitarás es para otras cosas, no para el
+    comprobante.
+  </p>
+
+  <h2>Entonces, ¿cuándo sigo usando papel?</h2>
+  <p>
+    En tres supuestos, que la norma llama de <em>concurrencia</em>:
+  </p>
+  <ul class="ar-lista">
+    {
+      supuestos.map((s) => (
+        <li>
+          <strong>{s.t}:</strong> {s.d}
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>La contingencia, paso a paso</h2>
+  <p>
+    Es el supuesto que más se usa en la práctica, porque un corte de luz o de internet no avisa. El
+    procedimiento tiene tres condiciones que conviene conocer antes de necesitarlo:
+  </p>
+  <ul class="ar-lista">
+    <li>
+      <strong>Los comprobantes llevan dos leyendas</strong>: que el emisor es electrónico obligado y
+      que el comprobante se emitió en contingencia. Van preimpresas en el formato.
+    </li>
+    <li>
+      <strong>Hay un límite de cantidad</strong>: el 10 % del promedio mensual de lo que emitiste en
+      el sistema electrónico para ese tipo de comprobante en los seis meses anteriores, o 100 formatos
+      por tipo y establecimiento, lo que resulte mayor.
+    </li>
+    <li>
+      <strong>Hay un plazo para informar</strong>: hasta el sétimo día calendario contado desde el día
+      siguiente al de la emisión.
+    </li>
+  </ul>
+  <p>
+    Y un respaldo que vale la pena saber: el Código Tributario establece que los incumplimientos
+    derivados de <strong>caso fortuito o fuerza mayor</strong> no constituyen infracción. Un corte de
+    luz por un desastre natural no te convierte en infractor, siempre que cumplas el procedimiento.
+  </p>
+
+  <h2>La representación impresa: qué es y qué no es</h2>
+  <p>
+    Cuando emites una factura electrónica y le entregas a tu cliente un papel, ese papel es la
+    <strong>representación impresa</strong>: la impresión del comprobante electrónico, con la
+    información mínima que exige la norma según el tipo de documento.
+  </p>
+  <p>
+    Sirve para tres cosas concretas: entregársela al adquirente, sustentar el traslado de bienes
+    cuando corresponde, y llevarla contigo durante el transporte. Pero <strong>no reemplaza al
+    comprobante electrónico</strong>. Si el comprobante se emitió electrónicamente, las obligaciones
+    se verifican sobre el electrónico; el papel es adicional. Por eso la representación impresa no
+    lleva número de autorización de impresión: la imprime el propio emisor, no una imprenta
+    autorizada.
+  </p>
+
+  <h2>Lo que NO es un comprobante de pago</h2>
+  <p>
+    Aprovechemos para cerrar una confusión muy común, porque tiene consecuencias. El Reglamento de
+    Comprobantes de Pago tiene una <strong>lista cerrada</strong> de lo que se considera comprobante:
+    facturas, recibos por honorarios, boletas de venta, liquidaciones de compra, tickets de máquinas
+    registradoras, Ticket POS, y otros expresamente autorizados.
+  </p>
+  <p>
+    <strong>Las proformas, las notas de pedido y las notas de venta no están en esa lista.</strong> No
+    son comprobantes de pago, no se reportan a SUNAT y no necesitan autorización de impresión. Eso es
+    lo que las hace útiles para el control interno: son documentos comerciales, no tributarios.
+  </p>
+  <p class="ar-nota">
+    <strong>Pero atención al matiz:</strong> "no se reporta a SUNAT" no significa "no tiene
+    consecuencia". El Código Tributario sanciona el hecho de <em>emitir documentos no previstos como
+    comprobantes de pago</em>. Si usas una nota de venta o una proforma para sustentar crédito fiscal
+    o gasto, eso es infracción. El documento no es el problema; el uso que le das, sí.
+  </p>
+
+  <p class="ar-nota">
+    <strong>Información general, no asesoría tributaria.</strong> Este artículo resume el Reglamento de
+    Comprobantes de Pago, las resoluciones de comprobantes electrónicos y el Código Tributario. Las
+    designaciones y los plazos cambian con frecuencia: antes de fijar tu procedimiento, confírmalo con
+    tu contador y con la consulta de obligaciones en SUNAT Operaciones en Línea.
+  </p>
+</Articulo>

@@ -1,0 +1,143 @@
+---
+/**
+ * Sección Trabajos realizados · rediseño v2 — design-refs/diseno/Home.dc.html
+ *
+ * IMÁGENES: se sustituyó /Trabajos_realizados.webp (1 MB y con logos de varias
+ * empresas de terceros) por tres fotos reales del taller, ya optimizadas, y se
+ * rellenó el hueco "[Foto real: talonario de guías de remisión]" que el canvas
+ * dejaba como placeholder.
+ *
+ * ⚠️ Igual que en /galeria: esas fotos muestran logos y RUC de clientes reales.
+ *    Hace falta su permiso. Ver el aviso en `src/data/galeria.ts`.
+ *
+ * Las fotos son verticales, así que se recortan desde arriba (object-position:
+ * top) para que se vea la cabecera del formato, que es lo que lo identifica.
+ */
+---
+
+<section class="fi-section fi-trabajos" id="trabajos">
+  <div class="fi-wrap fi-trabajos__inner">
+    <div class="fi-trabajos__head">
+      <h2 class="fi-h2">Trabajos realizados</h2>
+      <a class="fi-trabajos__link" href="/galeria">Ver galería completa →</a>
+    </div>
+
+    <div class="fi-trabajos__grid">
+      <figure class="fi-trabajos__big">
+        <img
+          src="/images/gallery/Horus-Factura-FC.webp"
+          alt="Factura comercial impresa en formato continuo autocopiativo"
+          width="900"
+          height="1600"
+          loading="lazy"
+        />
+        <figcaption>Factura en formato continuo · original + 2 copias</figcaption>
+      </figure>
+
+      <div class="fi-trabajos__col">
+        <figure class="fi-trabajos__small">
+          <img
+            src="/images/gallery/Sarepta-GuiaRemisionRemitente-FC.webp"
+            alt="Guía de remisión remitente continua en triplicado autocopiativo"
+            width="900"
+            height="1600"
+            loading="lazy"
+          />
+          <figcaption>Guía de remisión · triplicado autocopiativo</figcaption>
+        </figure>
+
+        <figure class="fi-trabajos__small">
+          <img
+            src="/images/gallery/EmpresaMineraFidamiS.A-Ticketdebalanza-FC.webp"
+            alt="Ticket de balanza continuo para control de pesaje"
+            width="900"
+            height="1600"
+            loading="lazy"
+          />
+          <figcaption>Ticket de balanza · control de pesaje</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-trabajos__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .fi-trabajos__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .fi-trabajos__link {
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .fi-trabajos__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .fi-trabajos__big {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 2 1 520px;
+    min-width: 0;
+  }
+  .fi-trabajos__big img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    /* Las fotos reales son verticales (900×1600): se recorta desde arriba para
+       que se vea la cabecera del formato, que es lo que lo identifica. Se
+       mantienen las proporciones del canvas para no alterar el alto de la
+       sección, que está verificado contra el diseño. */
+    object-position: top center;
+    background: #ffffff;
+    display: block;
+  }
+  .fi-trabajos__col {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1 1 280px;
+    min-width: 0;
+  }
+  .fi-trabajos__small {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fi-trabajos__small img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: top center;
+    background: #ffffff;
+    display: block;
+  }
+  .fi-trabajos figcaption {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-trabajos__grid {
+      flex-direction: column;
+    }
+    .fi-trabajos__big,
+    .fi-trabajos__col {
+      flex: 1 1 auto;
+    }
+  }
+</style>

@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://formatosintergraficos.pe/sitemap.xml
+# El sitemap lo genera la integración @astrojs/sitemap en cada build.
+# Antes apuntaba a /sitemap.xml, que era un archivo hecho a mano con 8 URLs y
+# lastmod de mayo de 2026: Google leía ese y se perdía el generado por Astro.
+Sitemap: https://formatosintergraficos.pe/sitemap-index.xml

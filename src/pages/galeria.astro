@@ -1,17 +1,318 @@
 ---
+/**
+ * /galeria · rediseño v2
+ * Fuente: design-refs/diseno/Galeria.dc.html
+ *
+ * Los filtros son interactivos en el diseño (guardaba el estado en memoria):
+ * aquí se resuelven con un poco de JS sin recargar la página. Sin JS se ven
+ * todos los trabajos.
+ *
+ * ⚠️ El diseño le pasaba active="nosotros" al Header en esta página: resaltaría
+ *    "Nosotros" estando en Galería. Es un fallo del canvas y no se replica.
+ *
+ * ✅ FOTOS REALES: los 15 trabajos de `public/images/gallery/`, optimizados de
+ *    8,31 MB a 0,79 MB. Los textos están en `src/data/galeria.ts`.
+ * ⚠️ Esas fotos muestran comprobantes reales: se ven logos, razones sociales y
+ *    RUC de empresas de terceros → hace falta su permiso. Aviso completo en
+ *    `src/data/galeria.ts`.
+ */
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import GaleriaComponent from '../components/Galeria.astro';
+import { WHATSAPP } from '../data/home';
+import { filtros, trabajos } from '../data/galeria';
+
+const base = 'https://formatosintergraficos.pe';
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ImageGallery',
+    name: 'Galería de trabajos impresos',
+    url: `${base}/galeria`,
+    image: trabajos.map((t) => `${base}${t.img}`),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Galería', item: `${base}/galeria` },
+    ],
+  },
+];
 ---
 
-<Layout 
-  title="Galería de Trabajos Realizados | Formatos Intergráficos"
-  description="Explora nuestra galería de trabajos. Formatos continuos, tickets de balanza, boletas, comandas y comprobantes autorizados SUNAT para diversos rubros en Lima."
+<Layout
+  title="Galería de Comprobantes Impresos | Formatos Intergráficos"
+  description="Galería de trabajos: comprobantes y formatos impresos en nuestro taller. Facturas, boletas, guías de remisión y formatos continuos autorizados SUNAT."
 >
-  <Header />
-  <main>
-    <GaleriaComponent />
-  </main>
-  <Footer />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site gl">
+    <Header />
+
+    <main>
+      <section class="gl-hero">
+        <div class="gl-wrap gl-hero__inner">
+          <nav class="gl-bc" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+            <span aria-current="page">Galería</span>
+          </nav>
+
+          <div class="gl-hero__head">
+            <h1 class="gl-h1">Galería de trabajos: comprobantes y formatos impresos</h1>
+            <p class="gl-hero__lead">
+              Trabajos reales impresos en nuestro taller: comprobantes autorizados SUNAT, guías de
+              remisión y formatos de control en papel continuo.
+            </p>
+          </div>
+
+          <div class="gl-filtros" role="group" aria-label="Filtrar por tipo">
+            {
+              filtros.map((f) => (
+                <button type="button" data-filtro={f.id} aria-pressed={f.id === 'todos' ? 'true' : 'false'} class:list={[{ 'is-active': f.id === 'todos' }]}>
+                  {f.label}
+                </button>
+              ))
+            }
+          </div>
+
+          <div class="gl-grid">
+            {
+              trabajos.map((t) => (
+                <figure class="gl-item" data-cat={t.cat}>
+                  <img
+                    src={t.img}
+                    alt={t.alt}
+                    width="900"
+                    height="1600"
+                    loading="lazy"
+                    style={t.pos === 'bottom' ? 'object-position: bottom center' : undefined}
+                  />
+                  <figcaption>
+                    <strong>{t.url ? <a href={t.url}>{t.titulo}</a> : t.titulo}</strong>
+                    <span>{t.detalle}</span>
+                  </figcaption>
+                </figure>
+              ))
+            }
+          </div>
+
+          <div class="gl-cta ns-sobre-rojo">
+            <span class="gl-cta__t">¿Quieres el tuyo así?</span>
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="galeria">
+              Cotizar por WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
 </Layout>
+
+<script>
+  // Filtros de la galería. Sin JS se muestran todos los trabajos.
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement | null)?.closest?.('[data-filtro]');
+    if (!btn) return;
+    const cat = btn.getAttribute('data-filtro');
+
+    document.querySelectorAll('[data-filtro]').forEach((b) => {
+      const on = b === btn;
+      b.setAttribute('aria-pressed', String(on));
+      b.classList.toggle('is-active', on);
+    });
+
+    document.querySelectorAll('.gl-item').forEach((el) => {
+      const coincide = cat === 'todos' || el.getAttribute('data-cat') === cat;
+      (el as HTMLElement).hidden = !coincide;
+    });
+  });
+</script>
+
+<style>
+  .gl-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .gl-hero {
+    padding: 40px clamp(16px, 4vw, 64px) 104px;
+  }
+  .gl-hero__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .gl-bc {
+    font-size: 13px;
+    color: var(--fi-texto-apagado);
+  }
+  .gl-bc a {
+    text-decoration: none;
+  }
+  .gl-bc span[aria-current] {
+    color: var(--fi-texto-claro);
+  }
+  .gl-hero__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .gl-h1 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(48px, 6vw, 96px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    max-width: 820px;
+  }
+  .gl-hero__lead {
+    margin: 0;
+    max-width: 380px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+
+  .gl-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .gl-filtros button {
+    min-height: 44px;
+    padding: 10px 18px;
+    font-family: var(--fi-sans);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    background: transparent;
+    color: var(--fi-texto-claro);
+    border: 1px solid #5a5354;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  }
+  .gl-filtros button:hover {
+    border-color: var(--fi-papel);
+  }
+  .gl-filtros button.is-active {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+    border-color: var(--fi-papel);
+  }
+
+  .gl-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .gl-item {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  /* El atributo hidden no basta: display:flex lo anularía */
+  .gl-item[hidden] {
+    display: none;
+  }
+  /* Las fotos reales son escaneos VERTICALES (900×1600). El 4/3 del canvas las
+     cortaba a una franja horizontal y se perdía el documento. Con 3/4 y
+     object-position: top se ve la cabecera del formato, que es lo que lo
+     identifica (tipo de comprobante, logo, serie). */
+  .gl-item img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    background: #ffffff;
+  }
+  .gl-item figcaption {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .gl-item figcaption strong {
+    font-size: 16px;
+  }
+  /* Solo la letra de cambio enlaza a su página: es enlazado interno desde la
+     galería a la ficha del formato. Va dentro del <strong> para no cambiar el
+     alto de la tarjeta. */
+  .gl-item figcaption strong a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .gl-item figcaption strong a:hover {
+    color: var(--fi-rosa);
+  }
+  .gl-item figcaption span {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+  }
+
+  .gl-cta {
+    margin-top: 24px;
+    padding: 36px;
+    background: var(--fi-rojo);
+    color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .gl-cta__t {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 40px;
+    text-transform: uppercase;
+  }
+  .gl-cta a {
+    padding: 16px 24px;
+    background: var(--fi-carbon);
+    color: var(--fi-papel);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .gl-cta a:hover {
+    background: #ffffff;
+    color: var(--fi-carbon);
+  }
+
+  /* ================= MÓVIL (añadido) ================= */
+  @media (max-width: 767px) {
+    .gl-hero {
+      padding: 32px 20px 64px;
+    }
+    .gl-h1 {
+      font-size: clamp(34px, 10vw, 52px);
+    }
+    .gl-hero__lead {
+      font-size: 15px;
+    }
+    .gl-grid {
+      grid-template-columns: 1fr;
+    }
+    .gl-filtros button {
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+    .gl-cta {
+      padding: 24px;
+    }
+    .gl-cta__t {
+      font-size: 28px;
+    }
+    .gl-cta a {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

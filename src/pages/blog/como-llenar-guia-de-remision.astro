@@ -1,0 +1,256 @@
+---
+/**
+ * /blog/como-llenar-guia-de-remision · rediseño v2
+ *
+ * FUENTES (todas oficiales):
+ *  · Reglamento de Comprobantes de Pago, RS 007-99/SUNAT, Cap. V (arts. 17 a 21):
+ *    https://cdn.www.gob.pe/uploads/document/file/3052447/Reglamento%20de%20Comprobantes%20de%20Pago.pdf
+ *  · RS 000123-2022/SUNAT (guías de remisión electrónicas, catálogos y anexos):
+ *    https://cdn.www.gob.pe/uploads/document/file/3416155/RS_123-2022%20GRE.pdf.pdf
+ *  · Catálogo N.° 20 de motivos de traslado: Anexo N.° 8 de la RS 123-2022.
+ *  · Obligatoriedad de la GRE electrónica desde el 1.1.2024: RS 000133-2025/SUNAT.
+ *  · Sanciones: Código Tributario, art. 174, y Tabla III de infracciones.
+ *
+ * ⚠️ PENDIENTE DE CONTADOR — puntos que NO se pudieron verificar y por eso NO se
+ *    afirman en el texto:
+ *  1. El plazo exacto en días para enviar la GRE electrónica a SUNAT (el PDF
+ *     oficial de la RS 097-2012 no permitió extraer el texto del art. 34).
+ *  2. El plazo de regularización de la GRE "por evento".
+ *  3. El texto literal de las leyendas de contingencia: en el portal de SUNAT
+ *     aparecen como imagen, y el texto usado aquí proviene de gob.pe.
+ *    En el artículo se explica el procedimiento sin afirmar plazos que no consten.
+ */
+
+import Articulo from '../../components/Articulo.astro';
+
+const motivos = [
+  { c: '01', m: 'Venta' },
+  { c: '02', m: 'Compra' },
+  { c: '03', m: 'Venta con entrega a terceros' },
+  { c: '04', m: 'Traslado entre establecimientos de la misma empresa' },
+  { c: '05', m: 'Consignación' },
+  { c: '06', m: 'Devolución' },
+  { c: '07', m: 'Recojo de bienes transformados' },
+  { c: '08', m: 'Importación' },
+  { c: '09', m: 'Exportación' },
+  { c: '13', m: 'Otros (hay que describir el motivo)' },
+  { c: '14', m: 'Venta sujeta a confirmación del comprador' },
+  { c: '17', m: 'Traslado de bienes para transformación' },
+  { c: '18', m: 'Traslado por emisor itinerante de comprobantes' },
+];
+
+const campos = [
+  { t: 'Serie y número', d: 'La serie empieza con la letra T (por ejemplo T001) y el correlativo va aparte del número impreso en el papel.' },
+  { t: 'Remitente', d: 'Tu razón social y tu RUC, que debe estar activo y habido.' },
+  { t: 'Destinatario', d: 'Tipo y número de documento, y nombre o razón social. Ojo: según el motivo, el destinatario puede ser tú mismo (en compras y traslados internos).' },
+  { t: 'Bienes', d: 'Unidad de medida, cantidad, descripción detallada —marca y número de serie si es un bien identificable— y peso bruto total.' },
+  { t: 'Motivo del traslado', d: 'Uno de los códigos oficiales. Si eliges "otros", hay que describirlo.' },
+  { t: 'Puntos de partida y llegada', d: 'Dirección y ubigeo de los dos. Si el motivo es traslado entre establecimientos, también el código de cada local.' },
+  { t: 'Fecha de inicio del traslado', d: 'Tiene que ser igual o posterior a la fecha de emisión de la guía.' },
+  { t: 'Documentos relacionados', d: 'La serie y número de la factura, la DAM o la constancia de depósito, según corresponda.' },
+];
+
+const faqs = [
+  {
+    q: '¿La guía de remisión se emite antes o después de cargar?',
+    a: 'Antes. La norma es explícita: el traslado debe estar sustentado antes de iniciarse. Si te para la autoridad en el camino, la guía ya tiene que existir y tienes que poder mostrarla, en papel o en digital con su código QR.',
+  },
+  {
+    q: '¿Cuántas guías necesito, una o dos?',
+    a: 'Depende de cómo transportas. Si llevas la mercadería en tu propio vehículo (transporte privado), te basta la guía de remisión remitente. Si contratas a un transportista (transporte público), son dos: la tuya, como remitente, y la del transportista. Hay un detalle que ahorra tiempo: si tu guía remitente ya incluye la placa y los datos del conductor, el transportista no está obligado a emitir la suya.',
+  },
+  {
+    q: '¿Sigue siendo válida una guía de remisión en papel?',
+    a: 'Sí, pero de forma acotada. Desde el 1 de enero de 2024 la regla general es la emisión electrónica. El papel queda para tres supuestos: quien no ha sido designado como emisor electrónico, quien está en una zona de baja o nula conexión a internet (hay una lista oficial por distrito) y quien, por causas que no le son imputables, no puede emitir electrónicamente: eso es la contingencia.',
+  },
+  {
+    q: '¿Qué pasa si me para la policía o aduanas y no tengo la guía?',
+    a: 'Las consecuencias están en el Código Tributario y son serias: internamiento temporal del vehículo o comiso, según el caso. La multa que sustituye al internamiento equivale a 1 UIT. No es un trámite para dejar para después.',
+  },
+  {
+    q: '¿Puedo poner varios puntos de llegada en una sola guía?',
+    a: 'Si es para un mismo destinatario, sí: se detallan todos los puntos. Lo que no se puede es meter varios destinatarios en una guía. Y al revés: el transportista puede usar una sola guía con datos agregados cuando lleva bienes de más de veinte remitentes.',
+  },
+  {
+    q: '¿Un negocio del Nuevo RUS necesita guía de remisión?',
+    a: 'Los sujetos del Nuevo RUS no están obligados a emitirla. Cuando los bienes son de sujetos no obligados —también de perceptores de recibos por honorarios—, es el transportista quien emite una única guía. Conviene confirmarlo con tu contador según tu caso concreto.',
+  },
+];
+---
+
+<Articulo
+  titulo="Cómo llenar una guía de remisión sin errores"
+  metaTitle="Cómo Llenar una Guía de Remisión sin Errores"
+  metaDescription="Campo por campo, con el catálogo oficial de motivos de traslado, cuándo basta una guía y cuándo son dos, y qué pasa si te falta. Con la norma citada."
+  tag="SUNAT"
+  slug="como-llenar-guia-de-remision"
+  fecha="8 de octubre de 2026"
+  fechaISO="2026-10-08"
+  min={6}
+  schemaDescription="Cómo llenar una guía de remisión remitente: campos obligatorios, catálogo oficial de motivos de traslado, cuándo basta una guía y cuándo hacen falta dos, y sanciones por no portarla."
+  respuesta="Lo primero es el <strong>motivo del traslado</strong>, porque casi todos los demás campos dependen de él: según el código que elijas, el destinatario puede ser tu cliente o tú mismo. Después van los bienes con su descripción y peso, los dos puntos (partida y llegada) con su ubigeo, y la fecha de inicio del traslado. Y todo esto <strong>antes</strong> de que el vehículo arranque."
+  faqs={faqs}
+  cta={{
+    titulo: '¿Necesitas el talonario?',
+    texto: 'Imprimimos guías de remisión remitente en triplicado, en hojas o en formato continuo para tu matricial.',
+    botones: [
+      { label: 'Ver guías de remisión', url: '/guias-de-remision' },
+      { label: 'Ver formatos continuos', url: '/servicios/formatos-continuos' },
+    ],
+  }}
+  relacionadas={[
+    { label: 'Comprobante físico o electrónico: cuándo te sigue sirviendo el físico', url: '/blog/comprobante-fisico-o-electronico' },
+    { label: 'Qué es el pie de imprenta y por qué tu comprobante lo necesita', url: '/blog/pie-de-imprenta' },
+    { label: 'Cómo autorizar la impresión de comprobantes en SUNAT', url: '/autorizado-sunat' },
+  ]}
+>
+  <p>
+    La guía de remisión es el documento que menos se revisa al imprimirlo y más se revisa en la
+    carretera. Un error en el motivo del traslado o un ubigeo mal puesto no se arregla conversando
+    con el fiscalizador: se arregla antes, en el sistema.
+  </p>
+
+  <h2>Cuándo necesitas una guía</h2>
+  <p>
+    Siempre que muevas bienes de una dirección a otra distinta, con las excepciones que la propia
+    norma enumera. Y una regla que no admite matices: <strong>debe estar emitida antes de que
+    empiece el traslado</strong>. No sirve emitirla cuando ya estás en el control.
+  </p>
+  <p>
+    Entre las excepciones están, por ejemplo, el recojo de envases o embalajes vacíos, la venta a
+    consumidor final concertada por internet o teléfono (que se sustenta con la boleta de venta
+    electrónica) y el uso de vehículos de categoría L o M1 cuando ya se emitió la guía del remitente.
+    Si tu caso es de frontera, conviene revisarlo con tu contador antes de decidir no emitir.
+  </p>
+
+  <h2>Empieza por el motivo del traslado</h2>
+  <p>
+    Es el campo que ordena todos los demás, y por eso va primero. SUNAT tiene un catálogo oficial
+    —el Catálogo N.° 20— y solo se puede elegir de esa lista:
+  </p>
+  <div class="ar-tabla__scroll">
+    <table class="ar-tabla">
+      <thead>
+        <tr>
+          <th scope="col">Código</th>
+          <th scope="col">Motivo del traslado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          motivos.map((m) => (
+            <tr>
+              <th scope="row">{m.c}</th>
+              <td>{m.m}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p class="ar-nota">
+    El código <strong>13 ("otros")</strong> no es un cajón de sastre cómodo: si lo eliges, hay que
+    describir el motivo. Y ojo con el <strong>04</strong>, que es el de los traslados entre locales
+    propios: pide además el código de cada establecimiento.
+  </p>
+
+  <h2>Los campos que no pueden faltar</h2>
+  <ul class="ar-lista">
+    {
+      campos.map((c) => (
+        <li>
+          <strong>{c.t}:</strong> {c.d}
+        </li>
+      ))
+    }
+  </ul>
+  <p>
+    En la guía electrónica, además, hay dos elementos que la hacen existir o no existir: la
+    <strong>fecha y hora de emisión</strong> y la <strong>firma digital</strong> del emisor, válida y
+    vigente. La propia norma lo dice con todas las letras: los campos marcados como condición de
+    emisión son elementos constitutivos del documento electrónico, y su incumplimiento tiene como
+    consecuencia la <em>inexistencia</em> del mismo. No es un documento defectuoso: es que no hay
+    documento.
+  </p>
+
+  <h2>¿Una guía o dos? Depende de quién maneja</h2>
+  <p>
+    Es la duda que más se repite, y la respuesta es sencilla:
+  </p>
+  <ul class="ar-lista">
+    <li>
+      <strong>Transporte privado</strong> (llevas la mercadería en tu propio vehículo): te basta la
+      <strong>guía de remisión remitente</strong>.
+    </li>
+    <li>
+      <strong>Transporte público</strong> (contratas a un transportista): son <strong>dos</strong>, la
+      tuya como remitente y la del transportista.
+    </li>
+  </ul>
+  <p>
+    En transporte privado, tu guía tiene que llevar los datos del vehículo y del conductor: la placa,
+    el número de registro del MTC si el vehículo supera las dos toneladas de carga útil, la tarjeta de
+    circulación, el tipo y número de documento del conductor, su nombre y su licencia.
+  </p>
+  <p class="ar-nota">
+    <strong>Un atajo que conviene conocer:</strong> si tu guía remitente ya incluye la placa y los
+    datos de los conductores, el transportista <em>no está obligado</em> a emitir su propia guía de
+    transportista. En transporte público, en cambio, tu guía solo consigna el RUC y el nombre del
+    transportista, y el resto lo pone él en la suya.
+  </p>
+
+  <h2>Electrónica o en papel</h2>
+  <p>
+    Desde el <strong>1 de enero de 2024</strong> la regla general es la emisión electrónica. La guía
+    física sigue existiendo, pero acotada a tres supuestos:
+  </p>
+  <ul class="ar-lista">
+    <li>Quien <strong>no ha sido designado</strong> como emisor electrónico de guías.</li>
+    <li>
+      Quien tiene su domicilio fiscal o un local en una <strong>zona de baja o nula conexión a
+      internet</strong>: hay una lista oficial de distritos por ubigeo.
+    </li>
+    <li>
+      Quien, <strong>por causas que no le son imputables</strong>, no puede emitir electrónicamente.
+      Eso es la contingencia, y el formato lleva dos leyendas: que es una guía emitida en contingencia
+      y que el emisor es electrónico obligado.
+    </li>
+  </ul>
+  <p>
+    Durante el traslado puedes llevar la representación impresa o la versión digital con el código QR.
+    Lo que sí es exigible: la guía electrónica se considera puesta a disposición recién cuando cuenta
+    con la constancia de recepción aceptada por SUNAT.
+  </p>
+
+  <h2>Qué pasa si falta o está mal</h2>
+  <p>
+    El Código Tributario lo trata como una infracción grave, y las consecuencias son sobre la carga y
+    sobre el vehículo, no solo sobre el papel:
+  </p>
+  <ul class="ar-lista">
+    <li>
+      <strong>Transportar bienes sin portar la guía</strong>, o no facilitar la información que
+      permita identificarla: internamiento temporal del vehículo o comiso.
+    </li>
+    <li>
+      <strong>Remitir bienes sin portarla:</strong> comiso.
+    </li>
+    <li>
+      <strong>Portar documentos que no reúnen los requisitos:</strong> comiso o multa.
+    </li>
+  </ul>
+  <p>
+    La multa que sustituye al internamiento temporal del vehículo equivale a <strong>1 UIT</strong>. Y
+    hay un detalle que sorprende a muchos: una guía no existe —a efectos legales— si el documento no
+    fue impreso conforme a la norma o si el remitente o el transportista figura como no habido a la
+    fecha de inicio del traslado.
+  </p>
+
+  <p class="ar-nota">
+    <strong>Este artículo es información general, no asesoría tributaria.</strong> Está redactado
+    sobre el Reglamento de Comprobantes de Pago y la resolución de guías de remisión electrónicas, con
+    sus anexos. Hay dos plazos que no pudimos verificar en fuente oficial y por eso no los afirmamos
+    aquí: el número exacto de días para enviar la guía electrónica a SUNAT y el plazo de regularización
+    de la guía por evento. Consúltalos con tu contador antes de fijar tu procedimiento interno.
+  </p>
+</Articulo>

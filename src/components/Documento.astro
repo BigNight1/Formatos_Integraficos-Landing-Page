@@ -1,0 +1,369 @@
+---
+/**
+ * Documento · maqueta ilustrada de un comprobante.
+ * Fuente: design-refs/diseno/Documento.dc.html
+ *
+ * Componente reutilizable: lo usan las 6 páginas de comprobante con la paleta y
+ * los campos de cada una. Es la alternativa honesta a una foto: un dibujo, no
+ * una foto falsa de un comprobante real.
+ *
+ * ⚠️ FICTICIO en la maqueta: "R.U.C. N.º 20XXXXXXXXX", "TU EMPRESA S.A.C.",
+ * "Av. Principal 123" y "Aut. SUNAT N.º 0458-2026" (el número real va en el
+ * footer; aquí es un ejemplo).
+ *
+ * RESPONSIVE: el diseño no tenía móvil. La maqueta mide 480×560 fijos, así que
+ * se escala completa con transform (no se reflowea por dentro): así las
+ * proporciones se mantienen idénticas en cualquier pantalla.
+ */
+export interface Props {
+  tipo?: string;
+  numero?: string;
+  acento?: string;
+  acentoTexto?: string;
+  suave?: string;
+  continuo?: boolean;
+  copias?: string[];
+  campos?: string[];
+  destino?: string;
+}
+
+const {
+  tipo = 'Factura',
+  numero = 'F001 - 000123',
+  acento = '#8E1F3A',
+  acentoTexto = '#FFFFFF',
+  suave = '#F6E7EA',
+  continuo = false,
+  copias = ['#F7C7CF', '#FBE7A6'],
+  campos = ['Señor(es)', 'R.U.C.', 'Dirección', 'Fecha de emisión'],
+  destino = 'Adquirente',
+} = Astro.props;
+
+// Capas de copias de color detrás de la hoja. Se invierten para que la primera
+// del array quede delante, igual que en el diseño.
+const capas = [...copias].reverse().map((color, i, arr) => {
+  const k = arr.length - i;
+  return { background: color, left: 30 + k * 16, top: 20 + k * 10, rotate: k * 2.2 };
+});
+
+const columnas = [
+  { t: 'Cant.', w: 14 },
+  { t: 'Descripción', w: 50 },
+  { t: 'P. Unit.', w: 18 },
+  { t: 'Importe', w: 18 },
+];
+
+const filas = [0, 1, 2, 3, 4, 5, 6];
+const agujeros = Array.from({ length: 14 }, (_, i) => i);
+---
+
+<div
+  class="fi-doc"
+  role="img"
+  aria-label={`Maqueta de ${tipo} con original y ${copias.length} copias`}
+  style={`--doc-acento:${acento};--doc-acento-texto:${acentoTexto};--doc-suave:${suave}`}
+>
+  <div class="fi-doc__stage">
+    {
+      capas.map((cp) => (
+        <div
+          class="fi-doc__capa"
+          style={`left:${cp.left}px;top:${cp.top}px;background:${cp.background};transform:rotate(${cp.rotate}deg)`}
+        />
+      ))
+    }
+
+    <div class="fi-doc__hoja">
+      {
+        continuo && (
+          <div class="fi-doc__perf fi-doc__perf--izq" aria-hidden="true">
+            {agujeros.map(() => (
+              <span class="fi-doc__agujero" />
+            ))}
+          </div>
+        )
+      }
+
+      <div class="fi-doc__cuerpo">
+        <div class="fi-doc__top">
+          <div class="fi-doc__emisor">
+            <span class="fi-doc__logo">TU LOGO</span>
+            <span class="fi-doc__empresa">TU EMPRESA S.A.C.</span>
+            <span class="fi-doc__direccion">Av. Principal 123 · Lima<br />Tel. 01 000 0000</span>
+          </div>
+          <div class="fi-doc__caja">
+            <span class="fi-doc__ruc">R.U.C. N.º 20XXXXXXXXX</span>
+            <span class="fi-doc__tipo">{tipo}</span>
+            <span class="fi-doc__numero">{numero}</span>
+          </div>
+        </div>
+
+        <div class="fi-doc__campos">
+          {
+            campos.map((c) => (
+              <div class="fi-doc__campo">
+                <span class="fi-doc__campo-label">{c}:</span>
+                <span class="fi-doc__campo-linea" />
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="fi-doc__tabla">
+          <div class="fi-doc__thead">
+            {columnas.map((col) => <span style={`width:${col.w}%`}>{col.t}</span>)}
+          </div>
+          {filas.map(() => <span class="fi-doc__fila" />)}
+        </div>
+
+        <div class="fi-doc__pie">
+          <span class="fi-doc__legal">
+            FORMATOS INTERGRÁFICOS · RUC 20503580030<br />Aut. SUNAT N.º 0458-2026 · F. Imp. 10/2026
+          </span>
+          <span class="fi-doc__destino">{destino}</span>
+        </div>
+      </div>
+
+      {
+        continuo && (
+          <div class="fi-doc__perf fi-doc__perf--der" aria-hidden="true">
+            {agujeros.map(() => (
+              <span class="fi-doc__agujero" />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .fi-doc {
+    --doc-scale: 1;
+    position: relative;
+    width: calc(480px * var(--doc-scale));
+    height: calc(560px * var(--doc-scale));
+    flex: none;
+    font-family: var(--fi-sans);
+    color: var(--fi-texto-oscuro);
+  }
+
+  .fi-doc__stage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 480px;
+    height: 560px;
+    transform-origin: top left;
+    transform: scale(var(--doc-scale));
+  }
+
+  /* Copias de color detrás de la hoja */
+  .fi-doc__capa {
+    position: absolute;
+    width: 400px;
+    height: 500px;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  .fi-doc__hoja {
+    position: absolute;
+    left: 30px;
+    top: 20px;
+    width: 400px;
+    height: 500px;
+    background: #ffffff;
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
+    box-sizing: border-box;
+    display: flex;
+  }
+
+  /* Perforaciones laterales del formato continuo */
+  .fi-doc__perf {
+    width: 26px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 0;
+  }
+  .fi-doc__perf--izq {
+    border-right: 1px dashed #c9c2be;
+  }
+  .fi-doc__perf--der {
+    border-left: 1px dashed #c9c2be;
+  }
+  .fi-doc__agujero {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #e9e4e0;
+    border: 1px solid #c9c2be;
+    display: block;
+  }
+
+  .fi-doc__cuerpo {
+    flex: 1;
+    min-width: 0;
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .fi-doc__top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .fi-doc__emisor {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .fi-doc__logo {
+    width: 64px;
+    height: 32px;
+    border: 1.5px dashed var(--doc-acento);
+    color: var(--doc-acento);
+    font-size: 9px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.08em;
+  }
+  .fi-doc__empresa {
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .fi-doc__direccion {
+    font-size: 8px;
+    color: #6b6365;
+    line-height: 1.4;
+  }
+
+  .fi-doc__caja {
+    width: 150px;
+    flex: none;
+    border: 2px solid var(--doc-acento);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .fi-doc__ruc {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 6px 4px;
+  }
+  .fi-doc__tipo {
+    background: var(--doc-acento);
+    color: var(--doc-acento-texto);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 4px;
+    text-transform: uppercase;
+    line-height: 1.15;
+  }
+  .fi-doc__numero {
+    font-family: "DM Mono", ui-monospace, monospace;
+    font-size: 11px;
+    padding: 6px 4px;
+    color: var(--doc-acento);
+  }
+
+  .fi-doc__campos {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .fi-doc__campo {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    font-size: 8.5px;
+  }
+  .fi-doc__campo-label {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .fi-doc__campo-linea {
+    flex: 1;
+    border-bottom: 1px solid #d8d1ce;
+    height: 9px;
+  }
+
+  .fi-doc__tabla {
+    flex: 1;
+    border: 1px solid #d8d1ce;
+    display: flex;
+    flex-direction: column;
+  }
+  .fi-doc__thead {
+    display: flex;
+    background: var(--doc-suave);
+    font-size: 8px;
+    font-weight: 700;
+    border-bottom: 1px solid #d8d1ce;
+  }
+  .fi-doc__thead span {
+    padding: 5px 6px;
+    box-sizing: border-box;
+  }
+  .fi-doc__fila {
+    display: block;
+    flex: 1;
+    border-bottom: 1px solid #efeae6;
+  }
+
+  .fi-doc__pie {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .fi-doc__legal {
+    font-size: 6.5px;
+    line-height: 1.45;
+    color: #6b6365;
+  }
+  .fi-doc__destino {
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--doc-acento);
+    text-transform: uppercase;
+  }
+
+  /* --- Móvil / tablet (añadido) --- */
+  @media (max-width: 1199px) {
+    .fi-doc {
+      --doc-scale: 0.9;
+    }
+  }
+  @media (max-width: 1023px) {
+    .fi-doc {
+      --doc-scale: 0.82;
+    }
+  }
+  @media (max-width: 899px) {
+    .fi-doc {
+      --doc-scale: 0.74;
+    }
+  }
+  @media (max-width: 767px) {
+    .fi-doc {
+      --doc-scale: 0.68;
+    }
+  }
+  @media (max-width: 599px) {
+    .fi-doc {
+      --doc-scale: 0.6;
+    }
+  }
+  @media (max-width: 419px) {
+    .fi-doc {
+      --doc-scale: 0.54;
+    }
+  }
+</style>

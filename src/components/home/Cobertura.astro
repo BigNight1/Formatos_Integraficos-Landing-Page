@@ -1,0 +1,110 @@
+---
+/**
+ * Sección Cobertura · rediseño v2 — design-refs/diseno/Home.dc.html
+ *
+ * ⚠️ FICTICIO: la lista de distritos debe corresponder a los distritos donde
+ * realmente entregan. El mapa queda como placeholder: falta el embed de la ficha
+ * de Google Business.
+ */
+import { distritos } from '../../data/home';
+---
+
+<section class="fi-section fi-cob">
+  <div class="fi-wrap fi-cob__inner">
+    <div class="fi-cob__copy">
+      <h2 class="fi-h2">Entregamos en Lima y todo el Perú</h2>
+      <p class="fi-cob__text">
+        Nuestro taller está en Villa María del Triunfo. En Lima Metropolitana entregamos en 24 a 48
+        horas; a provincia enviamos por agencia en 3 a 5 días hábiles.
+      </p>
+
+      <ul class="fi-cob__distritos">
+        {distritos.map((d) => <li>{d}</li>)}
+      </ul>
+
+      <address class="fi-cob__address">
+        <strong>Formatos Intergráficos</strong><br />
+        Pasaje 8 de Octubre 252, Parque Interno Hogar Policial<br />
+        Villa María del Triunfo, Lima<br />
+        Lun a Sáb 8:00 – 20:00 · <a href="tel:+51910500706">910 500 706</a>
+      </address>
+    </div>
+
+    <div class="fi-cob__mapa">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#A3243A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"></path>
+        <circle cx="12" cy="9.5" r="2.5"></circle>
+      </svg>
+      <span>[Mapa de Google Maps embebido · ficha de Google Business]</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-cob {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .fi-cob__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+  }
+  .fi-cob__copy {
+    flex: 1 1 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .fi-cob__text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .fi-cob__distritos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .fi-cob__distritos li {
+    padding: 8px 14px;
+    border: 1px solid var(--fi-borde-claro);
+    font-size: 14px;
+  }
+  .fi-cob__address {
+    font-style: normal;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  .fi-cob__mapa {
+    flex: 1 1 440px;
+    min-height: 420px;
+    background: var(--fi-papel-2);
+    border: 1px solid var(--fi-borde-claro);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    color: var(--fi-texto-oscuro-2);
+    text-align: center;
+    padding: 24px;
+    box-sizing: border-box;
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-cob__inner {
+      gap: 36px;
+    }
+    .fi-cob__mapa {
+      min-height: 260px;
+      flex: 1 1 100%;
+    }
+  }
+</style>

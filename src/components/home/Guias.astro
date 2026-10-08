@@ -1,0 +1,134 @@
+---
+/**
+ * Sección Guías (blog) · rediseño v2 — design-refs/diseno/Home.dc.html
+ *
+ * La Home destaca 4 guías; /blog listará 6. Se quitó de la lista del blog
+ * "Cómo autorizar la impresión… SUNAT" porque duplica la página /autorizado-sunat
+ * (canibalización de keywords).
+ *
+ * ⚠️ Solo /blog/factura-o-boleta tiene contenido diseñado por ahora; las demás
+ * tarjetas todavía no tienen artículo.
+ */
+import { guias } from '../../data/home';
+---
+
+<section class="fi-section fi-guias" id="blog">
+  <div class="fi-wrap fi-guias__inner">
+    <div class="fi-guias__head">
+      <h2 class="fi-h2">Guías para tu negocio</h2>
+      <a class="fi-guias__link" href="/blog">Ver todas las guías →</a>
+    </div>
+
+    <div class="fi-guias__grid">
+      {
+        guias.map((g) =>
+          g.listo ? (
+            <a class="fi-guia" href={g.url}>
+              <span class="fi-guia__tag">{g.tag}</span>
+              <h3 class="fi-guia__title">{g.titulo}</h3>
+              <span class="fi-guia__min">{g.min} min de lectura</span>
+            </a>
+          ) : (
+            <article class="fi-guia fi-guia--pendiente">
+              <span class="fi-guia__tag">{g.tag}</span>
+              <h3 class="fi-guia__title">{g.titulo}</h3>
+              <span class="fi-guia__pendiente">En preparación</span>
+            </article>
+          )
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-guias {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .fi-guias__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .fi-guias__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .fi-guias__link {
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .fi-guias__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .fi-guia {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 28px;
+    border: 1px solid var(--fi-borde-claro);
+    background: #ffffff;
+    text-decoration: none;
+    color: var(--fi-texto-oscuro);
+    min-height: 200px;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .fi-guia:hover {
+    color: var(--fi-texto-oscuro);
+    border-color: var(--fi-rojo-oscuro);
+    transform: translateY(-3px);
+  }
+  .fi-guia__tag {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--fi-rojo-oscuro);
+  }
+  .fi-guia__title {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.3;
+    /* Tailwind resetea el font-weight de los títulos a inherit; el diseño
+       dependía del 700 por defecto del navegador. */
+    font-weight: 700;
+    flex: 1;
+  }
+  .fi-guia__min {
+    font-size: 13px;
+    color: var(--fi-texto-oscuro-2);
+  }
+  /* Tarjeta sin artículo todavía: mismo alto que las demás, pero NO es un enlace
+     (antes apuntaba a un artículo inexistente y daba 404). */
+  .fi-guia--pendiente {
+    background: var(--fi-papel);
+  }
+  .fi-guia--pendiente:hover {
+    transform: none;
+    border-color: var(--fi-borde-claro);
+  }
+  .fi-guia__pendiente {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--fi-texto-apagado-2);
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-guias__grid {
+      grid-template-columns: 1fr;
+    }
+    .fi-guia {
+      min-height: 0;
+      padding: 22px;
+    }
+  }
+</style>

@@ -1,0 +1,147 @@
+---
+/**
+ * Sección Requisitos SUNAT · rediseño v2 — design-refs/diseno/Home.dc.html
+ *
+ * ⚠️ Contenido tributario a VALIDAR con un contador antes de publicar
+ * (ver formatos-intergraficos-rediseno-seo.md, sección 5c).
+ */
+import { requisitos } from '../../data/home';
+---
+
+<section class="fi-section fi-req" id="requisitos">
+  <div class="fi-deco">
+    <div class="fi-req__circle" aria-hidden="true"></div>
+  </div>
+
+  <div class="fi-wrap fi-req__inner">
+    <div class="fi-req__copy">
+      <span class="fi-req__eyebrow">Guía rápida</span>
+      <h2 class="fi-h2 fi-req__title">
+        ¿Qué necesitas para imprimir comprobantes autorizados por SUNAT?
+      </h2>
+      <p class="fi-req__text">
+        La autorización la pides tú en SUNAT Operaciones en Línea (SOL) y eliges a Formatos
+        Intergráficos como imprenta. Cuando aceptamos el pedido, SUNAT genera el número de
+        autorización que va impreso en cada comprobante.
+      </p>
+      <a class="fi-req__link" href="/autorizado-sunat">Leer la guía completa paso a paso →</a>
+    </div>
+
+    <ul class="fi-req__list">
+      {
+        requisitos.map((q) => (
+          <li class="fi-req__item">
+            <svg class="fi-req__check" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FF8A99" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m5 12 5 5L20 7" />
+            </svg>
+            <span class="fi-req__body">
+              <strong>{q.titulo}</strong>
+              <span class="fi-req__desc">{q.texto}</span>
+            </span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .fi-req {
+    position: relative;
+    overflow: hidden;
+  }
+  .fi-req__circle {
+    position: absolute;
+    left: -160px;
+    top: 80px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    border: 3px solid var(--fi-rojo);
+  }
+  .fi-req__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    position: relative;
+  }
+  .fi-req__copy {
+    flex: 1 1 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .fi-req__eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fi-texto-apagado);
+  }
+  .fi-req__title {
+    font-size: clamp(40px, 4.4vw, 64px);
+    line-height: 0.95;
+  }
+  .fi-req__text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .fi-req__link {
+    align-self: flex-start;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--fi-texto-claro);
+  }
+
+  .fi-req__list {
+    flex: 1 1 420px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fi-req__item {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    padding: 22px;
+    background: var(--fi-carbon-2);
+    border: 1px solid var(--fi-borde-oscuro-2);
+  }
+  .fi-req__check {
+    flex: none;
+    margin-top: 2px;
+  }
+  .fi-req__body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .fi-req__body strong {
+    font-size: 16px;
+  }
+  .fi-req__desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--fi-texto-claro-2);
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-req__circle {
+      left: -220px;
+      width: 320px;
+      height: 320px;
+      opacity: 0.5;
+    }
+    .fi-req__inner {
+      gap: 36px;
+    }
+    .fi-req__item {
+      padding: 18px;
+    }
+  }
+</style>

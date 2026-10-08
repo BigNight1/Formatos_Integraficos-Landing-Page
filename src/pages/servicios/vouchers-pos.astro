@@ -1,159 +1,758 @@
 ---
+/**
+ * /servicios/vouchers-pos · rediseño v2
+ *
+ * NO viene del canvas. Carácter propio:
+ *
+ *   · TICKET TÉRMICO dibujado en CSS en el hero: tira estrecha, tipografía
+ *     monoespaciada, separadores de guiones y borde inferior dentado.
+ *   · Anchos de rollo en tarjetas técnicas (80 mm y 57 mm).
+ *   · Comparativa papel térmico vs bond en dos columnas enfrentadas.
+ *
+ * Datos reales de la página anterior: ticketeras Star, Epson TM y Bixolon;
+ * papel térmico; desde 1 millar; y el ancho de 80 mm que ya figura en
+ * `src/data/precios.ts`.
+ *
+ * ⚠️ Que un voucher POS sustente gasto o crédito fiscal depende del tipo de
+ *    comprobante y de los requisitos de control tributario: el texto lo dice sin
+ *    prometer más de lo que corresponde, pero conviene que lo revise un contador.
+ */
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { Icon } from 'astro-icon/components';
+import { WHATSAPP } from '../../data/home';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Vouchers POS y Papel Térmico Personalizado",
-  "description": "Impresión de vouchers POS y papel térmico personalizado con logo para restaurantes, bodegas, minimarkets y más negocios en Lima, Perú.",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Formatos Intergraficos",
-    "url": "https://formatosintergraficos.pe"
+const base = 'https://formatosintergraficos.pe';
+
+const rollos = [
+  {
+    ancho: '80 mm',
+    d: 'El estándar de las ticketeras de mostrador. Más ancho para desglosar varios ítems por línea y para imprimir el logo con detalle.',
+    usos: 'Restaurantes, minimarkets, farmacias',
   },
-  "areaServed": "Lima, Peru",
-  "serviceType": "Impresión de vouchers y papel térmico",
-  "url": "https://formatosintergraficos.pe/servicios/vouchers-pos"
-};
+  {
+    ancho: '57 mm',
+    d: 'El rollo compacto de las impresoras portátiles y de las cajas con poco espacio. Entra más metros por rollo y se cambia menos veces.',
+    usos: 'Delivery, bodegas, cobranza en campo',
+  },
+];
+
+const negocios = [
+  'Restaurantes y cevicherías',
+  'Bodegas y minimarkets',
+  'Farmacias y boticas',
+  'Panaderías y cafeterías',
+  'Colegios y academias',
+  'Estacionamientos',
+  'Retail de mostrador',
+  'Delivery y reparto',
+];
+
+const specs = [
+  { t: 'Ancho', d: '80 mm o 57 mm, según tu ticketera.' },
+  { t: 'Diámetro', d: 'Hasta 50 mm de rollo para que quepa en el compartimento.' },
+  { t: 'Tubo', d: 'Núcleo de cartón de 12 mm, o sin tubo si tu equipo lo pide.' },
+  { t: 'Impresión', d: 'Térmica directa: sin cinta ni tóner.' },
+];
+
+const faqs = [
+  {
+    q: '¿Los vouchers POS están autorizados por SUNAT?',
+    a: 'Los tickets que cumplen los requisitos de control tributario pueden ser válidos, y algunos sustentan gasto o crédito fiscal mientras otros son solo para el consumidor final. Como imprenta autorizada imprimimos la estructura legal que corresponde a tu caso; si tienes dudas sobre cuál te toca, lo vemos con tu contador antes de imprimir.',
+  },
+  {
+    q: '¿Qué impresora necesito?',
+    a: 'Nuestros rollos funcionan con las ticketeras térmicas más comunes del mercado peruano: Star, Epson TM y Bixolon, entre otras. Dinos el modelo y confirmamos el ancho, el diámetro y el tipo de tubo antes de fabricar.',
+  },
+  {
+    q: '¿El papel térmico se borra con el tiempo?',
+    a: 'El papel térmico revela la imagen con calor, así que se degrada si se guarda cerca de una fuente de calor, expuesto al sol o en roce continuo con plástico. Para el ticket que se entrega y se archiva unas semanas va perfecto; si necesitas que dure años, el papel bond impreso es la opción y también lo trabajamos.',
+  },
+  {
+    q: '¿Puedo poner mi logo?',
+    a: 'Sí, y está incluido en el diseño. Tu logo, tu razón social y tu RUC se imprimen en la cabecera del rollo, así que todos los tickets de tu negocio salen con tu marca, no en blanco.',
+  },
+  {
+    q: '¿Cuál es la cantidad mínima y qué es 1 millar en rollos?',
+    a: 'Trabajamos desde 1 millar. En rollos, el millar se cuenta por rollos, no por tickets: cada rollo trae muchos metros de papel. Por eso el precio por millar de vouchers es bastante más alto que el de un comprobante en hojas, y conviene compararlo por metro útil.',
+  },
+  {
+    q: '¿Sirven para delivery o para cobrar fuera del local?',
+    a: 'Sí. Los rollos de 57 mm son los que usan las impresoras portátiles de los repartidores: caben en el bolsillo, pesan poco y aguantan la jornada. Si repartes, dilo y te armamos el pedido con ese ancho.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Impresión de vouchers POS y papel térmico personalizado',
+    description:
+      'Rollos de papel térmico de 80 mm y 57 mm personalizados con logo para ticketeras Star, Epson TM y Bixolon. Para restaurantes, bodegas, farmacias y retail en Lima.',
+    serviceType: 'Impresión de vouchers POS y papel térmico',
+    areaServed: { '@type': 'City', name: 'Lima' },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Formatos Intergráficos',
+      url: base,
+      telephone: '+51910500706',
+    },
+    url: `${base}/servicios/vouchers-pos`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Vouchers POS', item: `${base}/servicios/vouchers-pos` },
+    ],
+  },
+];
 ---
 
-<Layout 
-  title="Vouchers POS y Papel Térmico en Lima | Formatos Intergraficos"
-  description="Vouchers POS y rollos térmicos personalizados con tu logo. Perfectos para restaurantes, bodegas y minimarkets. Entrega en Lima en 24h. Cotiza gratis."
+<Layout
+  title="Vouchers POS y Papel Térmico en Lima | Imprenta SUNAT"
+  description="Rollos de papel térmico de 80 mm y 57 mm con tu logo, para ticketeras Star, Epson TM y Bixolon. Para restaurantes, bodegas y farmacias. Desde 1 millar."
 >
-  <Header />
-  <main>
-    <!-- 1. HERO -->
-    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
-      <div class="max-w-4xl mx-auto text-center px-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          Vouchers POS y papel térmico personalizado en Lima para tu negocio
-        </h1>
-        <p class="text-xl text-gray-700 leading-relaxed mb-8">
-          Imprimimos tickets y vouchers compactos para impresoras térmicas y ticketeras. Con tu logo, datos comerciales y la estructura reglamentada por SUNAT.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/contacto#cotizar" class="btn-primary text-lg px-8 py-4">Cotizar ahora</a>
-          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-secondary text-lg px-8 py-4">WhatsApp</a>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site vp">
+    <Header />
+
+    <main>
+      <!-- HERO con ticket -->
+      <section class="vp-hero">
+        <div class="fi-deco">
+          <div class="vp-hero__circle" aria-hidden="true"></div>
         </div>
-      </div>
-    </section>
+        <div class="fi-wrap vp-hero__inner">
+          <div class="vp-hero__texto">
+            <nav class="vp-bc" aria-label="Ruta de navegación">
+              <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+              <span aria-current="page">Vouchers POS</span>
+            </nav>
+            <h1 class="vp-h1">Vouchers POS y papel térmico con tu marca</h1>
+            <p class="vp-hero__lead">
+              Rollos de 80 mm y 57 mm para ticketeras Star, Epson TM y Bixolon. Tu logo en la
+              cabecera, la estructura legal que corresponda y papel que no se borra a la semana.
+            </p>
+            <div class="vp-hero__acciones">
+              <a class="vp-btn" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="vouchers-hero">
+                Cotizar rollos por WhatsApp
+              </a>
+              <a class="vp-btn vp-btn--linea" href="/precios">Ver precios</a>
+            </div>
+            <p class="vp-hero__nota">Desde 1 millar · Diseño con tu logo incluido</p>
+          </div>
 
-    <!-- 2. ¿QUÉ SON LOS VOUCHERS POS? -->
-    <section class="section-padding bg-white">
-      <div class="max-w-3xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">¿Qué son los vouchers POS y cuándo usarlos?</h2>
-        <p class="text-lg text-gray-700">
-          Son recibos emitidos por terminales de punto de venta (POS) o ticketeras, comúnmente impresos en papel térmico. Están autorizados por SUNAT para entregarse a consumidores finales o, dependiendo del caso, para sustentar gastos según el tipo de comprobante.
-        </p>
-      </div>
-    </section>
+          <!-- Ticket térmico en CSS: la firma visual de esta página -->
+          <div class="vp-ticket" role="img" aria-label="Ejemplo de ticket térmico de punto de venta">
+            <div class="vp-ticket__cuerpo">
+              <div class="vp-ticket__cabecera">
+                <span class="vp-ticket__logo"></span>
+                <strong>TU NEGOCIO E.I.R.L.</strong>
+                <em>R.U.C. 20XXXXXXXXX</em>
+                <em>Av. Principal 123 · Lima</em>
+              </div>
+              <p class="vp-ticket__tipo">BOLETA DE VENTA ELECTRÓNICA</p>
+              <p class="vp-ticket__serie">B001 - 000128</p>
+              <p class="vp-ticket__guion">- - - - - - - - - - - - - - - -</p>
+              <ul class="vp-ticket__items">
+                <li>
+                  <span>2 × Menú del día</span>
+                  <span>24.00</span>
+                </li>
+                <li>
+                  <span>2 × Chicha morada</span>
+                  <span>12.00</span>
+                </li>
+                <li>
+                  <span>1 × Postre</span>
+                  <span>8.00</span>
+                </li>
+              </ul>
+              <p class="vp-ticket__guion">- - - - - - - - - - - - - - - -</p>
+              <p class="vp-ticket__total">
+                <span>TOTAL</span>
+                <span>S/ 44.00</span>
+              </p>
+              <p class="vp-ticket__pie">¡Gracias por su compra!</p>
+              <span class="vp-ticket__codigo" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <!-- 3. TIPOS DE VOUCHERS -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-5xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">Tipos de vouchers que imprimimos</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-2xl font-bold text-primary-600 mb-4">Tickets de máquinas registradoras</h3>
-            <p class="text-gray-700">
-              Autorizados por SUNAT siempre que cumplan con los requisitos de control tributario. Algunos pueden sustentar gasto/costo o crédito fiscal, mientras que otros sirven exclusivamente para consumidores finales. Imprimimos el rollo y diseño adecuado para tu tipo de negocio.
+      <!-- QUÉ ES -->
+      <section class="fi-section vp-sec vp-sec--paper">
+        <div class="fi-wrap vp-quees">
+          <div class="vp-quees__texto">
+            <h2 class="fi-h2 vp-h2">Qué es un voucher POS</h2>
+            <p>
+              El papel que sale de la ticketera en el momento de cobrar. Se imprime por calor: la
+              cabeza térmica marca el papel sin cinta ni tóner, y por eso el equipo no tiene
+              consumibles ni mantenimiento más allá de limpiar el cabezal.
+            </p>
+            <p>
+              Ese mismo mecanismo es el que explica su límite. El papel térmico revela la imagen con
+              calor y la pierde con calor: guardado junto a una cocina, expuesto al sol o rozando
+              plástico durante meses, el texto se va. Para el ticket que se entrega al cliente y se
+              archiva unas semanas es exactamente lo que necesitas.
             </p>
           </div>
-          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-2xl font-bold text-primary-600 mb-4">Vouchers de pago personalizados</h3>
-            <p class="text-gray-700">
-              Personalizados con tu logo, nombre de empresa, RUC y estructura legal. Este formato compacto es ideal y muy solicitado por restaurantes, bodegas y minimarkets. Utilizamos papel térmico de alta resistencia.
-            </p>
+          <ul class="vp-specs">
+            {
+              specs.map((s) => (
+                <li class="vp-spec">
+                  <strong>{s.t}</strong>
+                  <span>{s.d}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- ROLLOS -->
+      <section class="fi-section vp-sec">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 vp-h2">Los dos anchos</h2>
+          <p class="vp-sec__intro">
+            El 90 % de los pedidos son de 80 mm. Antes de fabricar confirmamos el modelo de tu
+            ticketera, porque el diámetro del rollo también tiene que entrar en el compartimento.
+          </p>
+          <div class="vp-rollos">
+            {
+              rollos.map((r) => (
+                <article class="vp-rollo">
+                  <span class="vp-rollo__ancho">{r.ancho}</span>
+                  <p>{r.d}</p>
+                  <span class="vp-rollo__usos">{r.usos}</span>
+                </article>
+              ))
+            }
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 4. RUBROS QUE MÁS LOS USAN -->
-    <section class="section-padding bg-white">
-      <div class="max-w-5xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-10">Negocios que usan nuestros vouchers POS</h2>
-        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Restaurantes y cevicherías</div>
-          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Bodegas y minimarkets</div>
-          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Farmacias</div>
-          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Colegios (recibos)</div>
-          <div class="p-4 bg-gray-50 rounded-xl font-medium text-gray-800">Cualquier negocio retail</div>
+      <!-- TÉRMICO VS BOND -->
+      <section class="fi-section vp-sec vp-sec--paper">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 vp-h2">Térmico o bond</h2>
+          <div class="vp-comp">
+            <div class="vp-comp__col vp-comp__col--si">
+              <h3>Papel térmico</h3>
+              <ul>
+                <li>No necesita cinta ni tóner</li>
+                <li>Imprime rápido y en silencio</li>
+                <li>Sin mantenimiento del equipo</li>
+                <li>El texto se degrada con el calor y el roce</li>
+                <li>Ideal para tickets de entrega inmediata</li>
+              </ul>
+            </div>
+            <div class="vp-comp__col">
+              <h3>Papel bond</h3>
+              <ul>
+                <li>Necesita cinta, en impresora matricial o de impacto</li>
+                <li>Más lento y con más ruido</li>
+                <li>El texto dura años en el archivo</li>
+                <li>Aguanta grapas, humedad y carpetas</li>
+                <li>Ideal si el documento debe conservarse</li>
+              </ul>
+            </div>
+          </div>
+          <p class="vp-nota">
+            Si tu caso es archivo a largo plazo —un contrato, un comprobante que vas a guardar
+            años— dilo: te lo imprimimos en bond o autocopiativo, que además es lo que pide tu
+            contador.
+          </p>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 5. VENTAJAS -->
-    <section class="section-padding bg-primary-900 text-white">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-10">¿Por qué nuestros vouchers POS?</h2>
-        <ul class="space-y-4 text-lg text-gray-200">
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Diseño personalizado con tu marca y logo</li>
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Papel térmico de alta durabilidad (no se borra rápido)</li>
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Compatibles con las principales ticketeras del mercado peruano</li>
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Precios preferenciales por volumen desde 1 millar</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- 6. FAQ ESPECÍFICO -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Preguntas frecuentes sobre vouchers POS</h2>
-        <div class="space-y-6">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Los vouchers POS están autorizados por SUNAT?</h3>
-            <p class="text-gray-600">Sí, siempre que cumplan los requisitos de control tributario vigentes. Como imprenta autorizada, nos aseguramos de que tus vouchers cuenten con la estructura legal requerida.</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Qué impresora necesito para usar mis vouchers?</h3>
-            <p class="text-gray-600">Nuestros rollos son compatibles con las ticketeras térmicas más comunes en Perú, como las marcas Star, Epson TM y Bixolon. Si no sabes si tu impresora es compatible, ¡escríbenos!</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Puedo poner mi logo en el voucher?</h3>
-            <p class="text-gray-600">Sí. Incluimos el diseño personalizado con tu logo en todos los pedidos sin ningún costo adicional.</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Cuál es el pedido mínimo?</h3>
-            <p class="text-gray-600">Trabajamos pedidos desde 1 millar. Recuerda que a mayor volumen, menor será el precio por unidad.</p>
-          </div>
+      <!-- NEGOCIOS -->
+      <section class="fi-section vp-sec">
+        <div class="fi-wrap vp-quien">
+          <h2 class="fi-h2 vp-h2">Quién nos pide rollos</h2>
+          <ul class="vp-chips">
+            {negocios.map((n) => <li class="vp-chip">{n}</li>)}
+          </ul>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- INTERNAL LINKS -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-5xl mx-auto px-4 text-center">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">También te puede interesar</h2>
-        <div class="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-          <a href="/servicios/formatos-continuos" class="block bg-white rounded-xl border border-gray-200 p-5 hover:border-primary-200 hover:shadow-md transition-all text-left">
-            <h3 class="font-bold text-gray-900 mb-1">Formatos Continuos</h3>
-            <p class="text-sm text-gray-500">Papel bond o autocopiativo para impresoras matriciales</p>
+      <!-- FAQ -->
+      <section class="fi-section vp-sec vp-sec--paper fi-faq">
+        <div class="fi-narrow vp-faq">
+          <h2 class="fi-h2 vp-h2">Preguntas sobre vouchers POS</h2>
+          <div>
+            {
+              faqs.map((f) => (
+                <details class="vp-faq__item">
+                  <summary>
+                    <h3>{f.q}</h3>
+                    <span class="fi-faq-plus" aria-hidden="true">
+                      +
+                    </span>
+                  </summary>
+                  <p>{f.a}</p>
+                </details>
+              ))
+            }
+          </div>
+          <a class="vp-cta" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="vouchers-faq">
+            Cotizar mis rollos por WhatsApp
           </a>
-          <a href="/servicios/documentos-administrativos" class="block bg-white rounded-xl border border-gray-200 p-5 hover:border-primary-200 hover:shadow-md transition-all text-left">
-            <h3 class="font-bold text-gray-900 mb-1">Documentos Administrativos</h3>
-            <p class="text-sm text-gray-500">Proformas, cotizaciones y notas de pedido con tu logo</p>
-          </a>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
-    <!-- 7. CTA FINAL -->
-    <section class="section-padding bg-white text-center">
-      <div class="max-w-3xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">Pide tu cotización de vouchers POS</h2>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-primary text-lg px-8 py-4">Cotizar por WhatsApp</a>
-          <a href="/contacto#cotizar" class="btn-secondary text-lg px-8 py-4">Formulario de cotización</a>
-        </div>
-      </div>
-    </section>
-  </main>
-  <Footer />
+    <Footer />
+  </div>
 </Layout>
 
-<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>
+<style>
+  /* ==========================================================================
+     HERO + TICKET TÉRMICO
+     ========================================================================== */
+  .vp-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    padding: 56px clamp(16px, 4vw, 64px) 104px;
+  }
+  .vp-hero__circle {
+    position: absolute;
+    top: -180px;
+    right: -120px;
+    width: 520px;
+    height: 520px;
+    background: var(--fi-rojo);
+    border-radius: 50%;
+    opacity: 0.14;
+  }
+  .vp-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .vp-bc {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+    margin-bottom: 24px;
+  }
+  .vp-bc a {
+    color: var(--fi-texto-apagado);
+  }
+  .vp-h1 {
+    margin: 0 0 24px;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 5.2vw, 76px);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .vp-hero__lead {
+    margin: 0 0 32px;
+    max-width: 54ch;
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .vp-hero__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .vp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 26px;
+    background: var(--fi-rojo);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .vp-btn:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+  .vp-btn--linea {
+    background: transparent;
+    border: 1px solid var(--fi-borde-oscuro-2);
+    color: var(--fi-texto-claro);
+  }
+  .vp-btn--linea:hover {
+    background: var(--fi-carbon-3);
+    border-color: var(--fi-papel);
+  }
+  .vp-hero__nota {
+    margin: 24px 0 0;
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- El ticket --- */
+  .vp-ticket {
+    display: flex;
+    justify-content: center;
+  }
+  .vp-ticket__cuerpo {
+    position: relative;
+    width: min(100%, 300px);
+    padding: 28px 24px 34px;
+    background: #fff;
+    color: #1a1718;
+    font-family: var(--fi-mono, "DM Mono", ui-monospace, monospace);
+    font-size: 12.5px;
+    line-height: 1.5;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  }
+  /* Borde inferior dentado, como el corte del ticket */
+  .vp-ticket__cuerpo::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -12px;
+    height: 12px;
+    background-image: linear-gradient(135deg, #fff 50%, transparent 50%),
+      linear-gradient(-135deg, #fff 50%, transparent 50%);
+    background-size: 16px 16px;
+    background-position: 0 0;
+    background-repeat: repeat-x;
+  }
+  .vp-ticket__cabecera {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    text-align: center;
+  }
+  .vp-ticket__logo {
+    width: 34px;
+    height: 34px;
+    background: var(--fi-rojo);
+    margin-bottom: 6px;
+  }
+  .vp-ticket__cabecera strong {
+    font-size: 12.5px;
+  }
+  .vp-ticket__cabecera em {
+    font-style: normal;
+    font-size: 11px;
+    color: #6b6365;
+  }
+  .vp-ticket__tipo {
+    margin: 16px 0 2px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .vp-ticket__serie {
+    margin: 0;
+    text-align: center;
+    color: #6b6365;
+  }
+  .vp-ticket__guion {
+    margin: 10px 0;
+    color: #b8b0ae;
+    letter-spacing: -1px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .vp-ticket__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .vp-ticket__items li,
+  .vp-ticket__total {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .vp-ticket__total {
+    margin: 0;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .vp-ticket__pie {
+    margin: 14px 0 0;
+    text-align: center;
+    color: #6b6365;
+  }
+  .vp-ticket__codigo {
+    display: block;
+    height: 34px;
+    margin-top: 14px;
+    background-image: repeating-linear-gradient(
+      90deg,
+      #1a1718 0 2px,
+      transparent 2px 4px,
+      #1a1718 4px 5px,
+      transparent 5px 9px
+    );
+  }
+
+  /* --- Secciones --- */
+  .vp-sec {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+  }
+  .vp-sec--paper {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .vp-h2 {
+    margin-bottom: 24px;
+  }
+  .vp-sec__intro {
+    max-width: 62ch;
+    margin: 0 0 40px;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--fi-texto-apagado);
+  }
+  .vp-sec--paper .vp-sec__intro {
+    color: var(--fi-texto-oscuro-2);
+  }
+  .vp-quees {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+  .vp-quees__texto p {
+    margin: 0 0 20px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .vp-specs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--fi-borde-claro);
+  }
+  .vp-spec {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  .vp-spec strong {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .vp-spec span {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* --- Rollos --- */
+  .vp-rollos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  .vp-rollo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 36px 32px;
+    border: 1px solid var(--fi-borde-oscuro);
+    background: var(--fi-carbon-2);
+  }
+  .vp-rollo__ancho {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(52px, 6vw, 76px);
+    line-height: 0.9;
+    color: var(--fi-rosa);
+    font-variant-numeric: tabular-nums;
+  }
+  .vp-rollo p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fi-texto-claro-2);
+  }
+  .vp-rollo__usos {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--fi-borde-oscuro);
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Comparativa --- */
+  .vp-comp {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .vp-comp__col {
+    padding: 34px 30px;
+    background: var(--fi-papel-2);
+  }
+  .vp-comp__col--si {
+    background: var(--fi-texto-oscuro);
+    color: var(--fi-texto-claro);
+  }
+  .vp-comp__col h3 {
+    margin: 0 0 18px;
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: 28px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .vp-comp__col ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .vp-comp__col li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .vp-comp__col--si li {
+    color: var(--fi-texto-claro-2);
+  }
+  .vp-comp__col li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 10px;
+    height: 10px;
+    background: var(--fi-rojo);
+  }
+  .vp-nota {
+    margin: 32px 0 0;
+    padding: 22px 26px;
+    border-left: 5px solid var(--fi-rojo);
+    background: var(--fi-papel-2);
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* --- Chips --- */
+  .vp-quien {
+    max-width: 900px;
+  }
+  .vp-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .vp-chip {
+    padding: 10px 18px;
+    border: 1px solid var(--fi-borde-oscuro-2);
+    font-size: 15px;
+    color: var(--fi-texto-claro-2);
+  }
+
+  /* --- FAQ --- */
+  .vp-faq h2 {
+    margin-bottom: 32px;
+  }
+  .vp-faq__item {
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  .vp-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .vp-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .vp-faq__item p {
+    margin: 0;
+    padding: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .vp-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    margin-top: 36px;
+    padding: 0 30px;
+    background: var(--fi-rojo);
+    color: #fff !important;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .vp-cta:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+
+  /* --- Móvil --- */
+  @media (max-width: 900px) {
+    .vp-hero__inner,
+    .vp-quees {
+      grid-template-columns: 1fr;
+    }
+    .vp-ticket {
+      order: -1;
+    }
+    .vp-hero__circle {
+      width: 300px;
+      height: 300px;
+      top: -110px;
+      right: -90px;
+    }
+  }
+  @media (max-width: 600px) {
+    .vp-hero {
+      padding-bottom: 72px;
+    }
+    .vp-btn,
+    .vp-cta {
+      width: 100%;
+    }
+    .vp-rollo,
+    .vp-comp__col {
+      padding: 26px 22px;
+    }
+  }
+</style>

@@ -1,167 +1,906 @@
 ---
+/**
+ * /autorizado-sunat · rediseño v2
+ * Fuente: design-refs/diseno/AutorizadoSunat.dc.html
+ *
+ * CAMBIOS respecto al canvas:
+ *  1. Autor "Carlos Ramírez" (FICTICIO) → nombre real del fundador, que ya
+ *     declaraba el sitio anterior en su schema.
+ *  2. Se QUITÓ "Revisado por un contador colegiado": credencial inventada. El brief
+ *     daba la opción de quitarla; publicar una revisión que no ocurrió es peor.
+ *  3. El índice lateral queda fijo (sticky) en escritorio: es una guía larga y el
+ *     canvas, al ser un tablero estático, no define el comportamiento al hacer
+ *     scroll. Es una mejora añadida, no del diseño.
+ *
+ * ⚠️ FICTICIO: "Autorización SUNAT N.º 0458-2026".
+ * ⚠️ El botón "Verificar en SUNAT" apunta a sunat.gob.pe genérico: el brief pide la
+ *    URL exacta de consulta de imprentas autorizadas.
+ * ⚠️ CONTENIDO A VALIDAR CON UN CONTADOR: la regla de los S/ 700, el nombre del
+ *    Formulario Virtual N.º 816 y la ruta del menú en SUNAT SOL.
+ * Las capturas de los 5 pasos están en public/sunat-sol/ (SUNAT SOL real, 08/10/2026,
+ *    nombre del contribuyente ocultado). Las capturas sin anotar están en
+ *    design-refs/sunat-sol-raw/ (no versionado).
+ * ⚠️ "Guía paso a paso · 2026" y "Actualizado: 7 de octubre de 2026" son literales.
+ *
+ * Source Serif 4 se pide por el slot "head" del Layout (solo 3 páginas la usan).
+ */
 import Layout from '../layouts/Layout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { WHATSAPP } from '../data/home';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "¿Cómo verifico si una imprenta está autorizada por SUNAT?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Ingresa al portal de SUNAT y consulta el RUC de la imprenta. Si aparece como autorizada para emitir comprobantes de pago, puedes trabajar con ella legalmente."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Qué es el Formulario Virtual 816 de SUNAT?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Es el formulario que debes completar en el portal de SUNAT para autorizar a una imprenta a producir tus comprobantes de pago físicos. Sin este trámite, los documentos impresos no tienen validez legal."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "¿Me ayudan con el proceso del Formulario 816?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Sí. En Formatos Intergraficos te guiamos paso a paso para completar tu autorización antes de iniciar la impresión, sin costo adicional."
-      }
-    }
-  ]
-};
+const FUNDADOR = 'Zenón Walter Armas Quispialaya';
+const INICIALES = 'ZA';
+const base = 'https://formatosintergraficos.pe';
+const url = `${base}/autorizado-sunat`;
+
+const indice = [
+  { id: 'resumen', t: 'Resumen en 30 segundos' },
+  { id: 'requisitos', t: 'Requisitos' },
+  { id: 'pasos', t: 'Paso a paso en SUNAT SOL' },
+  { id: 'comprobante', t: 'Qué debe llevar el comprobante' },
+  { id: 'verificar', t: 'Cómo verificar a tu imprenta' },
+  { id: 'errores', t: 'Errores comunes' },
+  { id: 'faq', t: 'Preguntas frecuentes' },
+];
+
+const pasos = [
+  {
+    n: '01',
+    t: 'Ingresa a SUNAT Operaciones en Línea',
+    d: 'En sunat.gob.pe pulsa «Operaciones en línea (SOL)». En «Mis trámites y consultas» haz clic en Ingresar y entra con tu RUC, usuario y Clave SOL.',
+    img: '/sunat-sol/paso-01-ingresa-sol.jpg',
+    w: 700,
+    h: 475,
+    guia: ['Ingresar en «Mis trámites y consultas».'],
+  },
+  {
+    n: '02',
+    t: 'Abre el Formulario Virtual N.º 816',
+    d: 'En el menú elige la ruta de comprobantes físicos hasta la autorización de impresión. Se abre la bandeja del F.V. 816: pulsa «Nueva Solicitud».',
+    img: '/sunat-sol/paso-02-menu-fv816.jpg',
+    w: 795,
+    h: 495,
+    guia: [
+      'Empresas',
+      'Comprobantes de pago',
+      'Comprobantes de Pago Físico',
+      'Autorización de Comprobante',
+      'Autorización de Impresión de CDP F.V. 816',
+    ],
+  },
+  {
+    n: '03',
+    t: 'Digita el RUC de la imprenta y valida',
+    d: 'El sistema valida que tú y la imprenta cumplan las condiciones. Si no tienes el RUC a la mano, consulta el padrón de imprentas.',
+    img: '/sunat-sol/paso-03-ruc-imprenta.jpg',
+    w: 780,
+    h: 360,
+    guia: ['Escribe el RUC de la imprenta y pulsa Validar.', 'Ver padrón de imprentas (opcional).'],
+  },
+  {
+    n: '04',
+    t: 'Indica qué vas a imprimir',
+    d: 'Pulsa «Nuevo» y registra cada comprobante: establecimiento, serie, tipo y cantidad. Agrega todos los que necesites y continúa.',
+    img: '/sunat-sol/paso-04-datos-comprobante.jpg',
+    w: 780,
+    h: 372,
+    guia: [
+      'Establecimiento donde lo usarás.',
+      'Serie.',
+      'Tipo de comprobante.',
+      'Cantidad a imprimir.',
+      'Agregar.',
+      'Continuar para enviar la solicitud.',
+    ],
+  },
+  {
+    n: '05',
+    t: 'La imprenta acepta y SUNAT genera el número',
+    d: 'Cuando aceptamos tu pedido, SUNAT emite el número de autorización. Puedes ver el estado en la bandeja del F.V. 816. Con ese número imprimimos y te entregamos.',
+    img: '/sunat-sol/paso-05-bandeja-estado.jpg',
+    w: 780,
+    h: 230,
+    guia: ['Filtra por estado.', 'Buscar.'],
+  },
+];
+
+const datos = [
+  { k: 'Razón social, RUC y domicilio fiscal', v: 'Encabezado del comprobante' },
+  { k: 'Denominación del comprobante', v: 'Recuadro superior derecho, con tu RUC' },
+  { k: 'Serie y número correlativo', v: 'Recuadro superior derecho' },
+  { k: 'Datos de la imprenta (nombre y RUC)', v: 'Pie de imprenta' },
+  { k: 'Número de autorización SUNAT', v: 'Pie de imprenta' },
+  { k: 'Fecha de impresión', v: 'Pie de imprenta' },
+  { k: 'Destino de cada ejemplar', v: 'Al pie de cada hoja: adquirente, emisor, SUNAT' },
+];
+
+const errores = [
+  { t: 'Domicilio fiscal no habido:', d: 'SUNAT no te dejará avanzar. Regulariza tu domicilio primero.' },
+  { t: 'Declaraciones o registros pendientes:', d: 'aunque sea un mes, bloquea la solicitud.' },
+  { t: 'RUC de la imprenta mal digitado:', d: 'la solicitud llega a otra imprenta o queda sin aceptar.' },
+  { t: 'Serie o rango que se cruza', d: 'con comprobantes que ya autorizaste antes.' },
+  { t: 'Establecimiento equivocado:', d: 'cada serie va asociada a un local registrado en tu RUC.' },
+];
+
+const faqs = [
+  { q: '¿La autorización de impresión tiene costo?', a: 'La solicitud en SUNAT SOL es gratuita. Solo pagas la impresión de tus comprobantes.' },
+  { q: '¿Cuánto demora la autorización?', a: 'Si cumples los requisitos, el número se genera en cuanto la imprenta acepta el pedido, normalmente el mismo día.' },
+  { q: '¿Puedo hacer el trámite por mi cuenta?', a: 'Sí, lo haces tú con tu Clave SOL. Nosotros solo aceptamos el pedido y te guiamos si lo necesitas.' },
+  { q: '¿Necesito una autorización nueva cada vez que imprimo?', a: 'Sí, cada nuevo tiraje con su serie y rango de numeración requiere su propia autorización.' },
+  { q: '¿Qué pasa si SUNAT rechaza mi solicitud?', a: 'El sistema te muestra el motivo, normalmente domicilio no habido o declaraciones pendientes. Regularízalo y vuelve a solicitar.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: 'Cómo autorizar la impresión de comprobantes de pago en SUNAT',
+    description:
+      'Requisitos, los 5 pasos en SUNAT SOL y los errores que frenan la autorización para imprimir comprobantes de pago.',
+    inLanguage: 'es-PE',
+    mainEntityOfPage: url,
+    author: { '@type': 'Person', name: FUNDADOR },
+    publisher: { '@type': 'Organization', name: 'Formatos Intergráficos', url: base },
+    datePublished: '2026-10-07',
+    dateModified: '2026-10-07',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'Cómo autorizar la impresión de comprobantes de pago en SUNAT',
+    totalTime: 'P1D',
+    step: pasos.map((p, i) => ({ '@type': 'HowToStep', position: i + 1, name: p.t, text: p.d })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Autorización SUNAT', item: url },
+    ],
+  },
+];
 ---
 
-<Layout 
-  title="Imprenta Autorizada SUNAT en Lima | Formulario 816"
-  description="¿Necesitas imprimir boletas o guías legales? Somos imprenta autorizada por SUNAT. Te explicamos el proceso del Formulario 816 y te ayudamos a cumplirlo."
+<Layout
+  title="Cómo Autorizar Comprobantes en SUNAT (Guía 2026)"
+  description="Requisitos y los 5 pasos para autorizar la impresión de comprobantes en SUNAT SOL, qué debe llevar el comprobante y los errores que frenan el trámite."
 >
-  <Header />
-  <main>
-    <!-- 1. HERO -->
-    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
-      <div class="max-w-4xl mx-auto text-center px-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          ¿Qué significa ser una imprenta autorizada por SUNAT y por qué importa?
-        </h1>
-        <p class="text-xl text-gray-700 leading-relaxed mb-8">
-          No todas las imprentas pueden imprimir tus boletas o guías legalmente. Nosotros sí. Somos una imprenta autorizada con RUC 20503580030 y más de 20 años cumpliendo estrictamente los requisitos de SUNAT.
-        </p>
-        <div class="flex justify-center">
-          <a href="/servicios/formatos-continuos" class="btn-primary text-lg px-8 py-4">Ver nuestros servicios</a>
+  <Fragment slot="head">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+  </Fragment>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site gs">
+    <Header active="sunat" />
+
+    <main>
+      <!-- CABECERA -->
+      <header class="gs-hero">
+        <div class="fi-deco">
+          <div class="gs-hero__circle" aria-hidden="true"></div>
         </div>
-      </div>
-    </section>
-
-    <!-- 2. ¿QUÉ ES UNA IMPRENTA AUTORIZADA SUNAT? -->
-    <section class="section-padding bg-white">
-      <div class="max-w-3xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">¿Qué es una imprenta autorizada por SUNAT?</h2>
-        <p class="text-lg text-gray-700">
-          SUNAT es rigurosa con la documentación tributaria. Solo permite que empresas formalmente registradas, evaluadas y <strong>autorizadas</strong> impriman comprobantes de pago físicos (como boletas de venta, facturas y guías de remisión). Si tu imprenta no cuenta con esta autorización activa, tus documentos no tienen validez legal y carecen de efecto tributario.
-        </p>
-      </div>
-    </section>
-
-    <!-- 3. EL FORMULARIO 816 -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">¿Qué es el Formulario Virtual N.° 816 y cómo funciona?</h2>
-        <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-          <ol class="space-y-6 text-lg text-gray-700 list-decimal list-inside">
-            <li class="pb-4 border-b border-gray-100">
-              <strong class="text-gray-900">El contribuyente (tú) ingresa al portal SUNAT</strong> usando su Clave SOL.
-            </li>
-            <li class="pb-4 border-b border-gray-100">
-              <strong class="text-gray-900">Llena el Formulario Virtual 816</strong> solicitando la autorización de impresión e indicando el RUC de la imprenta.
-            </li>
-            <li class="pb-4 border-b border-gray-100">
-              <strong class="text-gray-900">SUNAT verifica</strong> de forma automática que la imprenta seleccionada esté efectivamente autorizada.
-            </li>
-            <li class="pt-2">
-              <strong class="text-gray-900">Una vez aprobado</strong>, la imprenta puede proceder de inmediato con la impresión de los formatos.
-            </li>
-          </ol>
-          <div class="mt-8 p-4 bg-primary-50 rounded-lg border-l-4 border-primary-500 text-primary-800">
-            <strong>Nota importante:</strong> Si aún no has gestionado tu autorización, nosotros te asesoramos en todo el proceso sin ningún costo adicional.
+        <div class="gs-wrap gs-hero__inner">
+          <nav class="gs-bc" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+            <span aria-current="page">Autorización SUNAT</span>
+          </nav>
+          <span class="gs-eyebrow">Guía paso a paso · 2026</span>
+          <h1 class="gs-h1">Cómo autorizar la impresión de comprobantes de pago en SUNAT</h1>
+          <p class="gs-hero__lead">
+            Requisitos, pasos en SUNAT Operaciones en Línea (SOL) y errores que frenan la
+            autorización. Escrita por la imprenta que tramita estos pedidos todos los días.
+          </p>
+          <div class="gs-meta">
+            <span class="gs-autor">
+              <span class="gs-avatar" aria-hidden="true">{INICIALES}</span>
+              Por <strong>{FUNDADOR}</strong>, fundador de Formatos Intergráficos
+            </span>
+            <span>Actualizado: 7 de octubre de 2026</span>
+            <span>6 min de lectura</span>
           </div>
         </div>
-      </div>
-    </section>
+      </header>
 
-    <!-- 4. RIESGOS -->
-    <section class="section-padding bg-white">
-      <div class="max-w-5xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-10">Riesgos de imprimir con una imprenta no autorizada</h2>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div class="p-6 bg-red-50 rounded-xl border border-red-100">
-            <div class="text-red-500 text-3xl mb-4">❌</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Sin validez legal</h3>
-            <p class="text-gray-700">Tus comprobantes no tendrán validez legal ante SUNAT, lo que los convierte en papel sin valor tributario.</p>
-          </div>
-          <div class="p-6 bg-red-50 rounded-xl border border-red-100">
-            <div class="text-red-500 text-3xl mb-4">❌</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Multas severas</h3>
-            <p class="text-gray-700">Emitir documentos no válidos puede resultar en fuertes multas y sanciones durante una fiscalización.</p>
-          </div>
-          <div class="p-6 bg-red-50 rounded-xl border border-red-100">
-            <div class="text-red-500 text-3xl mb-4">❌</div>
-            <h3 class="text-xl font-bold text-gray-900 mb-2">Rechazo de clientes</h3>
-            <p class="text-gray-700">Tus clientes no podrán utilizar esos documentos para sustentar gastos, lo que afectará la confianza en tu negocio.</p>
-          </div>
+      <div class="gs-main">
+        <div class="gs-wrap gs-layout">
+          <!-- ÍNDICE -->
+          <aside class="gs-indice">
+            <strong>En esta guía</strong>
+            <nav aria-label="Contenido de la guía">
+              <ol>
+                {
+                  indice.map((i) => (
+                    <li>
+                      <a href={`#${i.id}`}>{i.t}</a>
+                    </li>
+                  ))
+                }
+              </ol>
+            </nav>
+          </aside>
+
+          <!-- ARTÍCULO -->
+          <article class="gs-art">
+            <section id="resumen" class="gs-resumen">
+              <h2>Resumen en 30 segundos</h2>
+              <p>
+                Para imprimir comprobantes de pago físicos necesitas una autorización de SUNAT. La
+                pides tú mismo en SUNAT SOL con tu Clave SOL, eliges una imprenta inscrita en el
+                registro de SUNAT, la imprenta acepta el pedido y SUNAT genera un número de
+                autorización que se imprime en cada comprobante.
+              </p>
+            </section>
+
+            <section id="requisitos" class="gs-sec">
+              <h2>1. Requisitos</h2>
+              <p>
+                Según la guía oficial de gob.pe, antes de solicitar la autorización debes cumplir
+                estas condiciones:
+              </p>
+              <ul class="gs-lista">
+                <li>Tener el <strong>RUC activo</strong> y el domicilio fiscal en condición de <strong>habido</strong>.</li>
+                <li>Tener al día tus <strong>registros electrónicos de ventas y compras</strong> de los últimos 12 meses.</li>
+                <li>Haber presentado tus <strong>declaraciones mensuales</strong> de los últimos 6 meses.</li>
+                <li>Contar con tu <strong>Clave SOL</strong> para ingresar a SUNAT Operaciones en Línea.</li>
+              </ul>
+              <p class="gs-fuente">
+                Fuente:{' '}
+                <a href="https://www.gob.pe/390-obtener-autorizacion-para-imprimir-comprobantes-de-pago">
+                  gob.pe · Obtener autorización para imprimir comprobantes de pago
+                </a>
+              </p>
+            </section>
+
+            <section id="pasos" class="gs-sec gs-sec--gap24">
+              <h2>2. Paso a paso en SUNAT SOL</h2>
+              <ol class="gs-pasos">
+                {
+                  pasos.map((p) => (
+                    <li>
+                      <span class="gs-paso__n">{p.n}</span>
+                      <span class="gs-paso__body">
+                        <strong>{p.t}</strong>
+                        <span class="gs-paso__d">{p.d}</span>
+                        <figure class="gs-paso__shot">
+                          <a href={p.img} target="_blank" rel="noopener">
+                            <img
+                              src={p.img}
+                              width={p.w}
+                              height={p.h}
+                              loading="lazy"
+                              decoding="async"
+                              alt={`Captura de SUNAT SOL, paso ${p.n}: ${p.t}`}
+                            />
+                          </a>
+                          <figcaption>
+                            <ol class="gs-paso__guia">
+                              {p.guia.map((g) => <li>{g}</li>)}
+                            </ol>
+                          </figcaption>
+                        </figure>
+                      </span>
+                    </li>
+                  ))
+                }
+              </ol>
+            </section>
+
+            <section id="comprobante" class="gs-sec">
+              <h2>3. Qué debe llevar el comprobante impreso</h2>
+              <p>
+                Además de los datos de tu empresa, todo comprobante autorizado lleva información de la
+                imprenta y de la autorización. Si falta alguno, el comprobante puede ser observado.
+              </p>
+              <div class="gs-tabla__scroll">
+                <table class="gs-tabla">
+                  <thead>
+                    <tr>
+                      <th scope="col">Dato</th>
+                      <th scope="col">Dónde va</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {
+                      datos.map((d) => (
+                        <tr>
+                          <th scope="row">{d.k}</th>
+                          <td>{d.v}</td>
+                        </tr>
+                      ))
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </section>
+
+            <section id="verificar" class="gs-sec">
+              <h2>4. Cómo verificar que tu imprenta está autorizada</h2>
+              <p>
+                Solo puedes elegir en SUNAT SOL una imprenta inscrita en el registro de imprentas.
+                Pídele siempre su RUC y verifica que aparezca al registrar tu solicitud.
+              </p>
+              <div class="gs-datos ns-sobre-rojo">
+                <span class="gs-datos__texto">
+                  <span class="gs-datos__k">Nuestros datos</span>
+                  <strong>RUC 20503580030</strong>
+                  <span>Autorización SUNAT N.º 0458-2026</span>
+                </span>
+                <a class="gs-datos__cta" href="https://www.sunat.gob.pe" target="_blank" rel="noopener noreferrer">
+                  Verificar en SUNAT
+                </a>
+              </div>
+            </section>
+
+            <section id="errores" class="gs-sec">
+              <h2>5. Errores que frenan la autorización</h2>
+              <ul class="gs-lista gs-lista--gap12">
+                {errores.map((e) => <li><strong>{e.t}</strong> {e.d}</li>)}
+              </ul>
+            </section>
+
+            <section id="faq" class="gs-sec gs-faq fi-faq">
+              <h2>6. Preguntas frecuentes</h2>
+              <div>
+                {
+                  faqs.map((q) => (
+                    <details class="gs-faq__item">
+                      <summary>
+                        <h3>{q.q}</h3>
+                        <span class="fi-faq-plus" aria-hidden="true">
+                          +
+                        </span>
+                      </summary>
+                      <p>{q.a}</p>
+                    </details>
+                  ))
+                }
+              </div>
+            </section>
+
+            <section class="gs-cta">
+              <h2>¿Primera vez? Te acompañamos</h2>
+              <p>
+                Escríbenos y te guiamos por WhatsApp mientras haces la solicitud en SUNAT SOL. Sin
+                costo.
+              </p>
+              <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="guia-sunat">
+                Hablar con un asesor
+              </a>
+            </section>
+          </article>
         </div>
       </div>
-    </section>
+    </main>
 
-    <!-- 5. NUESTRA AUTORIZACIÓN -->
-    <section class="section-padding bg-primary-900 text-white">
-      <div class="max-w-4xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold mb-6">Nuestra autorización SUNAT</h2>
-        <div class="inline-block bg-white text-primary-900 px-6 py-3 rounded-lg font-bold text-2xl mb-8 shadow-lg">
-          RUC: <a href="https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/jcrS00Alias" target="_blank" rel="noopener noreferrer" class="hover:underline">20503580030</a>
-        </div>
-        <p class="text-xl text-gray-200">
-          Puedes verificar nuestra autorización directamente en el portal oficial de SUNAT consultando nuestro RUC. Llevamos más de 20 años operando ininterrumpidamente como imprenta autorizada en Lima Metropolitana.
-        </p>
-      </div>
-    </section>
-
-    <!-- 6. FAQ -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Preguntas frecuentes sobre imprentas autorizadas SUNAT</h2>
-        <div class="space-y-6">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Cómo verifico si una imprenta está autorizada por SUNAT?</h3>
-            <p class="text-gray-600">Ingresa al portal de SUNAT y consulta el RUC de la imprenta. Si en la sección de datos secundarios aparece habilitada para emitir e imprimir comprobantes de pago, puedes trabajar con ella con total seguridad.</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Necesito gestionar el Formulario 816 antes de hacer mi pedido?</h3>
-            <p class="text-gray-600">Sí, es un requisito obligatorio pero únicamente para formatos tributarios (boletas, facturas, guías de remisión). Para documentos administrativos o de control interno como proformas o notas de pedido, no es necesario.</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Me ayudan con el proceso del Formulario 816?</h3>
-            <p class="text-gray-600">Sí. Sabemos que el portal puede ser confuso, así que te guiamos paso a paso para que tu autorización esté lista rápidamente antes de iniciar la impresión. Simplemente escríbenos por WhatsApp.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 7. CTA FINAL -->
-    <section class="section-padding bg-white text-center">
-      <div class="max-w-3xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">Empieza a imprimir con respaldo legal</h2>
-        <p class="text-xl text-gray-700 mb-8">No te arriesgues. Asegura la legalidad de tus comprobantes trabajando con una imprenta seria y de trayectoria comprobada.</p>
-        <div class="flex justify-center">
-          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-primary text-lg px-8 py-4">Cotizar con imprenta autorizada</a>
-        </div>
-      </div>
-    </section>
-  </main>
-  <Footer />
+    <Footer />
+  </div>
 </Layout>
 
-<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>
+<style>
+  .gs {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  /* El diseño usa rojo oscuro en los enlaces y casi negro al pasar.
+     Se sube la especificidad para ganar al hover global de .fi-site. */
+  .fi-site.gs :where(a:hover) {
+    color: var(--fi-texto-oscuro);
+  }
+  .gs-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* CABECERA */
+  .gs-hero {
+    background: var(--fi-carbon);
+    color: var(--fi-papel);
+    padding: 40px clamp(16px, 4vw, 64px) 72px;
+    position: relative;
+    overflow: hidden;
+  }
+  .gs-hero__circle {
+    position: absolute;
+    right: -120px;
+    bottom: -220px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    background: var(--fi-rojo);
+  }
+  .gs-hero__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .gs-bc {
+    font-size: 13px;
+    color: var(--fi-texto-apagado);
+  }
+  .gs-bc a {
+    color: var(--fi-texto-apagado);
+    text-decoration: none;
+  }
+  .gs-bc span[aria-current] {
+    color: var(--fi-texto-claro);
+  }
+  .gs-eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--fi-rosa);
+  }
+  .gs-h1 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(44px, 5.6vw, 88px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    max-width: 980px;
+  }
+  .gs-hero__lead {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+    max-width: 720px;
+  }
+  .gs-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    font-size: 14px;
+    color: var(--fi-texto-claro-2);
+  }
+  .gs-autor {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .gs-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--fi-borde-oscuro-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--fi-papel);
+    flex: none;
+  }
+
+  /* LAYOUT */
+  .gs-main {
+    padding: 72px clamp(16px, 4vw, 64px) 104px;
+  }
+  .gs-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    align-items: flex-start;
+  }
+
+  .gs-indice {
+    flex: 1 1 260px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--fi-borde-claro-2);
+    /* Añadido: en una guía tan larga el índice conviene que acompañe al scroll */
+    position: sticky;
+    top: 24px;
+  }
+  .gs-indice strong {
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fi-rojo-oscuro);
+  }
+  .gs-indice ol {
+    margin: 0;
+    padding-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 15px;
+    line-height: 1.4;
+  }
+
+  .gs-art {
+    flex: 999 1 560px;
+    min-width: 0;
+    max-width: 780px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+    font-family: var(--fi-serif);
+    font-size: 19px;
+    line-height: 1.7;
+  }
+  .gs-art p,
+  .gs-lista {
+    margin: 0;
+  }
+  .gs-sec {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .gs-sec--gap24 {
+    gap: 24px;
+  }
+  /* Solo los apartados numerados. En el diseño cada h2 lleva sus estilos en línea,
+     y el resumen y el CTA NO son mayúsculas ni de 48px. */
+  .gs-sec h2 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .gs-lista {
+    padding-left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .gs-lista--gap12 {
+    gap: 12px;
+  }
+  .gs-fuente {
+    font-size: 15px;
+    font-family: var(--fi-sans);
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  .gs-resumen {
+    padding: 28px 32px;
+    background: var(--fi-carbon);
+    color: var(--fi-papel);
+    font-family: var(--fi-sans);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gs-resumen h2 {
+    font-family: var(--fi-sans);
+    font-size: 22px;
+    font-weight: 700; /* el diseño usaba el 700 por defecto de <h2> */
+    /* En el diseño este h2 no fija line-height: hereda el 1.7 de .gs-art */
+    line-height: 1.7;
+    text-transform: none;
+  }
+  .gs-resumen p {
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .gs-pasos {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    font-family: var(--fi-sans);
+  }
+  .gs-pasos > li {
+    display: flex;
+    gap: 20px;
+    padding: 24px;
+    background: #ffffff;
+    border: 1px solid var(--fi-borde-claro-2);
+  }
+  .gs-paso__n {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 48px;
+    line-height: 1;
+    color: var(--fi-rojo);
+    flex: none;
+    width: 56px;
+  }
+  .gs-paso__body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .gs-paso__body strong {
+    font-size: 19px;
+  }
+  .gs-paso__d {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #3a3334;
+  }
+  .gs-paso__shot {
+    margin: 6px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .gs-paso__shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--fi-borde-claro-2);
+  }
+  .gs-paso__guia {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: guia;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #3a3334;
+  }
+  .gs-paso__guia li {
+    counter-increment: guia;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+  .gs-paso__guia li::before {
+    content: counter(guia);
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgb(200, 16, 46);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .gs-tabla__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--fi-borde-claro);
+    font-family: var(--fi-sans);
+  }
+  .gs-tabla {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: 15px;
+    background: #ffffff;
+  }
+  .gs-tabla thead tr {
+    background: var(--fi-carbon);
+    color: var(--fi-papel);
+    text-align: left;
+  }
+  .gs-tabla th,
+  .gs-tabla td {
+    padding: 14px 18px;
+  }
+  .gs-tabla tbody tr {
+    border-top: 1px solid var(--fi-papel-2);
+  }
+  .gs-tabla tbody th {
+    text-align: left;
+  }
+
+  .gs-datos {
+    padding: 28px;
+    background: var(--fi-rojo);
+    color: #ffffff;
+    font-family: var(--fi-sans);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .gs-datos__texto {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .gs-datos__k {
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .gs-datos__texto strong {
+    font-size: 22px;
+  }
+  .gs-datos__texto span:last-child {
+    font-size: 15px;
+  }
+  .gs-datos__cta {
+    padding: 14px 20px;
+    background: var(--fi-carbon);
+    color: var(--fi-papel);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .gs-datos__cta:hover {
+    background: #ffffff;
+    color: var(--fi-carbon) !important;
+  }
+
+  .gs-faq__item {
+    border-top: 1px solid var(--fi-borde-claro);
+  }
+  .gs-faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 18px 0;
+    box-sizing: content-box; /* el min-height:44px del diseño medía el contenido */
+    min-height: 44px;
+  }
+  .gs-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700; /* el diseño usaba el 700 por defecto de <h3> */
+  }
+  .gs-faq__item summary span {
+    font-size: 28px;
+    /* El diseño no le fija line-height: hereda el 1.7 de .gs-art, y por eso
+       cada fila del acordeón mide 84,6px en lugar de 81. */
+    line-height: 1.7;
+    color: var(--fi-rojo-oscuro);
+    flex: none;
+  }
+  .gs-faq__item p {
+    margin: 0 0 20px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #3a3334;
+    font-family: var(--fi-sans);
+  }
+  .gs-faq {
+    font-family: var(--fi-sans);
+  }
+
+  .gs-cta {
+    padding: 36px;
+    background: var(--fi-carbon);
+    color: var(--fi-papel);
+    font-family: var(--fi-sans);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .gs-cta h2 {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 40px;
+    /* En el diseño hereda el line-height 1.7 de .gs-art */
+    line-height: 1.7;
+    text-transform: uppercase;
+  }
+  .gs-cta p {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .gs-cta a {
+    align-self: flex-start;
+    padding: 16px 24px;
+    background: var(--fi-rojo);
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .gs-cta a:hover {
+    background: var(--fi-rojo-oscuro);
+    color: #ffffff !important;
+  }
+
+  /* ================= MÓVIL (añadido) ================= */
+  @media (max-width: 1023px) {
+    .gs-indice {
+      position: static;
+      max-width: 100%;
+      flex: 1 1 100%;
+    }
+    .gs-art {
+      flex: 1 1 100%;
+      max-width: 100%;
+    }
+    .gs-layout {
+      gap: 36px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .gs-hero {
+      padding: 32px 20px 56px;
+    }
+    .gs-hero__circle {
+      right: -200px;
+      bottom: -260px;
+      width: 380px;
+      height: 380px;
+      opacity: 0.7;
+    }
+    .gs-h1 {
+      font-size: clamp(32px, 9.5vw, 48px);
+    }
+    .gs-hero__lead {
+      font-size: 16px;
+    }
+    .gs-main {
+      padding: 40px 20px 64px;
+    }
+    .gs-art {
+      font-size: 17px;
+      gap: 40px;
+    }
+    .gs-art h2 {
+      font-size: 32px;
+    }
+    .gs-resumen {
+      padding: 22px 20px;
+    }
+    .gs-resumen h2 {
+      font-size: 19px;
+    }
+    .gs-resumen p {
+      font-size: 16px;
+    }
+    .gs-pasos > li {
+      padding: 18px;
+      gap: 14px;
+    }
+    .gs-paso__n {
+      font-size: 34px;
+      width: 40px;
+    }
+    .gs-tabla th,
+    .gs-tabla td {
+      padding: 12px 14px;
+      font-size: 14px;
+    }
+    .gs-datos {
+      padding: 22px 20px;
+    }
+    .gs-datos__cta {
+      width: 100%;
+      text-align: center;
+    }
+    .gs-faq__item summary h3 {
+      font-size: 16px;
+    }
+    .gs-cta {
+      padding: 24px 20px;
+    }
+    .gs-cta h2 {
+      font-size: 28px;
+    }
+    .gs-cta a {
+      align-self: stretch;
+      text-align: center;
+    }
+  }
+</style>

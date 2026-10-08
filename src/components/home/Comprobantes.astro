@@ -1,0 +1,119 @@
+---
+/** Sección Comprobantes · rediseño v2 — design-refs/diseno/Home.dc.html */
+import { productos } from '../../data/home';
+---
+
+<section class="fi-section fi-comp" id="comprobantes">
+  <div class="fi-wrap fi-comp__inner">
+    <div class="fi-comp__head">
+      <h2 class="fi-h2 fi-comp__title">Comprobantes de pago y formatos que imprimimos</h2>
+      <p class="fi-comp__lead">
+        Todos llevan pie de imprenta, serie, numeración correlativa y el número de autorización que
+        SUNAT genera para tu RUC.
+      </p>
+    </div>
+
+    <div class="fi-comp__grid">
+      {
+        productos.map((p) => (
+          <a class="fi-prod" href={p.url}>
+            <span class="fi-prod__num">{p.num}</span>
+            <h3 class="fi-prod__title">{p.nombre}</h3>
+            <span class="fi-prod__desc">{p.desc}</span>
+            <span class="fi-prod__more">Ver detalle →</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-comp {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .fi-comp__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .fi-comp__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .fi-comp__title {
+    max-width: 640px;
+  }
+  .fi-comp__lead {
+    margin: 0;
+    max-width: 420px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .fi-comp__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .fi-prod {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 28px;
+    background: #ffffff;
+    border: 1px solid var(--fi-borde-claro-2);
+    text-decoration: none;
+    color: var(--fi-texto-oscuro);
+    min-height: 220px;
+    box-sizing: border-box;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+  }
+  .fi-prod:hover {
+    color: var(--fi-texto-oscuro);
+    border-color: var(--fi-rojo-oscuro);
+    transform: translateY(-3px);
+  }
+  .fi-prod__num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--fi-rojo-oscuro);
+  }
+  .fi-prod__title {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .fi-prod__desc {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--fi-texto-oscuro-2);
+    flex: 1;
+  }
+  .fi-prod__more {
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-comp__grid {
+      grid-template-columns: 1fr;
+    }
+    .fi-prod {
+      min-height: 0;
+      padding: 22px;
+    }
+    .fi-prod__title {
+      font-size: 24px;
+    }
+  }
+</style>

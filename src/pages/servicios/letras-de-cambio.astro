@@ -1,0 +1,673 @@
+---
+/**
+ * /servicios/letras-de-cambio · rediseño v2  ·  PÁGINA NUEVA
+ *
+ * Antes el footer enlazaba a `/servicios/documentos-administrativos#letras`, un
+ * ancla que no existía en ninguna página. Ahora tiene la suya.
+ *
+ * Carácter propio, distinto de las otras cinco:
+ *
+ *   · TIPOGRAFÍA SERIF (Source Serif 4) en el cuerpo y en los títulos de sección
+ *     → le da el aire de documento legal, frente al display industrial del resto.
+ *   · MAQUETA DE LA LETRA dibujada en CSS, con las líneas del formulario.
+ *   · LAS PARTES OBLIGATORIAS como CLÁUSULAS NUMERADAS (I–VIII), a dos columnas.
+ *
+ * ⚠️ DERECHO: el listado sigue los requisitos del artículo 158 de la Ley de
+ *    Títulos Valores (Ley 27287). Es información general, NO asesoría legal, y así
+ *    se dice en la propia página. Conviene que lo revise un abogado antes de
+ *    publicar, porque el detalle importa y la ley cambia.
+ */
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { WHATSAPP } from '../../data/home';
+
+const base = 'https://formatosintergraficos.pe';
+
+const partes = [
+  { n: 'I', t: 'La denominación', d: 'La expresión "letra de cambio" escrita en el propio texto del documento.' },
+  { n: 'II', t: 'La orden de pago', d: 'La orden incondicional de pagar una cantidad determinada o determinable en soles.' },
+  { n: 'III', t: 'El girado', d: 'El nombre y el número de documento de identidad de quien debe pagar.' },
+  { n: 'IV', t: 'El vencimiento', d: 'La fecha en que hay que pagar: a la vista, a cierto plazo o en día fijo.' },
+  { n: 'V', t: 'El lugar de pago', d: 'Dónde se paga. Si no se indica, se entiende que en el domicilio del girado.' },
+  { n: 'VI', t: 'El beneficiario', d: 'El nombre de quien cobra: tu empresa o el tercero a quien endoses la letra.' },
+  { n: 'VII', t: 'Fecha y lugar de emisión', d: 'Cuándo y dónde se giró. Determinan el plazo y la ley aplicable.' },
+  { n: 'VIII', t: 'La firma del girador', d: 'La firma de quien emite la letra. Sin ella, el documento no vale como título valor.' },
+];
+
+const usos = [
+  {
+    t: 'Venta a crédito',
+    d: 'Entregas la mercadería hoy y cobras a 30, 60 o 90 días. La letra fija la fecha y el importe, y el cliente la firma al recibir.',
+  },
+  {
+    t: 'Cobranza formal',
+    d: 'Cuando la factura ya no alcanza como recordatorio, la letra pone una fecha exigible y una firma. Cambia el tono de la cobranza.',
+  },
+  {
+    t: 'Venta a un cliente nuevo',
+    d: 'Antes de abrir crédito a alguien que no conoces, la letra deja constancia del compromiso y de quién responde por él.',
+  },
+  {
+    t: 'Respaldo del crédito',
+    d: 'Un título valor firmado permite reclamar por la vía ejecutiva, que es bastante más rápida que un juicio de cobro común.',
+  },
+];
+
+const faqs = [
+  {
+    q: '¿Qué diferencia hay entre una letra de cambio y un pagaré?',
+    a: 'En la letra hay tres partes: quien gira (el vendedor), quien paga (el comprador) y quien cobra (el beneficiario). En el pagaré solo hay dos: quien promete pagar y quien cobra. Por eso la letra se usa más en cobranza comercial entre empresas y el pagaré en préstamos y financiamientos.',
+  },
+  {
+    q: '¿Necesito el Formulario 816 de SUNAT para imprimir letras de cambio?',
+    a: 'No. La letra de cambio no es un comprobante de pago, así que no pasa por la autorización de impresión de SUNAT ni lleva el 816. Es un título valor regido por la Ley de Títulos Valores, y por eso el control de la numeración lo llevas tú.',
+  },
+  {
+    q: '¿Qué significa la cláusula "sin protesto"?',
+    a: 'Que si la letra no se paga, no hace falta protestarla formalmente para poder reclamar. Ahorra tiempo y gastos de notaría. Se imprime como una leyenda más en el formato; dime si la quieres y va incluida.',
+  },
+  {
+    q: '¿Cómo se controla la numeración?',
+    a: 'Como no hay autorización de SUNAT, el correlativo es tuyo. Lo habitual es armarlo en talonario: original para el girado y una copia que se queda el girador, con numeración consecutiva y hojas de color distinto.',
+  },
+  {
+    q: '¿En qué papel y medida las imprimen?',
+    a: 'Lo estándar es A4 o ½ oficio en papel bond de 80 g, con el original y una copia. También las hacemos en formato continuo si tu sistema las emite por impresora matricial.',
+  },
+  {
+    q: '¿Puedo tenerlas con el diseño de mi empresa?',
+    a: 'Sí. Va tu logo, tu razón social y tu RUC en la cabecera, y los campos obligatorios ordenados como te resulte más cómodo llenar. El diseño está incluido en el pedido.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Impresión de letras de cambio',
+    description:
+      'Talonarios de letras de cambio impresos con los requisitos de la Ley de Títulos Valores, personalizados con el logo de la empresa. A4 o ½ oficio, original y copia.',
+    serviceType: 'Impresión de letras de cambio y títulos valores',
+    areaServed: { '@type': 'City', name: 'Lima' },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Formatos Intergráficos',
+      url: base,
+      telephone: '+51910500706',
+    },
+    url: `${base}/servicios/letras-de-cambio`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Letras de cambio', item: `${base}/servicios/letras-de-cambio` },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Letras de Cambio Impresas en Lima | Talonarios con tu Logo"
+  description="Imprimimos talonarios de letras de cambio con los requisitos de la Ley de Títulos Valores, personalizados con tu logo. A4 o ½ oficio, original y copia."
+>
+  <Fragment slot="head">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+  </Fragment>
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site lc">
+    <Header />
+
+    <main>
+      <!-- HERO -->
+      <section class="lc-hero">
+        <div class="fi-wrap lc-hero__inner">
+          <div class="lc-hero__texto">
+            <nav class="lc-bc" aria-label="Ruta de navegación">
+              <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+              <span aria-current="page">Letras de cambio</span>
+            </nav>
+            <h1 class="lc-h1">Letras de cambio impresas con tu logo</h1>
+            <p class="lc-hero__lead">
+              Talonarios con los ocho requisitos que exige la Ley de Títulos Valores, tu numeración
+              correlativa y la cláusula que necesites. En A4 o ½ oficio, original y copia.
+            </p>
+            <div class="lc-hero__acciones">
+              <a class="lc-btn" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="letras-hero">
+                Cotizar por WhatsApp
+              </a>
+              <a class="lc-btn lc-btn--linea" href="/precios">Ver precios</a>
+            </div>
+          </div>
+
+          <!-- Maqueta de la letra: la firma visual de esta página -->
+          <div class="lc-doc" role="img" aria-label="Maqueta de una letra de cambio con sus campos">
+            <p class="lc-doc__titulo">LETRA DE CAMBIO</p>
+            <p class="lc-doc__importe">Por S/ ............................</p>
+            <div class="lc-doc__campos">
+              <span class="lc-doc__campo"><em>Girador</em><i></i></span>
+              <span class="lc-doc__campo"><em>Girado</em><i></i></span>
+              <span class="lc-doc__campo"><em>Beneficiario</em><i></i></span>
+              <span class="lc-doc__campo"><em>Vencimiento</em><i></i></span>
+              <span class="lc-doc__campo"><em>Lugar de pago</em><i></i></span>
+              <span class="lc-doc__campo"><em>Fecha de giro</em><i></i></span>
+            </div>
+            <p class="lc-doc__clausula">Cláusula “sin protesto”</p>
+            <div class="lc-doc__firma">
+              <i></i>
+              <em>Firma del girador</em>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUÉ ES -->
+      <section class="fi-section lc-sec lc-sec--paper">
+        <div class="fi-narrow lc-prosa">
+          <h2 class="fi-h2 lc-h2">Qué es una letra de cambio</h2>
+          <p>
+            Es un documento por el que una persona —el girador— ordena a otra —el girado— que le
+            pague una cantidad de dinero a un tercero o a sí misma, en una fecha determinada. No es
+            un comprobante de pago ni pasa por SUNAT: es un título valor, y su fuerza no viene de la
+            administración tributaria sino de la firma de quien se compromete.
+          </p>
+          <p>
+            En la práctica comercial peruana sirve para lo mismo que siempre: convertir un acuerdo
+            verbal de «te pago en marzo» en un papel con fecha, importe y firma. Cuando la factura ya
+            no alcanza como recordatorio, la letra cambia el tono de la conversación.
+          </p>
+        </div>
+      </section>
+
+      <!-- PARTES OBLIGATORIAS -->
+      <section class="fi-section lc-sec">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 lc-h2">Las ocho partes obligatorias</h2>
+          <p class="lc-sec__intro">
+            Si falta alguna, el documento pierde fuerza como título valor. Nuestros formatos reservan
+            un espacio para cada una, en el orden en que se leen y se llenan.
+          </p>
+          <ol class="lc-clausulas">
+            {
+              partes.map((p) => (
+                <li class="lc-clausula">
+                  <span class="lc-clausula__n">{p.n}</span>
+                  <div>
+                    <h3>{p.t}</h3>
+                    <p>{p.d}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+          <p class="lc-aviso">
+            <strong>Información general, no asesoría legal.</strong> El listado sigue el artículo 158
+            de la Ley de Títulos Valores (Ley 27287), pero cada operación tiene su matiz. Antes de
+            girar una letra, consúltalo con tu abogado o tu contador.
+          </p>
+        </div>
+      </section>
+
+      <!-- CUÁNDO SE USA -->
+      <section class="fi-section lc-sec lc-sec--paper">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 lc-h2">Cuándo se usa</h2>
+          <div class="lc-usos">
+            {
+              usos.map((u) => (
+                <article class="lc-uso">
+                  <h3>{u.t}</h3>
+                  <p>{u.d}</p>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- TALONARIO Y MEDIDAS -->
+      <section class="fi-section lc-sec">
+        <div class="fi-wrap lc-tira">
+          <h2 class="fi-h2 lc-h2">Talonario, medidas y numeración</h2>
+          <dl class="lc-fichas">
+            <div>
+              <dt>Medidas</dt>
+              <dd>A4 (210 × 297 mm) o ½ oficio, en papel bond de 80 g.</dd>
+            </div>
+            <div>
+              <dt>Copias</dt>
+              <dd>Original para el girado y una copia para el girador, en colores distintos.</dd>
+            </div>
+            <div>
+              <dt>Numeración</dt>
+              <dd>Correlativa y propia: al no pasar por SUNAT, el control del talonario es tuyo.</dd>
+            </div>
+            <div>
+              <dt>Cláusulas</dt>
+              <dd>“Sin protesto” u otras leyendas, impresas en el formato si las necesitas.</dd>
+            </div>
+            <div>
+              <dt>Cantidad</dt>
+              <dd>Desde 1 millar. Si son varias series, se imprimen en un solo pedido.</dd>
+            </div>
+            <div>
+              <dt>Diseño</dt>
+              <dd>Tu logo, razón social y RUC en la cabecera, incluido en el precio.</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="fi-section lc-sec lc-sec--paper fi-faq">
+        <div class="fi-narrow lc-faq">
+          <h2 class="fi-h2 lc-h2">Preguntas sobre letras de cambio</h2>
+          <div>
+            {
+              faqs.map((f) => (
+                <details class="lc-faq__item">
+                  <summary>
+                    <h3>{f.q}</h3>
+                    <span class="fi-faq-plus" aria-hidden="true">
+                      +
+                    </span>
+                  </summary>
+                  <p>{f.a}</p>
+                </details>
+              ))
+            }
+          </div>
+          <a class="lc-cta" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="letras-faq">
+            Cotizar mis letras por WhatsApp
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<style>
+  /* ==========================================================================
+     SERIF — el rasgo de identidad. Todo el cuerpo y los títulos de sección van
+     en Source Serif 4, que es lo que le da el aire de documento legal.
+     ========================================================================== */
+  .lc-h2,
+  .lc-prosa p,
+  .lc-sec__intro,
+  .lc-clausula h3,
+  .lc-clausula p,
+  .lc-uso p,
+  .lc-fichas dd,
+  .lc-faq__item summary h3,
+  .lc-faq__item p {
+    font-family: var(--fi-serif);
+  }
+  .lc-h2 {
+    font-family: var(--fi-serif) !important;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    line-height: 1.02;
+    margin-bottom: 26px;
+  }
+
+  .lc-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    padding: 56px clamp(16px, 4vw, 64px) 96px;
+  }
+  .lc-hero__inner {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .lc-bc {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+    margin-bottom: 24px;
+  }
+  .lc-bc a {
+    color: var(--fi-texto-apagado);
+  }
+  .lc-h1 {
+    margin: 0 0 24px;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 5.2vw, 76px);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .lc-hero__lead {
+    margin: 0 0 32px;
+    max-width: 54ch;
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .lc-hero__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .lc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 26px;
+    background: var(--fi-rojo);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .lc-btn:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+  .lc-btn--linea {
+    background: transparent;
+    border: 1px solid var(--fi-borde-oscuro-2);
+    color: var(--fi-texto-claro);
+  }
+  .lc-btn--linea:hover {
+    background: var(--fi-carbon-3);
+    border-color: var(--fi-papel);
+  }
+
+  /* --- Maqueta de la letra --- */
+  .lc-doc {
+    width: min(100%, 380px);
+    margin: 0 auto;
+    padding: 34px 30px 28px;
+    background: #fbf8f4;
+    color: #1a1718;
+    font-family: var(--fi-serif);
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.34);
+    border-top: 6px solid #8e1f3a;
+  }
+  .lc-doc__titulo {
+    margin: 0;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+  }
+  .lc-doc__importe {
+    margin: 10px 0 24px;
+    text-align: center;
+    font-size: 30px;
+    font-weight: 600;
+    color: #8e1f3a;
+  }
+  .lc-doc__campos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .lc-doc__campo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .lc-doc__campo em {
+    font-style: normal;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b6365;
+  }
+  .lc-doc__campo i {
+    display: block;
+    height: 1px;
+    background: #b8b0ae;
+  }
+  .lc-doc__clausula {
+    margin: 24px 0 0;
+    padding: 8px 12px;
+    border: 1px solid #8e1f3a;
+    color: #8e1f3a;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 0.04em;
+  }
+  .lc-doc__firma {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 30px;
+  }
+  .lc-doc__firma i {
+    display: block;
+    width: 70%;
+    height: 1px;
+    background: #1a1718;
+  }
+  .lc-doc__firma em {
+    font-style: normal;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #6b6365;
+  }
+
+  /* --- Secciones --- */
+  .lc-sec {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+  }
+  .lc-sec--paper {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .lc-prosa p {
+    margin: 0 0 22px;
+    font-size: 19px;
+    line-height: 1.75;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .lc-sec__intro {
+    max-width: 64ch;
+    margin: 0 0 44px;
+    font-size: 19px;
+    line-height: 1.7;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Cláusulas --- */
+  .lc-clausulas {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 0 clamp(28px, 4vw, 64px);
+  }
+  .lc-clausula {
+    display: flex;
+    gap: 20px;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--fi-borde-oscuro);
+  }
+  .lc-clausula__n {
+    flex: none;
+    min-width: 46px;
+    font-family: var(--fi-serif);
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--fi-rosa);
+    line-height: 1;
+  }
+  .lc-clausula h3 {
+    margin: 0 0 6px;
+    font-size: 21px;
+    font-weight: 600;
+  }
+  .lc-clausula p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fi-texto-apagado);
+  }
+  .lc-aviso {
+    margin: 44px 0 0;
+    padding: 22px 26px;
+    border-left: 4px solid var(--fi-rosa);
+    background: var(--fi-carbon-2);
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fi-texto-apagado);
+  }
+  .lc-aviso strong {
+    color: var(--fi-texto-claro);
+  }
+
+  /* --- Usos --- */
+  .lc-usos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--fi-borde-claro);
+    border: 1px solid var(--fi-borde-claro);
+  }
+  .lc-uso {
+    padding: 32px 28px;
+    background: var(--fi-papel);
+  }
+  .lc-uso h3 {
+    margin: 0 0 12px;
+    font-family: var(--fi-serif);
+    font-weight: 600;
+    font-size: 23px;
+    line-height: 1.15;
+  }
+  .lc-uso p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* --- Fichas técnicas --- */
+  .lc-tira {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0 clamp(28px, 4vw, 64px);
+  }
+  .lc-tira .lc-h2 {
+    grid-column: 1 / -1;
+  }
+  .lc-fichas {
+    display: contents;
+  }
+  .lc-fichas > div {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--fi-borde-oscuro);
+  }
+  .lc-fichas dt {
+    font-family: var(--fi-sans);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fi-rosa);
+    margin-bottom: 8px;
+  }
+  .lc-fichas dd {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--fi-texto-claro-2);
+  }
+
+  /* --- FAQ --- */
+  .lc-faq h2 {
+    margin-bottom: 32px;
+  }
+  .lc-faq__item {
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  .lc-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .lc-faq__item summary h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .lc-faq__item p {
+    margin: 0;
+    padding: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.75;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .lc-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    margin-top: 36px;
+    padding: 0 30px;
+    background: var(--fi-rojo);
+    color: #fff !important;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .lc-cta:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+
+  /* --- Móvil --- */
+  @media (max-width: 900px) {
+    .lc-hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .lc-doc {
+      order: -1;
+    }
+  }
+  @media (max-width: 600px) {
+    .lc-hero {
+      padding-bottom: 64px;
+    }
+    .lc-btn,
+    .lc-cta {
+      width: 100%;
+    }
+    .lc-clausula {
+      gap: 14px;
+    }
+    .lc-clausula__n {
+      min-width: 34px;
+      font-size: 22px;
+    }
+  }
+</style>

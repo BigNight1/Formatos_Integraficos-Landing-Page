@@ -1,0 +1,68 @@
+---
+/**
+ * Barra de confianza · rediseño v2
+ * Fuente: design-refs/diseno/Home.dc.html (sección TRUST BAR)
+ *
+ * ⚠️ "4.9 ★ en Google (120 reseñas)" es FICTICIO: reemplazar por la calificación
+ * y el número reales, o quitar el bloque.
+ */
+import { confianza } from '../../data/home';
+---
+
+<section class="fi-trust fi-sobre-rojo" aria-label="Por qué confiar en nosotros">
+  <div class="fi-truth__inner fi-wrap">
+    {
+      confianza.map((c) => (
+        <div class="fi-trust__item">
+          <span class="fi-trust__valor">{c.valor}</span>
+          <span class="fi-trust__texto">{c.texto}</span>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .fi-trust {
+    background: var(--fi-rojo);
+    color: #ffffff;
+    padding: 28px clamp(16px, 4vw, 64px);
+  }
+  .fi-truth__inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .fi-trust__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 160px;
+  }
+  .fi-trust__valor {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 1;
+  }
+  .fi-trust__texto {
+    font-size: 14px;
+  }
+
+  @media (max-width: 767px) {
+    .fi-truth__inner {
+      gap: 20px 16px;
+    }
+    .fi-trust__item {
+      min-width: 40%;
+      flex: 1 1 40%;
+    }
+    .fi-trust__valor {
+      font-size: 32px;
+    }
+    .fi-trust__texto {
+      font-size: 13px;
+    }
+  }
+</style>

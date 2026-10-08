@@ -1,0 +1,78 @@
+---
+/** Sección Cómo trabajamos · rediseño v2 — design-refs/diseno/Home.dc.html */
+import { pasos } from '../../data/home';
+---
+
+<section class="fi-section fi-proceso">
+  <div class="fi-wrap fi-proceso__inner">
+    <h2 class="fi-h2">Cómo trabajamos</h2>
+
+    <ol class="fi-proceso__grid">
+      {
+        pasos.map((s) => (
+          <li class="fi-paso">
+            <span class="fi-paso__n">{s.n}</span>
+            <h3 class="fi-paso__title">{s.titulo}</h3>
+            <p class="fi-paso__text">{s.texto}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .fi-proceso {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .fi-proceso__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+  }
+  .fi-proceso__grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 32px;
+  }
+  .fi-paso {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 3px solid var(--fi-texto-oscuro);
+  }
+  .fi-paso__n {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--fi-rojo-oscuro);
+  }
+  .fi-paso__title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .fi-paso__text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-proceso__grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .fi-paso__n {
+      font-size: 44px;
+    }
+  }
+</style>

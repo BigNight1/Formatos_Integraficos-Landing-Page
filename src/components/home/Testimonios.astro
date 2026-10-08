@@ -1,0 +1,119 @@
+---
+/**
+ * Sección Testimonios · rediseño v2 — design-refs/diseno/Home.dc.html
+ *
+ * ⚠️ FICTICIO: los 3 testimonios (Rosa Mendoza, Jorge Quispe, Lucía Huamán) y sus
+ * textos son inventados. Publicarlos como reales es publicidad engañosa (INDECOPI)
+ * y Google penaliza las reseñas falsas. Reemplazar por reseñas reales de Google
+ * Business con permiso, o quitar la sección.
+ */
+import { testimonios } from '../../data/home';
+---
+
+<section class="fi-section fi-test fi-sobre-rojo">
+  <div class="fi-deco">
+    <div class="fi-test__circle" aria-hidden="true"></div>
+  </div>
+
+  <div class="fi-wrap fi-test__inner">
+    <h2 class="fi-h2 fi-test__title">Lo que dicen nuestros clientes</h2>
+
+    <div class="fi-test__grid">
+      {
+        testimonios.map((t) => (
+          <figure class="fi-test__card">
+            <span class="fi-test__stars" aria-label="5 de 5 estrellas">
+              ★★★★★
+            </span>
+            <blockquote class="fi-test__quote">“{t.texto}”</blockquote>
+            <figcaption class="fi-test__author">
+              <strong>{t.nombre}</strong>
+              <span class="fi-test__cargo">{t.cargo}</span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-test {
+    background: var(--fi-rojo);
+    color: #ffffff;
+    position: relative;
+    overflow: hidden;
+  }
+  .fi-test__circle {
+    position: absolute;
+    right: -120px;
+    top: -120px;
+    width: 380px;
+    height: 380px;
+    border-radius: 50%;
+    background: var(--fi-rojo-oscuro);
+  }
+  .fi-test__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: relative;
+  }
+  /* Sin max-width: el diseño no lo llevaba y forzarlo partía el titular en
+     dos líneas (132px en vez de 66px). */
+  .fi-test__title {
+    margin: 0;
+  }
+  .fi-test__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .fi-test__card {
+    margin: 0;
+    padding: 32px;
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .fi-test__stars {
+    color: var(--fi-rosa-claro);
+    font-size: 18px;
+    letter-spacing: 4px;
+  }
+  .fi-test__quote {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.6;
+    flex: 1;
+  }
+  .fi-test__author {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .fi-test__author strong {
+    font-size: 15px;
+  }
+  .fi-test__cargo {
+    font-size: 13px;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-test__grid {
+      grid-template-columns: 1fr;
+    }
+    .fi-test__card {
+      padding: 24px;
+    }
+    .fi-test__circle {
+      right: -180px;
+      width: 300px;
+      height: 300px;
+    }
+  }
+</style>

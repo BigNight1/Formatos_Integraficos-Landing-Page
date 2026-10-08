@@ -1,164 +1,735 @@
 ---
+/**
+ * /servicios/documentos-administrativos · rediseño v2
+ *
+ * NO viene del canvas. Carácter propio, deliberadamente distinto de
+ * /servicios/formatos-continuos:
+ *
+ *   · HERO CLARO (fondo papel) en vez de oscuro → invierte el ritmo de la otra.
+ *   · PILA DE HOJAS en CSS en lugar de la maqueta `Documento`.
+ *   · TABLA EDITORIAL documento → para qué sirve, con el nombre en tipografía
+ *     display grande y el uso en texto.
+ *   · Cierra con tarjetas a las 3 páginas hermanas (enlazado interno).
+ *
+ * Esta página es el HUB de los documentos que no son comprobantes de pago:
+ * enlaza a letras de cambio, recibos por honorarios y documentos aduaneros.
+ *
+ * ⚠️ Los 3 enlaces del footer que apuntaban a `#letras`, `#honorarios` y
+ *    `#aduaneros` (anclas que NO existían en ninguna página) ahora van a sus
+ *    propias páginas. También se corrigieron en `src/data/precios.ts`.
+ */
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { Icon } from 'astro-icon/components';
+import { WHATSAPP } from '../../data/home';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Proformas y Documentos Administrativos Impresos",
-  "description": "Impresión de proformas, cotizaciones, notas de pedido y recibos de caja chica personalizados con logo para empresas en Lima, Perú.",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Formatos Intergraficos",
-    "url": "https://formatosintergraficos.pe"
+const base = 'https://formatosintergraficos.pe';
+
+const documentos = [
+  {
+    t: 'Proformas',
+    d: 'El documento previo a la venta. Tu logo, la tabla de productos o servicios y las condiciones, en una hoja que el cliente se lleva.',
   },
-  "areaServed": "Lima, Peru",
-  "serviceType": "Impresión de documentos administrativos",
-  "url": "https://formatosintergraficos.pe/servicios/documentos-administrativos"
-};
+  {
+    t: 'Cotizaciones',
+    d: 'Igual que la proforma, pero pensada para licitaciones y compras corporativas: validez de la oferta, plazos y forma de pago.',
+  },
+  {
+    t: 'Notas de pedido',
+    d: 'Control de inventario y despacho interno de almacén, sin emitir todavía un comprobante tributario.',
+  },
+  {
+    t: 'Guías internas',
+    d: 'Traslados entre sedes y almacenes propios, con correlativo y firma del responsable.',
+  },
+  {
+    t: 'Recibos de caja chica',
+    d: 'Gastos menores en empresas con varias áreas. Correlativo, fecha, concepto y espacio para la firma.',
+  },
+  {
+    t: 'Órdenes de compra',
+    d: 'Para formalizar el pedido a un proveedor con número, detalle y autorización interna.',
+  },
+];
+
+const usos = [
+  { t: 'Proforma', u: 'Presentar un producto o servicio y sus condiciones antes de cerrar la venta.' },
+  { t: 'Cotización', u: 'Participar en licitaciones y compras corporativas que exigen oferta formal.' },
+  { t: 'Nota de pedido', u: 'Que almacén despache contra un documento correlativo, sin comprobante aún.' },
+  { t: 'Guía interna', u: 'Mover mercadería entre tus propias sedes y dejar rastro de quién la llevó.' },
+  { t: 'Recibo de caja chica', u: 'Sustentar gastos menores y rendir la caja ante administración.' },
+  { t: 'Orden de compra', u: 'Formalizar el pedido a un proveedor con número y autorización.' },
+];
+
+const incluye = [
+  'Diseño y diagramación con tu logo y tus colores, incluido',
+  'Papel bond o couché según el uso y la durabilidad que necesites',
+  'Duplicado o triplicado en papel autocopiativo, si lo requiere tu control interno',
+  'Numeración correlativa y talonario, o hojas sueltas',
+  'Desde 1 millar, sin mínimos inflados',
+  'Prueba de diseño antes de imprimir y entrega en 24–48 h en Lima',
+];
+
+const hermanas = [
+  {
+    t: 'Letras de cambio',
+    d: 'Talonarios con los requisitos que exige la Ley de Títulos Valores.',
+    url: '/servicios/letras-de-cambio',
+  },
+  {
+    t: 'Recibos por honorarios',
+    d: 'Formatos físicos para profesionales independientes, con tu numeración.',
+    url: '/servicios/recibos-por-honorarios',
+  },
+  {
+    t: 'Documentos aduaneros',
+    d: 'Factura comercial, packing list y el expediente de comercio exterior.',
+    url: '/servicios/documentos-aduaneros',
+  },
+];
+
+const faqs = [
+  {
+    q: '¿Una proforma tiene validez legal ante SUNAT?',
+    a: 'No es un comprobante de pago, así que no requiere autorización previa de SUNAT ni Formulario 816. Es un documento comercial: sirve como oferta y como respaldo interno, y en licitaciones y auditorías se acepta justamente con ese carácter.',
+  },
+  {
+    q: '¿Sirven como comprobante para sustentar gastos?',
+    a: 'No. Para sustentar un gasto o un crédito fiscal necesitas un comprobante de pago (factura, boleta o el documento que corresponda). Los administrativos son para tu control y para la relación comercial previa.',
+  },
+  {
+    q: '¿Pueden ir en duplicado o triplicado?',
+    a: 'Sí. Usamos papel autocopiativo para que el original y las copias salgan en una sola pasada. Es lo habitual en notas de pedido y recibos de caja chica, donde una copia se queda en almacén y otra en administración.',
+  },
+  {
+    q: '¿Incluye el diseño?',
+    a: 'Sí, está incluido. Armamos la estructura del documento, la diagramación con tu logo y tus colores, y te enviamos una prueba para que la apruebes antes de imprimir.',
+  },
+  {
+    q: '¿Cuál es la cantidad mínima?',
+    a: 'Desde 1 millar en la mayoría de los formatos. En los que arrancan en 5 millares lo verás indicado en la tabla de precios, porque el montaje obliga a un tiraje mayor.',
+  },
+  {
+    q: '¿Puedo pedir varios documentos distintos en un mismo pedido?',
+    a: 'Sí, y suele salir mejor: se comparte el montaje y el diseño. Cuéntanos qué documentos necesitas, en qué cantidad y qué medidas, y te pasamos un solo presupuesto.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Impresión de proformas y documentos administrativos',
+    description:
+      'Impresión de proformas, cotizaciones, notas de pedido, guías internas, recibos de caja chica y órdenes de compra personalizados con logo para empresas en Lima.',
+    serviceType: 'Impresión de documentos administrativos',
+    areaServed: { '@type': 'City', name: 'Lima' },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Formatos Intergráficos',
+      url: base,
+      telephone: '+51910500706',
+    },
+    url: `${base}/servicios/documentos-administrativos`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Proformas y documentos',
+        item: `${base}/servicios/documentos-administrativos`,
+      },
+    ],
+  },
+];
 ---
 
-<Layout 
+<Layout
   title="Proformas y Documentos Administrativos | Lima, Perú"
-  description="Imprimimos proformas, cotizaciones y notas de pedido personalizadas con tu logo para empresas en Lima y todo el Perú. Diseño incluido. Cotiza gratis."
+  description="Imprimimos proformas, cotizaciones y notas de pedido con tu logo para empresas en Lima. Papel bond o couché, desde 1 millar y con diseño incluido."
 >
-  <Header />
-  <main>
-    <!-- 1. HERO -->
-    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
-      <div class="max-w-4xl mx-auto text-center px-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          Proformas y documentos administrativos impresos con tu marca en Lima
-        </h1>
-        <p class="text-xl text-gray-700 leading-relaxed mb-8">
-          Imprimimos cotizaciones, notas de pedido, recibos de caja chica y más. Diseño personalizado con tu logo y colores corporativos para una imagen altamente profesional.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/contacto#cotizar" class="btn-primary text-lg px-8 py-4">Cotizar ahora</a>
-          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-secondary text-lg px-8 py-4">WhatsApp</a>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site da">
+    <Header />
+
+    <main>
+      <!-- HERO CLARO -->
+      <section class="da-hero">
+        <div class="fi-deco">
+          <div class="da-hero__bloque" aria-hidden="true"></div>
         </div>
-      </div>
-    </section>
-
-    <!-- 2. ¿QUÉ SON Y PARA QUÉ SIRVEN? -->
-    <section class="section-padding bg-white">
-      <div class="max-w-3xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">Documentos que refuerzan la imagen de tu negocio</h2>
-        <p class="text-lg text-gray-700">
-          Aunque no son comprobantes tributarios directos reportados a SUNAT, los documentos administrativos físicos son componentes esenciales en la cadena comercial, el control interno y la auditoría de cualquier empresa peruana formal.
-        </p>
-      </div>
-    </section>
-
-    <!-- 3. TIPOS DE DOCUMENTOS -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-5xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center text-gray-900 mb-12">¿Qué documentos administrativos imprimimos?</h2>
-        <div class="grid md:grid-cols-3 gap-8">
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-bold text-primary-600 mb-4">Proformas y Cotizaciones personalizadas</h3>
-            <p class="text-gray-700">
-              Impresas con tu logo, datos de la empresa, tabla de productos/servicios y condiciones. Entregar una proforma física bien diseñada transmite profesionalismo, seriedad y confianza ante tus clientes corporativos.
+        <div class="fi-wrap da-hero__inner">
+          <div class="da-hero__texto">
+            <nav class="da-bc" aria-label="Ruta de navegación">
+              <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+              <span aria-current="page">Proformas y documentos</span>
+            </nav>
+            <h1 class="da-h1">Proformas y documentos administrativos con tu marca</h1>
+            <p class="da-hero__lead">
+              Cotizaciones, notas de pedido, guías internas y recibos de caja chica. Papel bond o
+              couché, con tu logo y tus colores, para que el papeleo interno también hable bien de
+              tu empresa.
             </p>
+            <div class="da-hero__acciones">
+              <a class="da-btn" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="admin-hero">
+                Cotizar por WhatsApp
+              </a>
+              <a class="da-btn da-btn--linea" href="/precios">Ver precios</a>
+            </div>
           </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-bold text-primary-600 mb-4">Notas de Pedido y Guías internas</h3>
-            <p class="text-gray-700">
-              Utilizadas para el control estricto de inventario, despachos internos de almacén y trazabilidad de pedidos, sin necesidad de emitir un comprobante tributario inmediato. Muy usadas en el comercio mayorista.
-            </p>
-          </div>
-          <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-xl font-bold text-primary-600 mb-4">Recibos de Caja Chica</h3>
-            <p class="text-gray-700">
-              Fundamentales para el control de gastos menores en empresas con múltiples áreas. Incluyen correlativo, fecha, concepto y espacio para la firma del responsable autorizado.
-            </p>
+
+          <!-- Pila de hojas: la firma visual de esta página -->
+          <div class="da-stack" role="img" aria-label="Pila de documentos administrativos impresos">
+            <div class="da-stack__hoja da-stack__hoja--3"></div>
+            <div class="da-stack__hoja da-stack__hoja--2"></div>
+            <div class="da-stack__hoja da-stack__hoja--1">
+              <div class="da-stack__cabecera">
+                <span class="da-stack__logo"></span>
+                <span class="da-stack__empresa">
+                  <strong>TU EMPRESA S.A.C.</strong>
+                  <em>R.U.C. 20XXXXXXXXX</em>
+                </span>
+              </div>
+              <span class="da-stack__titulo">COTIZACIÓN</span>
+              <span class="da-stack__meta">N.º 000123 · Válida por 15 días</span>
+              <span class="da-stack__tabla">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+              </span>
+              <span class="da-stack__total">TOTAL&nbsp;&nbsp;S/ —</span>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 4. RUBROS -->
-    <section class="section-padding bg-white">
-      <div class="max-w-4xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-10">¿Qué negocios nos piden documentos administrativos?</h2>
-        <div class="flex flex-wrap justify-center gap-4">
-          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Distribuidoras</span>
-          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Colegios y universidades</span>
-          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Empresas de servicios</span>
-          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Constructoras</span>
-          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Clínicas y farmacias</span>
-          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Ferreterías</span>
-          <span class="px-5 py-2 bg-gray-100 rounded-full font-medium text-gray-800">Empresas agrarias</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5. VENTAJAS -->
-    <section class="section-padding bg-primary-900 text-white">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-10">Lo que incluye cada pedido</h2>
-        <ul class="space-y-4 text-lg text-gray-200">
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Diseño personalizado profesional con tu logo y colores</li>
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Papel bond o couche de alta calidad</li>
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Opción de duplicado o triplicado (papel autocopiativo)</li>
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Sin mínimos exagerados: trabajamos desde 1 millar</li>
-          <li class="flex items-center"><Icon name="lucide:check" class="w-6 h-6 mr-3 text-green-400 flex-shrink-0" /> Entrega rápida en todo Lima en 24-48 horas</li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- 6. FAQ -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Preguntas frecuentes</h2>
-        <div class="space-y-6">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Una proforma tiene validez legal ante SUNAT?</h3>
-            <p class="text-gray-600">Las proformas y cotizaciones no son comprobantes de pago formales, por lo que no requieren un Formulario 816 ni autorización directa de SUNAT. Sin embargo, son ampliamente aceptadas como documento previo a la venta en licitaciones y auditorías internas.</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Pueden imprimir en duplicado o triplicado?</h3>
-            <p class="text-gray-600">Sí. Usamos papel autocopiativo de la mejor calidad para que obtengas un documento original y las copias exactas en una sola escritura. Esto es ideal para notas de pedido de almacén y recibos.</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Incluye el diseño?</h3>
-            <p class="text-gray-600">Sí, el diseño de la estructura del documento y la diagramación con tu logo está incluido en todos nuestros pedidos sin ningún costo adicional.</p>
+      <!-- QUÉ DOCUMENTOS -->
+      <section class="fi-section da-sec">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 da-h2">Qué documentos imprimimos</h2>
+          <p class="da-sec__intro">
+            No son comprobantes de pago y no pasan por SUNAT, pero sostienen la cadena comercial y
+            el control interno de cualquier empresa formal.
+          </p>
+          <div class="da-grid">
+            {
+              documentos.map((d) => (
+                <article class="da-card">
+                  <h3>{d.t}</h3>
+                  <p>{d.d}</p>
+                </article>
+              ))
+            }
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- INTERNAL LINKS -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-5xl mx-auto px-4 text-center">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">También te puede interesar</h2>
-        <div class="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-          <a href="/servicios/formatos-continuos" class="block bg-white rounded-xl border border-gray-200 p-5 hover:border-primary-200 hover:shadow-md transition-all text-left">
-            <h3 class="font-bold text-gray-900 mb-1">Formatos Continuos</h3>
-            <p class="text-sm text-gray-500">Papel bond o autocopiativo para impresoras matriciales</p>
+      <!-- TABLA EDITORIAL -->
+      <section class="fi-section da-sec da-sec--paper">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 da-h2">Para qué sirve cada uno</h2>
+          <dl class="da-tabla">
+            {
+              usos.map((u) => (
+                <div class="da-tabla__fila">
+                  <dt>{u.t}</dt>
+                  <dd>{u.u}</dd>
+                </div>
+              ))
+            }
+          </dl>
+
+          <div class="da-incluye">
+            <h3 class="da-incluye__t">Qué incluye cada pedido</h3>
+            <ul>
+              {incluye.map((i) => <li>{i}</li>)}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- HERMANAS -->
+      <section class="fi-section da-sec">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 da-h2">También imprimimos</h2>
+          <div class="da-hermanas">
+            {
+              hermanas.map((h) => (
+                <a class="da-hermana" href={h.url}>
+                  <h3>{h.t}</h3>
+                  <p>{h.d}</p>
+                  <span class="da-hermana__mas">Ver →</span>
+                </a>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="fi-section da-sec da-sec--paper fi-faq">
+        <div class="fi-narrow da-faq">
+          <h2 class="fi-h2 da-h2">Preguntas sobre documentos administrativos</h2>
+          <div>
+            {
+              faqs.map((f) => (
+                <details class="da-faq__item">
+                  <summary>
+                    <h3>{f.q}</h3>
+                    <span class="fi-faq-plus" aria-hidden="true">
+                      +
+                    </span>
+                  </summary>
+                  <p>{f.a}</p>
+                </details>
+              ))
+            }
+          </div>
+          <a
+            class="da-cta"
+            href={WHATSAPP}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-wa="admin-faq"
+          >
+            Cotizar mis documentos por WhatsApp
           </a>
-          <a href="/servicios/vouchers-pos" class="block bg-white rounded-xl border border-gray-200 p-5 hover:border-primary-200 hover:shadow-md transition-all text-left">
-            <h3 class="font-bold text-gray-900 mb-1">Vouchers POS</h3>
-            <p class="text-sm text-gray-500">Rollos térmicos personalizados para restaurantes y retail</p>
-          </a>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
-    <!-- 7. CTA FINAL -->
-    <section class="section-padding bg-white text-center">
-      <div class="max-w-3xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-8">Imprime tus documentos administrativos con calidad profesional</h2>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-primary text-lg px-8 py-4">Cotizar por WhatsApp</a>
-          <a href="/contacto#cotizar" class="btn-secondary text-lg px-8 py-4">Formulario de cotización</a>
-        </div>
-      </div>
-    </section>
-  </main>
-  <Footer />
+    <Footer />
+  </div>
 </Layout>
 
-<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>
+<style>
+  /* ==========================================================================
+     HERO CLARO — el rasgo que más diferencia esta página de las otras cinco.
+     Fondo papel y una pila de hojas a la derecha.
+     ========================================================================== */
+  .da-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+    padding: 56px clamp(16px, 4vw, 64px) 96px;
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  /* Bloque decorativo del sistema .fi-deco: mismo tablero de 1440px, así no se
+     despega del contenido en monitores anchos. */
+  .da-hero__bloque {
+    position: absolute;
+    top: -140px;
+    right: -80px;
+    width: 460px;
+    height: 460px;
+    background: var(--fi-papel-2);
+    border-radius: 50%;
+  }
+  .da-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .da-bc {
+    font-size: 14px;
+    color: var(--fi-texto-apagado-2);
+    margin-bottom: 24px;
+  }
+  .da-bc a {
+    color: var(--fi-texto-apagado-2);
+  }
+  .da-h1 {
+    margin: 0 0 24px;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 5.2vw, 76px);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .da-hero__lead {
+    margin: 0 0 32px;
+    max-width: 56ch;
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .da-hero__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .da-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 26px;
+    background: var(--fi-rojo);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .da-btn:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+  .da-btn--linea {
+    background: transparent;
+    border: 1px solid var(--fi-input-borde);
+    color: var(--fi-texto-oscuro);
+  }
+  .da-btn--linea:hover {
+    background: var(--fi-papel-2);
+    border-color: var(--fi-texto-oscuro);
+  }
+
+  /* --- Pila de hojas --- */
+  .da-stack {
+    position: relative;
+    width: min(100%, 380px);
+    aspect-ratio: 4 / 5;
+    margin: 0 auto;
+  }
+  .da-stack__hoja {
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(26, 23, 24, 0.14);
+  }
+  .da-stack__hoja--3 {
+    transform: rotate(-5deg) translate(-14px, 6px);
+    background: var(--fi-papel-2);
+  }
+  .da-stack__hoja--2 {
+    transform: rotate(3.5deg) translate(12px, -4px);
+    background: #fbf9f8;
+  }
+  .da-stack__hoja--1 {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px 30px;
+  }
+  .da-stack__cabecera {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .da-stack__logo {
+    width: 40px;
+    height: 40px;
+    background: var(--fi-rojo);
+    flex: none;
+  }
+  .da-stack__empresa {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .da-stack__empresa strong {
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+  .da-stack__empresa em {
+    font-style: normal;
+    font-size: 11px;
+    color: var(--fi-texto-apagado-2);
+  }
+  .da-stack__titulo {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 34px;
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--fi-rojo);
+    border-bottom: 2px solid var(--fi-texto-oscuro);
+    padding-bottom: 10px;
+  }
+  .da-stack__meta {
+    font-size: 12px;
+    color: var(--fi-texto-apagado-2);
+  }
+  .da-stack__tabla {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 6px;
+  }
+  .da-stack__tabla i {
+    display: block;
+    height: 8px;
+    background: var(--fi-papel-2);
+  }
+  .da-stack__tabla i:nth-child(2) {
+    width: 82%;
+  }
+  .da-stack__tabla i:nth-child(3) {
+    width: 92%;
+  }
+  .da-stack__tabla i:nth-child(4) {
+    width: 68%;
+  }
+  .da-stack__total {
+    margin-top: auto;
+    align-self: flex-end;
+    font-size: 13px;
+    font-weight: 700;
+    border-top: 1px solid var(--fi-borde-claro);
+    padding-top: 12px;
+    min-width: 45%;
+    text-align: right;
+  }
+
+  /* --- Secciones --- */
+  .da-sec {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+  }
+  .da-sec--paper {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .da-h2 {
+    margin-bottom: 24px;
+  }
+  .da-sec__intro {
+    max-width: 62ch;
+    margin: 0 0 40px;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--fi-texto-apagado);
+  }
+  .da-sec--paper .da-sec__intro {
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* --- Rejilla de documentos --- */
+  .da-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 1px;
+    background: var(--fi-borde-oscuro);
+    border: 1px solid var(--fi-borde-oscuro);
+  }
+  .da-card {
+    padding: 32px 28px;
+    background: var(--fi-carbon);
+  }
+  .da-card h3 {
+    margin: 0 0 12px;
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: 27px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .da-card p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Tabla editorial --- */
+  .da-tabla {
+    margin: 0;
+    border-top: 1px solid var(--fi-borde-claro);
+  }
+  .da-tabla__fila {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.8fr) 2fr;
+    gap: 24px;
+    align-items: baseline;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  .da-tabla dt {
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: clamp(24px, 2.4vw, 34px);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .da-tabla dd {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .da-incluye {
+    margin-top: 56px;
+    padding: 36px clamp(22px, 3vw, 44px);
+    background: var(--fi-papel-2);
+    border-left: 5px solid var(--fi-rojo);
+  }
+  .da-incluye__t {
+    margin: 0 0 20px;
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: 26px;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+  .da-incluye ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 12px 32px;
+  }
+  .da-incluye li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .da-incluye li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 12px;
+    height: 12px;
+    background: var(--fi-rojo);
+  }
+
+  /* --- Hermanas --- */
+  .da-hermanas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .da-hermana {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 30px 26px;
+    border: 1px solid var(--fi-borde-oscuro);
+    background: var(--fi-carbon-2);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .da-hermana:hover {
+    border-color: var(--fi-rojo);
+    background: var(--fi-carbon-3);
+  }
+  .da-hermana h3 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: 25px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .da-hermana p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-apagado);
+  }
+  .da-hermana__mas {
+    margin-top: auto;
+    padding-top: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fi-rosa);
+  }
+
+  /* --- FAQ --- */
+  .da-faq h2 {
+    margin-bottom: 32px;
+  }
+  .da-faq__item {
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  .da-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .da-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .da-faq__item p {
+    margin: 0;
+    padding: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .da-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    margin-top: 36px;
+    padding: 0 30px;
+    background: var(--fi-rojo);
+    color: #fff !important;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .da-cta:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+
+  /* --- Móvil --- */
+  @media (max-width: 900px) {
+    .da-hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .da-stack {
+      width: min(100%, 320px);
+    }
+    .da-tabla__fila {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+  }
+  @media (max-width: 600px) {
+    .da-hero {
+      padding-bottom: 64px;
+    }
+    .da-btn,
+    .da-cta {
+      width: 100%;
+    }
+    .da-hero__bloque {
+      width: 280px;
+      height: 280px;
+      top: -90px;
+      right: -60px;
+    }
+    .da-incluye {
+      padding: 28px 20px;
+    }
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+/**
+ * Sección Especificaciones técnicas · rediseño v2 — design-refs/diseno/Home.dc.html
+ *
+ * Corregido por el dueño (oct 2026): se quitaron los colores de papel (solo
+ * trabajan papel blanco), el acabado de talonario (engomado, perforado, trepado y
+ * engrapado: es trabajo de imprenta plana, que no hacen) y la medida A5.
+ *
+ * ⚠️ FICTICIO / A CONFIRMAR: "hasta 5 copias" y "offset de 1 a 4 colores".
+ *
+ * ⚠️ IMAGEN: /maquinaria.webp es del sitio actual y parece de banco de imágenes.
+ * El brief pide reemplazarla por una foto real del taller.
+ */
+import { specs } from '../../data/home';
+---
+
+<section class="fi-section fi-specs">
+  <div class="fi-wrap fi-specs__inner">
+    <figure class="fi-specs__figure">
+      <img
+        src="/maquinaria.webp"
+        alt="Bobina de papel bond en la línea de producción de formatos continuos"
+        width="680"
+        height="850"
+        loading="lazy"
+      />
+    </figure>
+
+    <div class="fi-specs__copy">
+      <h2 class="fi-h2">Especificaciones técnicas</h2>
+
+      <dl class="fi-specs__dl">
+        {
+          specs.map((e) => (
+            <div class="fi-spec">
+              <dt>{e.k}</dt>
+              <dd>{e.v}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-specs {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .fi-specs__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    align-items: center;
+  }
+  .fi-specs__figure {
+    flex: 1 1 340px;
+    margin: 0;
+  }
+  .fi-specs__figure img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    max-height: 620px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .fi-specs__copy {
+    flex: 1 1 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .fi-specs__dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0;
+  }
+  .fi-spec {
+    padding: 20px 20px 20px 0;
+    border-top: 1px solid var(--fi-borde-claro);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .fi-spec dt {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fi-rojo-oscuro);
+  }
+  .fi-spec dd {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-specs__inner {
+      gap: 36px;
+    }
+    .fi-specs__figure img {
+      aspect-ratio: 4 / 3;
+      max-height: 340px;
+    }
+    .fi-specs__dl {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

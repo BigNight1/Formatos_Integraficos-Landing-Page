@@ -1,0 +1,460 @@
+---
+/**
+ * /precios · rediseño v2
+ * Fuente: design-refs/diseno/Precios.dc.html
+ *
+ * UNIDAD: millar / millares (el diseño decía "juegos").
+ * ⚠️ Precios y condiciones FICTICIOS.
+ * ⚠️ "Actualizado: octubre de 2026" es un literal del diseño: hay que mantenerlo
+ *    a mano, no se genera solo.
+ */
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { grupos, factores, condiciones, faqs } from '../data/precios';
+import { WHATSAPP } from '../data/home';
+
+const base = 'https://formatosintergraficos.pe';
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Precios', item: `${base}/precios` },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Precios de Boletas y Facturas en Lima (2026)"
+  description="Precios referenciales de impresión de boletas, facturas y guías autorizadas SUNAT por millar, con IGV incluido. Diseño y prueba incluidos. Cotiza por WhatsApp."
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site">
+    <Header active="precios" />
+
+    <main>
+      <!-- HERO -->
+      <section class="pr-hero">
+        <div class="fi-deco">
+          <div class="pr-hero__circle" aria-hidden="true"></div>
+        </div>
+        <div class="pr-wrap pr-hero__inner">
+          <nav class="pr-bc" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+            <span aria-current="page">Precios</span>
+          </nav>
+          <h1 class="pr-h1">Precios de impresión de boletas, facturas y guías en Lima</h1>
+          <p class="pr-hero__lead">
+            Precios referenciales por millar, con IGV incluido, impresión a 1 color y papel
+            autocopiativo. Te damos el precio exacto por WhatsApp en minutos.
+          </p>
+          <span class="pr-hero__fecha">Actualizado: octubre de 2026</span>
+        </div>
+      </section>
+
+      <!-- TABLAS -->
+      <section class="pr-sec pr-sec--paper">
+        <div class="pr-wrap pr-tablas">
+          {
+            grupos.map((g) => (
+              <div class="pr-grupo">
+                <h2 class="pr-h2--grupo">{g.titulo}</h2>
+                <div class="pr-tabla__scroll">
+                  <table class="pr-tabla">
+                    <thead>
+                      <tr>
+                        <th scope="col">Formato</th>
+                        <th scope="col">Medida</th>
+                        <th scope="col">Copias</th>
+                        <th scope="col" class="pr-tabla__num">1 millar</th>
+                        <th scope="col" class="pr-tabla__num">5 millares</th>
+                        <th scope="col" class="pr-tabla__num">10 millares</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {g.filas.map((r) => (
+                        <tr>
+                          <th scope="row">
+                            <a href={r.url}>{r.formato}</a>
+                          </th>
+                          <td>{r.medida}</td>
+                          <td>{r.copias}</td>
+                          <td class="pr-tabla__num">{r.p1}</td>
+                          <td class="pr-tabla__num">{r.p5}</td>
+                          <td class="pr-tabla__num pr-tabla__destacado">{r.p10}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))
+          }
+          <p class="pr-nota">
+            Cantidades en millares (vouchers en rollos). Precios en soles con IGV. Diseño y prueba
+            incluidos.
+          </p>
+        </div>
+      </section>
+
+      <!-- QUÉ CAMBIA EL PRECIO -->
+      <section class="pr-sec">
+        <div class="pr-wrap pr-factores">
+          <h2 class="pr-h2">Qué cambia el precio</h2>
+          <div class="pr-factores__grid">
+            {
+              factores.map((f) => (
+                <div class="pr-factor">
+                  <span class="pr-factor__n">{f.n}</span>
+                  <h3 class="pr-factor__t">{f.t}</h3>
+                  <p class="pr-factor__d">{f.d}</p>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- CONDICIONES -->
+      <section class="pr-cond pr-sobre-rojo">
+        <div class="pr-wrap pr-cond__grid">
+          {
+            condiciones.map((c) => (
+              <div class="pr-cond__item">
+                <h2>{c.t}</h2>
+                <p>{c.d}</p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="pr-sec pr-sec--paper fi-faq">
+        <div class="pr-narrow pr-faq">
+          <h2 class="pr-h2">Preguntas sobre precios</h2>
+          <div>
+            {
+              faqs.map((q) => (
+                <details class="pr-faq__item">
+                  <summary>
+                    <h3>{q.q}</h3>
+                    <span class="fi-faq-plus" aria-hidden="true">
+                      +
+                    </span>
+                  </summary>
+                  <p>{q.a}</p>
+                </details>
+              ))
+            }
+          </div>
+          <a class="pr-cta" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="precios">
+            Pedir precio exacto por WhatsApp
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<style>
+  .pr-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .pr-narrow {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .pr-sec {
+    padding: 96px clamp(16px, 4vw, 64px);
+  }
+  .pr-sec--paper {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .pr-h2 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 4.4vw, 64px);
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .pr-h2--grupo {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(32px, 3.4vw, 48px);
+    text-transform: uppercase;
+  }
+  .pr-bc {
+    font-size: 13px;
+    color: var(--fi-texto-apagado);
+  }
+  .pr-bc a {
+    text-decoration: none;
+  }
+  .pr-bc span[aria-current] {
+    color: var(--fi-texto-claro);
+  }
+
+  /* HERO */
+  .pr-hero {
+    padding: 40px clamp(16px, 4vw, 64px) 88px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pr-hero__circle {
+    position: absolute;
+    right: -180px;
+    top: -120px;
+    width: 560px;
+    height: 560px;
+    border-radius: 50%;
+    background: var(--fi-rojo);
+  }
+  .pr-hero__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .pr-h1 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(48px, 6vw, 96px);
+    line-height: 0.9;
+    text-transform: uppercase;
+    max-width: 900px;
+  }
+  .pr-hero__lead {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+    max-width: 680px;
+  }
+  .pr-hero__fecha {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* TABLAS */
+  .pr-tablas {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+  .pr-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .pr-tabla__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--fi-borde-claro);
+    background: #ffffff;
+  }
+  .pr-tabla {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .pr-tabla thead tr {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    text-align: left;
+  }
+  .pr-tabla th,
+  .pr-tabla td {
+    padding: 16px 20px;
+  }
+  .pr-tabla tbody tr {
+    border-top: 1px solid var(--fi-papel-2);
+  }
+  .pr-tabla tbody th {
+    text-align: left;
+  }
+  .pr-tabla__num {
+    text-align: right;
+  }
+  .pr-tabla__destacado {
+    font-weight: 700;
+  }
+  .pr-nota {
+    margin: 0;
+    font-size: 14px;
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* FACTORES */
+  .pr-factores {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .pr-factores__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .pr-factor {
+    padding: 26px;
+    background: var(--fi-carbon-2);
+    border: 1px solid var(--fi-borde-oscuro-2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pr-factor__n {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 1;
+    color: var(--fi-rosa);
+  }
+  .pr-factor__t {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700; /* el diseño usaba el 700 por defecto de <h3> */
+  }
+  .pr-factor__d {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+
+  /* CONDICIONES */
+  .pr-cond {
+    background: var(--fi-rojo);
+    color: #ffffff;
+    padding: 88px clamp(16px, 4vw, 64px);
+  }
+  .pr-cond__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+  }
+  .pr-cond__item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .pr-cond__item h2 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 36px;
+    text-transform: uppercase;
+  }
+  .pr-cond__item p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* FAQ */
+  .pr-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .pr-faq__item {
+    border-top: 1px solid var(--fi-borde-claro);
+  }
+  .pr-faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    box-sizing: content-box; /* el min-height:44px del diseño medía el contenido */
+    min-height: 44px;
+  }
+  .pr-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700; /* el diseño usaba el 700 por defecto de <h3> */
+  }
+  .pr-faq__item summary span {
+    font-size: 28px;
+    line-height: 1;
+    color: var(--fi-rojo-oscuro);
+    flex: none;
+  }
+  .pr-faq__item p {
+    margin: 0 0 22px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #3a3334;
+  }
+  .pr-cta {
+    align-self: flex-start;
+    padding: 16px 26px;
+    background: var(--fi-carbon);
+    color: var(--fi-papel);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  /* ================= MÓVIL (añadido) ================= */
+  @media (max-width: 767px) {
+    .pr-sec {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
+    .pr-cond {
+      padding: 56px 20px;
+    }
+    .pr-hero {
+      padding: 32px 20px 56px;
+    }
+    .pr-hero__circle {
+      right: -220px;
+      top: -180px;
+      width: 380px;
+      height: 380px;
+      opacity: 0.7;
+    }
+    .pr-h1 {
+      font-size: clamp(34px, 10vw, 52px);
+    }
+    .pr-hero__lead {
+      font-size: 16px;
+    }
+    .pr-tabla th,
+    .pr-tabla td {
+      padding: 14px 16px;
+      font-size: 14px;
+    }
+    .pr-factores__grid,
+    .pr-cond__grid {
+      grid-template-columns: 1fr;
+    }
+    .pr-cond__item h2 {
+      font-size: 30px;
+    }
+    .pr-faq__item summary h3 {
+      font-size: 16px;
+    }
+    .pr-cta {
+      align-self: stretch;
+      text-align: center;
+    }
+  }
+</style>

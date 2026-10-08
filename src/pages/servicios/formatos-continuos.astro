@@ -1,210 +1,663 @@
 ---
+/**
+ * /servicios/formatos-continuos · rediseño v2
+ *
+ * NO viene del canvas: el diseño no traía esta página. Se construye con el
+ * sistema del rediseño (tokens, Header y Footer compartidos, .fi-wrap 1280,
+ * .fi-h2, .fi-deco) y con **carácter propio**, distinto del resto:
+ *
+ *   · RIEL PERFORADO en el borde izquierdo del hero, como el papel continuo.
+ *   · HERO partido: texto a la izquierda, maqueta de la guía a la derecha.
+ *   · TABLA TÉCNICA de medidas con números en monoespaciada.
+ *   · Chips de sector en la sección oscura.
+ *
+ * Datos de producto reales, tomados de la página anterior y de `src/data/precios.ts`
+ * (medidas y copias coinciden con /precios: 9½"×5½", 9½"×11", Original + 1/2/3).
+ *
+ * ⚠️ El texto legal de contingencia ("Comprobante de pago emitido en contingencia")
+ *    es la leyenda que SUNAT exige; conviene que lo revise un contador.
+ */
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import { Icon } from 'astro-icon/components';
+import Documento from '../../components/Documento.astro';
+import { WHATSAPP } from '../../data/home';
 
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "Formatos Continuos Autorizados SUNAT",
-  "description": "Impresión de formatos continuos en papel bond o autocopiativo para impresoras matriciales. Guías de remisión, boletas de contingencia, notas de crédito y más. Autorizados por SUNAT.",
-  "provider": {
-    "@type": "LocalBusiness",
-    "name": "Formatos Intergraficos",
-    "url": "https://formatosintergraficos.pe"
+const base = 'https://formatosintergraficos.pe';
+
+const medidas = [
+  {
+    formato: 'Boleta continua',
+    medida: '9½" × 5½"',
+    copias: 'Original + 1',
+    uso: 'Contingencia y series de bajo volumen',
   },
-  "areaServed": {
-    "@type": "Country",
-    "name": "Peru"
+  {
+    formato: 'Factura continua',
+    medida: '9½" × 11"',
+    copias: 'Original + 2',
+    uso: 'Facturación física y control de despacho',
   },
-  "serviceType": "Impresión de formatos continuos autorizados SUNAT",
-  "url": "https://formatosintergraficos.pe/servicios/formatos-continuos"
-};
+  {
+    formato: 'Guía continua',
+    medida: '9½" × 11"',
+    copias: 'Original + 3',
+    uso: 'Traslado: remitente, transportista y SUNAT',
+  },
+];
+
+const especificaciones = [
+  { t: 'Perforación lateral', d: 'Arrastre por tractor de agujas, a ambos lados de la hoja.' },
+  { t: 'Troquelado', d: 'Microperforado entre formatos para separarlos a mano sin romperlos.' },
+  { t: 'Papel', d: 'Bond 60 g para 1 copia, o autocopiativo químico para 2 y 3 copias.' },
+  { t: 'Impresión', d: 'Matricial. Compatible con Epson LX-350, LX-300 y similares.' },
+];
+
+const documentos = [
+  {
+    t: 'Guías de remisión',
+    d: 'Remitente y transportista. El documento físico más aceptado para sustentar traslados, en duplicado o triplicado.',
+    url: '/guias-de-remision',
+  },
+  {
+    t: 'Boletas y facturas de contingencia',
+    d: 'Para cuando se cae el internet o el sistema de emisión electrónica. Llevan la leyenda legal obligatoria.',
+    url: '/boletas-de-venta',
+  },
+  {
+    t: 'Notas de crédito y débito',
+    d: 'Para anular o modificar operaciones que necesitan respaldo físico continuo.',
+    url: '/notas-de-credito-debito',
+  },
+  {
+    t: 'Liquidaciones de compra',
+    d: 'Compras a personas naturales sin RUC: acopio agrario, pesca artesanal y comercio de productos primarios.',
+    url: '/liquidaciones-de-compra',
+  },
+];
+
+const sectores = [
+  'Transporte y logística',
+  'Distribuidoras mayoristas',
+  'Empresas agrarias y acopio',
+  'Retail con despacho',
+  'Constructoras',
+  'Minería',
+];
+
+const faqs = [
+  {
+    q: '¿Los formatos continuos siguen siendo válidos ante SUNAT?',
+    a: 'Sí. Las guías de remisión en papel continuo están vigentes, y las boletas y facturas físicas siguen siendo obligatorias cuando hay contingencia eléctrica o de internet. Cada formato se imprime con la estructura y las leyendas que exige el reglamento.',
+  },
+  {
+    q: '¿Qué impresora necesito?',
+    a: 'Una impresora matricial de arrastre por tractor de agujas. Las más comunes en Perú son la Epson LX-350 y la LX-300, pero trabajamos con cualquier equipo cuyo tractor acepte las medidas de la tabla. Si tienes dudas, escríbenos con el modelo y lo confirmamos.',
+  },
+  {
+    q: '¿Qué es el papel autocopiativo y cuándo conviene?',
+    a: 'Es un papel químico que transfiere la impresión de la aguja a las hojas de abajo, sin papel carbón. Conviene en cuanto necesitas un original y una o dos copias: se imprimen todas de una sola pasada, no una por una.',
+  },
+  {
+    q: '¿Puedo pedirlo con mi logo y mis datos?',
+    a: 'Sí, y está incluido. Adaptamos el formato a tu razón social, RUC, dirección, teléfonos y logo, respetando los casilleros y leyendas obligatorios de cada tipo de documento.',
+  },
+  {
+    q: '¿Cuál es la cantidad mínima?',
+    a: 'Trabajamos desde 1 millar en la mayoría de formatos continuos. En los que arrancan en 5 millares lo verás indicado en la tabla de precios, porque el montaje de la matriz obliga a un tiraje mayor.',
+  },
+  {
+    q: '¿Cuánto tarda la entrega?',
+    a: 'Entre 24 y 48 horas en Lima metropolitana, una vez aprobada la prueba de diseño. A provincia enviamos por courier y el tiempo depende del destino.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Impresión de formatos continuos autorizados SUNAT',
+    description:
+      'Impresión de formatos continuos en papel bond o autocopiativo para impresoras matriciales: guías de remisión, boletas y facturas de contingencia, notas de crédito y liquidaciones de compra.',
+    serviceType: 'Impresión de formatos continuos',
+    areaServed: { '@type': 'City', name: 'Lima' },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Formatos Intergráficos',
+      url: base,
+      telephone: '+51910500706',
+    },
+    url: `${base}/servicios/formatos-continuos`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Formatos continuos', item: `${base}/servicios/formatos-continuos` },
+    ],
+  },
+];
 ---
 
-<Layout 
+<Layout
   title="Formatos Continuos SUNAT en Lima | Papel Matricial a Medida"
-  description="Imprimimos formatos continuos autorizados por SUNAT: guías de remisión, boletas de contingencia y más. Papel bond o autocopiativo. Entrega en Lima en 24h."
+  description="Imprimimos formatos continuos autorizados por SUNAT: guías de remisión, boletas de contingencia y liquidaciones. Papel bond o autocopiativo, desde 1 millar."
 >
-  <Header />
-  <main>
-    <!-- 1. HERO -->
-    <section class="section-padding bg-gradient-to-br from-primary-50 to-blue-100 pt-20">
-      <div class="max-w-4xl mx-auto text-center px-4">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          Formatos Continuos autorizados SUNAT en Lima
-        </h1>
-        <p class="text-xl text-gray-700 leading-relaxed mb-8">
-          Imprimimos en papel bond o autocopiativo (duplicado/triplicado), compatibles con impresoras de matriz de puntos. Ideales para empresas que manejan alto volumen de despachos o facturación física.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/contacto#cotizar" class="btn-primary text-lg px-8 py-4">Cotizar ahora</a>
-          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-secondary text-lg px-8 py-4">WhatsApp</a>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site fc">
+    <Header />
+
+    <main>
+      <!-- HERO -->
+      <section class="fc-hero">
+        <div class="fc-hero__rail" aria-hidden="true"></div>
+        <div class="fi-wrap fc-hero__inner">
+          <div class="fc-hero__texto">
+            <nav class="fc-bc" aria-label="Ruta de navegación">
+              <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+              <span aria-current="page">Formatos continuos</span>
+            </nav>
+            <h1 class="fc-h1">Formatos continuos autorizados SUNAT en Lima</h1>
+            <p class="fc-hero__lead">
+              Papel bond o autocopiativo con perforación lateral, para impresoras matriciales.
+              Guías de remisión, comprobantes de contingencia y liquidaciones de compra, con tu
+              logo y tus datos.
+            </p>
+            <div class="fc-hero__acciones">
+              <a class="fc-btn" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="continuos-hero">
+                Cotizar por WhatsApp
+              </a>
+              <a class="fc-btn fc-btn--linea" href="/precios">Ver precios por millar</a>
+            </div>
+            <p class="fc-hero__nota">Desde 1 millar · Prueba de diseño incluida · Entrega en 24–48 h</p>
+          </div>
+
+          <div class="fc-hero__figura">
+            <Documento
+              tipo="Guía de remisión remitente"
+              numero="T001 - 000412"
+              acento="#C62F44"
+              acentoTexto="#FFFFFF"
+              suave="#F6E7EA"
+              continuo={true}
+              copias={['#F7C7CF', '#FBE7A6']}
+              campos={['Destinatario', 'R.U.C.', 'Punto de partida', 'Punto de llegada']}
+              destino="Destinatario"
+            />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 2. ¿QUÉ SON LOS FORMATOS CONTINUOS? -->
-    <section class="section-padding bg-white">
-      <div class="max-w-3xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">¿Qué son los formatos continuos y para qué sirven?</h2>
-        <p class="text-lg text-gray-700">
-          El papel continuo con perforaciones laterales está diseñado específicamente para impresoras matriciales. Disponibles en bond tradicional o papel autocopiativo, son la solución perfecta cuando tu operación requiere un original y copias físicas en una sola impresión de forma rápida y secuencial.
-        </p>
-      </div>
-    </section>
-
-    <!-- 3. TIPOS DE DOCUMENTOS -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">Documentos que imprimimos en formato continuo</h2>
-        <div class="grid md:grid-cols-2 gap-8">
-          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-2xl font-bold text-primary-600 mb-4">Guías de Remisión (Remitente y Transportista)</h3>
-            <p class="text-gray-700">
-              Los documentos físicos más solicitados. Aceptados para traslados y contingencias. Adaptados a los nuevos requisitos SUNAT 2024. Disponibles en duplicado o triplicado autocopiativo.
+      <!-- QUÉ ES -->
+      <section class="fi-section fc-sec fc-sec--paper">
+        <div class="fi-wrap fc-quees">
+          <div class="fc-quees__texto">
+            <h2 class="fi-h2 fc-h2">Qué es el papel continuo</h2>
+            <p>
+              Una sola hoja sin fin, con agujeros a los dos lados, que el tractor de una impresora
+              matricial arrastra hoja por hoja. Se imprime de corrido, sin cambiar de papel y sin
+              detenerse entre documento y documento: por eso es el formato de las operaciones que
+              van en serie, como un día de despachos o una jornada de facturación.
+            </p>
+            <p>
+              Su ventaja real aparece con las copias. En papel autocopiativo, una sola pasada de la
+              aguja imprime el original y las dos copias de abajo. No hay que imprimir tres veces ni
+              intercalar papel carbón, que es donde se pierden las horas y donde salen los errores
+              de alineación.
             </p>
           </div>
-          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-2xl font-bold text-primary-600 mb-4">Boletas de Venta y Facturas por Contingencia</h3>
-            <p class="text-gray-700">
-              Obligatorias cuando hay cortes de luz, caídas de internet o fallas en el Sistema de Emisión Electrónica (SEE). Incluyen la leyenda legal obligatoria: "Comprobante de pago emitido en contingencia".
-            </p>
-          </div>
-          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-2xl font-bold text-primary-600 mb-4">Notas de Crédito y Notas de Débito</h3>
-            <p class="text-gray-700">
-              Para modificar o anular operaciones que requieren soporte físico continuo. Impresas con correlativo, datos del emisor y receptor según el reglamento de SUNAT.
-            </p>
-          </div>
-          <div class="bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-            <h3 class="text-2xl font-bold text-primary-600 mb-4">Liquidaciones de Compra</h3>
-            <p class="text-gray-700">
-              Para adquisiciones a personas naturales sin RUC. Frecuentes en sectores agrarios, pesca artesanal, artesanías y comercio de productos primarios.
-            </p>
+
+          <ul class="fc-especs">
+            {
+              especificaciones.map((e) => (
+                <li class="fc-espec">
+                  <strong>{e.t}</strong>
+                  <span>{e.d}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </section>
+
+      <!-- MEDIDAS -->
+      <section class="fi-section fc-sec">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 fc-h2">Medidas que manejamos</h2>
+          <p class="fc-sec__intro">
+            Las mismas tres medidas de nuestra lista de precios. Si tu formato no está aquí,
+            escríbenos: se puede fabricar a medida.
+          </p>
+
+          <div class="fc-tabla__scroll">
+            <table class="fc-tabla">
+              <thead>
+                <tr>
+                  <th scope="col">Formato</th>
+                  <th scope="col">Medida</th>
+                  <th scope="col">Copias</th>
+                  <th scope="col">Para qué se usa</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  medidas.map((m) => (
+                    <tr>
+                      <th scope="row">{m.formato}</th>
+                      <td class="fc-tabla__mono">{m.medida}</td>
+                      <td>{m.copias}</td>
+                      <td class="fc-tabla__uso">{m.uso}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 4. RUBROS QUE MÁS LOS USAN -->
-    <section class="section-padding bg-white">
-      <div class="max-w-5xl mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold text-gray-900 mb-10">¿Qué negocios usan formatos continuos?</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-          <div class="p-6 bg-gray-50 rounded-xl">
-            <div class="font-semibold text-gray-900">Transporte y logística</div>
-            <div class="text-sm text-gray-600 mt-2">(Guías de remisión)</div>
-          </div>
-          <div class="p-6 bg-gray-50 rounded-xl">
-            <div class="font-semibold text-gray-900">Distribuidoras</div>
-            <div class="text-sm text-gray-600 mt-2">(Mayoristas)</div>
-          </div>
-          <div class="p-6 bg-gray-50 rounded-xl">
-            <div class="font-semibold text-gray-900">Empresas agrarias</div>
-            <div class="text-sm text-gray-600 mt-2">(Liquidaciones)</div>
-          </div>
-          <div class="p-6 bg-gray-50 rounded-xl">
-            <div class="font-semibold text-gray-900">Negocios retail</div>
-            <div class="text-sm text-gray-600 mt-2">(Contingencia)</div>
+      <!-- QUÉ DOCUMENTOS -->
+      <section class="fi-section fc-sec fc-sec--paper">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 fc-h2">Qué imprimimos en continuo</h2>
+          <div class="fc-docs">
+            {
+              documentos.map((d) => (
+                <a class="fc-doc" href={d.url}>
+                  <h3>{d.t}</h3>
+                  <p>{d.d}</p>
+                  <span class="fc-doc__mas">Ver el formato →</span>
+                </a>
+              ))
+            }
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 5. ¿POR QUÉ ELEGIRNOS? -->
-    <section class="section-padding bg-primary-900 text-white">
-      <div class="max-w-5xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-center mb-12">¿Por qué imprimir tus formatos continuos con nosotros?</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div class="flex items-start">
-            <Icon name="lucide:check" class="w-8 h-8 mr-4 text-green-600 flex-shrink-0" />
-            <div>
-              <h4 class="text-xl font-bold mb-2">Autorización SUNAT vigente</h4>
-              <p class="text-gray-300">Tus documentos tendrán 100% de validez legal.</p>
-            </div>
-          </div>
-          <div class="flex items-start">
-            <Icon name="lucide:check" class="w-8 h-8 mr-4 text-green-600 flex-shrink-0" />
-            <div>
-              <h4 class="text-xl font-bold mb-2">+20 años de experiencia</h4>
-              <p class="text-gray-300">Especialistas en la impresión de formatos legales.</p>
-            </div>
-          </div>
-          <div class="flex items-start">
-            <Icon name="lucide:check" class="w-8 h-8 mr-4 text-green-600 flex-shrink-0" />
-            <div>
-              <h4 class="text-xl font-bold mb-2">Diseño incluido</h4>
-              <p class="text-gray-300">Adaptamos el formato a tu RUC, logo y datos comerciales.</p>
-            </div>
-          </div>
-          <div class="flex items-start">
-            <Icon name="lucide:check" class="w-8 h-8 mr-4 text-green-600 flex-shrink-0" />
-            <div>
-              <h4 class="text-xl font-bold mb-2">Entrega rápida</h4>
-              <p class="text-gray-300">Entregamos en 24-48 horas en todo Lima metropolitana.</p>
-            </div>
-          </div>
+      <!-- SECTORES -->
+      <section class="fi-section fc-sec">
+        <div class="fi-wrap fc-quien">
+          <h2 class="fi-h2 fc-h2">Quién trabaja en continuo</h2>
+          <p class="fc-sec__intro">
+            Cualquier negocio que emita documentos en serie y necesite copias físicas en el
+            momento. Estos son los que más nos lo piden:
+          </p>
+          <ul class="fc-chips">
+            {sectores.map((s) => <li class="fc-chip">{s}</li>)}
+          </ul>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- 6. FAQ ESPECÍFICO -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-4xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 text-center mb-12">Preguntas frecuentes sobre formatos continuos</h2>
-        <div class="space-y-6">
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Los formatos continuos siguen siendo válidos ante SUNAT?</h3>
-            <p class="text-gray-600">Sí. Las guías de remisión en papel continuo están vigentes y son los documentos físicos más aceptados para traslados. Además, las boletas y facturas físicas siguen siendo obligatorias en caso de contingencia eléctrica o de internet.</p>
+      <!-- FAQ -->
+      <section class="fi-section fc-sec fc-sec--paper fi-faq">
+        <div class="fi-narrow fc-faq">
+          <h2 class="fi-h2 fc-h2">Preguntas sobre formatos continuos</h2>
+          <div>
+            {
+              faqs.map((f) => (
+                <details class="fc-faq__item">
+                  <summary>
+                    <h3>{f.q}</h3>
+                    <span class="fi-faq-plus" aria-hidden="true">
+                      +
+                    </span>
+                  </summary>
+                  <p>{f.a}</p>
+                </details>
+              ))
+            }
           </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Qué impresora necesito para usar formatos continuos?</h3>
-            <p class="text-gray-600">Necesitas una impresora de matriz de puntos (matricial), como las Epson LX-350, LX-300 o similares. Si tienes dudas sobre compatibilidad, escríbenos y te asesoramos.</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Puedo pedir el formato con mi logo y datos de mi empresa?</h3>
-            <p class="text-gray-600">Sí, todos nuestros formatos incluyen el servicio de diseño personalizado con tu RUC, razón social, logo y datos obligatorios requeridos por SUNAT.</p>
-          </div>
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 class="text-lg font-semibold text-gray-900 mb-3">¿Qué es el papel autocopiativo?</h3>
-            <p class="text-gray-600">Es un papel especial que transfiere la escritura o la impresión de la aguja matricial a las copias adyacentes sin necesidad de usar papel carbón extra. Perfecto para duplicados y triplicados.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- INTERNAL LINKS -->
-    <section class="section-padding bg-gray-50">
-      <div class="max-w-5xl mx-auto px-4 text-center">
-        <h2 class="text-2xl font-bold text-gray-900 mb-8">También te puede interesar</h2>
-        <div class="grid sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-          <a href="/servicios/vouchers-pos" class="block bg-white rounded-xl border border-gray-200 p-5 hover:border-primary-200 hover:shadow-md transition-all text-left">
-            <h3 class="font-bold text-gray-900 mb-1">Vouchers POS</h3>
-            <p class="text-sm text-gray-500">Rollos térmicos personalizados para restaurantes y retail</p>
+          <a
+            class="fc-cta"
+            href={WHATSAPP}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-wa="continuos-faq"
+          >
+            Cotizar formatos continuos por WhatsApp
           </a>
-          <a href="/servicios/documentos-administrativos" class="block bg-white rounded-xl border border-gray-200 p-5 hover:border-primary-200 hover:shadow-md transition-all text-left">
-            <h3 class="font-bold text-gray-900 mb-1">Documentos Administrativos</h3>
-            <p class="text-sm text-gray-500">Proformas, cotizaciones y notas de pedido con tu logo</p>
-          </a>
         </div>
-      </div>
-    </section>
+      </section>
+    </main>
 
-    <!-- 7. CTA FINAL -->
-    <section class="section-padding bg-white text-center">
-      <div class="max-w-3xl mx-auto px-4">
-        <h2 class="text-3xl font-bold text-gray-900 mb-6">Solicita tu cotización de formatos continuos</h2>
-        <p class="text-xl text-gray-700 mb-8">Cuéntanos qué tipo de formato necesitas, qué cantidad y si requieres diseño personalizado. Te respondemos en menos de 2 horas.</p>
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="https://wa.me/51910500706" target="_blank" rel="noopener noreferrer" class="btn-primary text-lg px-8 py-4">Cotizar por WhatsApp</a>
-          <a href="/contacto#cotizar" class="btn-secondary text-lg px-8 py-4">Formulario de cotización</a>
-        </div>
-      </div>
-    </section>
-  </main>
-  <Footer />
+    <Footer />
+  </div>
 </Layout>
 
-<script type="application/ld+json" is:inline set:html={JSON.stringify(schema)}></script>
+<style>
+  /* ==========================================================================
+     RIEL PERFORADO — la firma visual de esta página.
+     Reproduce el borde del papel continuo: una tira de agujeros que recorre todo
+     el hero. Solo en escritorio; en móvil se oculta para no robar ancho.
+     ========================================================================== */
+  .fc-hero {
+    position: relative;
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    overflow: hidden;
+    padding: 56px clamp(16px, 4vw, 64px) 96px;
+  }
+  .fc-hero__rail {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 40px;
+    border-right: 1px solid var(--fi-borde-oscuro);
+    background-image: radial-gradient(circle, var(--fi-borde-oscuro-2) 3px, transparent 3.5px);
+    background-size: 40px 40px;
+    background-position: 50% 20px;
+    pointer-events: none;
+  }
+  .fc-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+    padding-left: 40px;
+  }
+  .fc-bc {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+    margin-bottom: 24px;
+  }
+  .fc-bc a {
+    color: var(--fi-texto-apagado);
+  }
+  .fc-h1 {
+    margin: 0 0 24px;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 5.2vw, 76px);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .fc-hero__lead {
+    margin: 0 0 32px;
+    max-width: 56ch;
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .fc-hero__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .fc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 26px;
+    background: var(--fi-rojo);
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+  }
+  .fc-btn:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+  .fc-btn--linea {
+    background: transparent;
+    border: 1px solid var(--fi-borde-oscuro-2);
+    color: var(--fi-texto-claro);
+  }
+  .fc-btn--linea:hover {
+    background: var(--fi-carbon-3);
+    border-color: var(--fi-papel);
+  }
+  .fc-hero__nota {
+    margin: 24px 0 0;
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+  }
+  .fc-hero__figura {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* --- Secciones ---
+     Las dos variantes declaran fondo Y color. Sin el `color` en la de papel, el
+     texto heredaba el claro de `.fi-site` y los títulos quedaban INVISIBLES sobre
+     el fondo papel (mismo valor rgb en texto y fondo). */
+  .fc-sec {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+  }
+  .fc-sec--paper {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .fc-h2 {
+    margin-bottom: 28px;
+  }
+  .fc-sec__intro {
+    max-width: 62ch;
+    margin: 0 0 36px;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--fi-texto-apagado);
+  }
+  .fc-sec--paper .fc-sec__intro {
+    color: var(--fi-texto-oscuro-2);
+  }
+  .fc-quees {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: start;
+  }
+  .fc-quees__texto p {
+    margin: 0 0 20px;
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .fc-especs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--fi-borde-claro);
+  }
+  .fc-espec {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  .fc-espec strong {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .fc-espec span {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* --- Tabla técnica --- */
+  .fc-tabla__scroll {
+    overflow-x: auto;
+  }
+  .fc-tabla {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    font-size: 16px;
+  }
+  .fc-tabla th,
+  .fc-tabla td {
+    text-align: left;
+    padding: 20px 20px 20px 0;
+    border-bottom: 1px solid var(--fi-borde-oscuro);
+  }
+  .fc-tabla thead th {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fi-texto-apagado);
+    border-bottom-color: var(--fi-borde-oscuro-2);
+  }
+  .fc-tabla tbody th {
+    font-weight: 700;
+  }
+  .fc-tabla__mono {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .fc-tabla__uso {
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Tarjetas de documento --- */
+  .fc-docs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--fi-borde-claro);
+    border: 1px solid var(--fi-borde-claro);
+  }
+  .fc-doc {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 32px 28px;
+    background: var(--fi-papel);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s ease;
+  }
+  .fc-doc:hover {
+    background: var(--fi-papel-2);
+  }
+  .fc-doc h3 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: 26px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .fc-doc p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .fc-doc__mas {
+    margin-top: auto;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--fi-rojo);
+  }
+
+  /* --- Chips de sector --- */
+  .fc-quien {
+    max-width: 900px;
+  }
+  .fc-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .fc-chip {
+    padding: 10px 18px;
+    border: 1px solid var(--fi-borde-oscuro-2);
+    font-size: 15px;
+    color: var(--fi-texto-claro-2);
+  }
+
+  /* --- FAQ --- */
+  .fc-faq h2 {
+    margin-bottom: 32px;
+  }
+  .fc-faq__item {
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  .fc-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .fc-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .fc-faq__item p {
+    margin: 0;
+    padding: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .fc-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    margin-top: 36px;
+    padding: 0 30px;
+    background: var(--fi-rojo);
+    color: #fff !important;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .fc-cta:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+
+  /* --- Móvil (todo añadido: el canvas no traía media queries) --- */
+  @media (max-width: 900px) {
+    .fc-hero__inner,
+    .fc-quees {
+      grid-template-columns: 1fr;
+    }
+    .fc-hero__figura {
+      order: -1;
+    }
+    .fc-hero__rail {
+      width: 22px;
+      background-size: 22px 22px;
+      background-position: 50% 12px;
+    }
+    .fc-hero__inner {
+      padding-left: 22px;
+    }
+  }
+  @media (max-width: 600px) {
+    .fc-hero {
+      padding-bottom: 64px;
+    }
+    .fc-btn,
+    .fc-cta {
+      width: 100%;
+    }
+    .fc-doc {
+      padding: 26px 22px;
+    }
+  }
+</style>

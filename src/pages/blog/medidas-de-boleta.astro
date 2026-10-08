@@ -1,0 +1,207 @@
+---
+/**
+ * /blog/medidas-de-boleta · rediseño v2
+ *
+ * Usa la plantilla `Articulo.astro`. El cuerpo va aquí; el armazón y los estilos
+ * son compartidos con el resto de artículos.
+ *
+ * FUENTES de los datos de este artículo:
+ *  · Medidas ISO (A4, A5, A6): ISO 216 — https://www.papersizes.org/a-paper-sizes.htm
+ *  · Medidas US (carta, oficio): https://www.papersizes.org/us-paper-sizes.htm
+ *  · Requisitos de tamaño de SUNAT: Reglamento de Comprobantes de Pago,
+ *    RS 007-99/SUNAT, art. 9 (mínimo 21 × 14 cm para facturas y liquidaciones,
+ *    sustituido por RS 362-2013/SUNAT, vigente desde el 1.1.2014).
+ *  · Repinte de la numeración en formatos continuos: mismo reglamento, art. 12.2.7.
+ *
+ * ⚠️ HONESTIDAD SOBRE LAS FUENTES — no se afirma más de lo que se puede sostener:
+ *  · "Oficio" y "½ oficio" NO tienen norma peruana oficial. Las medidas que se dan
+ *    (21,5 × 33 y 21,5 × 16,5 cm) son las del mercado, y así se dice en el texto.
+ *  · La explicación de *por qué* en Perú la boleta es ½ oficio y la factura A4 se
+ *    presenta como interpretación razonada, no como dato citado.
+ */
+
+import Articulo from '../../components/Articulo.astro';
+
+const medidas = [
+  { n: '½ oficio', d: '21,5 × 16,5 cm', u: 'Boletas de venta, notas de venta y recibos de mostrador' },
+  { n: 'A4', d: '21 × 29,7 cm', u: 'Facturas, guías de remisión y liquidaciones de compra' },
+  { n: 'A5', d: '14,8 × 21 cm', u: 'Documentos de control interno y recibos' },
+  { n: 'Oficio', d: '21,5 × 33 cm', u: 'Formatos internos largos, contratos y fichas' },
+  { n: 'Continuo 9½" × 5½"', d: '24,1 × 14 cm', u: 'Boletas y tickets para impresora matricial' },
+  { n: 'Continuo 9½" × 11"', d: '24,1 × 27,9 cm', u: 'Facturas y guías para impresora matricial' },
+  { n: 'Continuo 14⅞" × 11"', d: '37,8 × 27,9 cm', u: 'Formatos anchos: guías con muchos casilleros, minería' },
+];
+
+const faqs = [
+  {
+    q: '¿Cuánto mide exactamente el ½ oficio?',
+    a: 'En el mercado peruano se trabaja a 21,5 × 16,5 cm, pero conviene que lo sepas: no existe una norma oficial peruana que fije esa medida. Cada proveedor de papel varía unos milímetros, así que antes de aprobar el arte confirmamos la medida con la muestra del papel que vamos a usar. Si tu formato depende de un milímetro exacto, dínoslo.',
+  },
+  {
+    q: '¿Una boleta en A4 es válida?',
+    a: 'Sí. SUNAT no fija un tamaño para las boletas de venta ni para los recibos por honorarios. El mínimo de 21 cm de ancho por 14 cm de alto aplica a las facturas y a las liquidaciones de compra, no a las boletas.',
+  },
+  {
+    q: '¿Por qué las facturas llevan un recuadro de 4 × 8 cm?',
+    a: 'Porque el Reglamento de Comprobantes de Pago lo exige para las facturas: el recuadro va en el extremo superior derecho y dentro van el RUC, la denominación y la numeración, con la numeración de al menos 4 mm de alto. Ese requisito, más los datos del adquirente y las leyendas, es lo que empuja a la factura hacia el A4.',
+  },
+  {
+    q: '¿Qué medida pido si imprimo con matricial?',
+    a: 'Ninguna de hoja suelta: necesitas formato continuo. Los dos anchos más usados en Perú son 9½" × 11" (facturas y guías) y 9½" × 5½" (boletas), y también se trabaja el 14⅞" × 11" cuando el formato necesita más casilleros.',
+  },
+  {
+    q: '¿Puedo usar la misma medida para la boleta y la factura?',
+    a: 'Puedes unificar todo en A4 y te ahorras tener dos papeles. La contrapartida es que la boleta gasta casi el doble de papel que en ½ oficio. Si emites sobre todo boletas, el ½ oficio te sale bastante más barato por millar.',
+  },
+];
+---
+
+<Articulo
+  titulo="½ oficio o A4: qué medida de boleta elegir"
+  metaTitle="½ Oficio o A4: Qué Medida de Boleta Elegir"
+  metaDescription="Medidas reales de ½ oficio, A4 y A5, y qué exige SUNAT para cada comprobante. Te ayudamos a elegir la medida según lo que vendes."
+  tag="Papel y medidas"
+  slug="medidas-de-boleta"
+  fecha="8 de octubre de 2026"
+  fechaISO="2026-10-08"
+  min={4}
+  schemaDescription="Medidas exactas de ½ oficio, A4, A5 y de los formatos continuos, con lo que SUNAT exige para cada comprobante y cómo elegir según tu negocio."
+  respuesta="Para una bodega, un puesto de mercado o cualquier venta de mostrador, <strong>½ oficio</strong>: entra todo lo necesario y gastas la mitad de papel. Si emites <strong>facturas</strong> a empresas, si detallas muchos productos por venta o si tu cliente archiva el documento, <strong>A4</strong>. Y si imprimes con matricial, ninguna de las dos: formato continuo."
+  faqs={faqs}
+  cta={{
+    titulo: '¿Ya sabes tu medida?',
+    texto: 'Dinos qué comprobante emites y cuántos al mes, y te decimos qué medida y cuántos millares te convienen.',
+    botones: [
+      { label: 'Ver precios por millar', url: '/precios' },
+      { label: 'Ver boletas', url: '/boletas-de-venta' },
+    ],
+  }}
+  relacionadas={[
+    { label: 'Papel autocopiativo vs bond: diferencias y usos', url: '/blog/autocopiativo-vs-bond' },
+    { label: 'Factura o boleta: cuál emitir y cuándo', url: '/blog/factura-o-boleta' },
+    { label: 'Cómo autorizar la impresión de comprobantes en SUNAT', url: '/autorizado-sunat' },
+  ]}
+>
+  <p>
+    La pregunta llega siempre en el mismo momento: ya decidiste qué comprobante vas a emitir y
+    ahora hay que decir una medida. Y si vienes del mundo digital, ninguna de las opciones te suena.
+  </p>
+  <p>
+    La respuesta corta es que <strong>la medida la decide el uso, no el gusto</strong>. Aquí están las
+    medidas reales, lo que SUNAT exige de verdad y cómo elegir sin equivocarte.
+  </p>
+
+  <h2>Lo que SUNAT exige (y lo que no)</h2>
+  <p>
+    Empecemos por quitarse un peso de encima: el Reglamento de Comprobantes de Pago <strong>no fija un
+    tamaño para las boletas de venta</strong>. Solo pone un mínimo para las facturas y las
+    liquidaciones de compra: <strong>21 cm de ancho por 14 cm de alto</strong>.
+  </p>
+  <p>
+    A las facturas les añade un requisito que explica por qué casi siempre terminan en A4: un
+    recuadro de <strong>4 cm de alto por 8 cm de ancho</strong> en el extremo superior derecho, con el
+    RUC, la denominación y la numeración dentro, y la numeración de al menos 4 mm de alto. Súmale los
+    datos del adquirente, las leyendas y el detalle de los ítems, y el ½ oficio se queda corto.
+  </p>
+  <p class="ar-nota">
+    <strong>Traducción práctica:</strong> si emites boletas, la medida es tu decisión y la más barata
+    suele ser el ½ oficio. Si emites facturas, el punto de partida es el A4.
+  </p>
+
+  <h2>Las medidas, una por una</h2>
+  <div class="ar-tabla__scroll">
+    <table class="ar-tabla">
+      <thead>
+        <tr>
+          <th scope="col">Medida</th>
+          <th scope="col">En centímetros</th>
+          <th scope="col">Para qué se usa</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          medidas.map((m) => (
+            <tr>
+              <th scope="row">{m.n}</th>
+              <td>{m.d}</td>
+              <td>{m.u}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Las medidas A4, A5 y A6 vienen de la norma ISO 216 y son exactas en todo el mundo: A4 mide
+    210 × 297 mm y A5 es justo la mitad. Las de carta y oficio vienen del sistema norteamericano
+    (carta 8,5 × 11 pulgadas; oficio 8,5 × 13).
+  </p>
+
+  <h2>El detalle del ½ oficio que casi nadie te dice</h2>
+  <p>
+    El ½ oficio es la mitad del oficio: unos <strong>21,5 × 16,5 cm</strong>. Es la medida clásica de
+    la boleta peruana y la que más se pide.
+  </p>
+  <p>
+    Pero hay algo que conviene saber antes de mandar a hacer el arte: <strong>no existe una norma
+    peruana oficial que fije esa medida</strong>. No está en el Reglamento de Comprobantes de Pago ni
+    en una norma técnica nacional. Es una convención del mercado, y cada proveedor de papel varía
+    unos milímetros.
+  </p>
+  <p>
+    Por eso, cuando un formato depende de un milímetro exacto —por ejemplo, porque tiene que calzar en
+    una funda o en un archivo ya existente— lo confirmamos con la muestra del papel antes de aprobar
+    el diseño. Es más barato preguntarlo que reimprimir un tiraje entero.
+  </p>
+
+  <h2>El formato continuo se mide en pulgadas</h2>
+  <p>
+    Si tu impresora es matricial, olvídate de las medidas de hoja: el papel continuo se mide en
+    pulgadas y lleva agujeros a los lados por donde el tractor lo arrastra.
+  </p>
+  <p>
+    Esas medidas dan un número que parece raro: el <strong>9½" × 11"</strong> mide 24,1 cm de ancho,
+    más que un A4. La razón es que la hoja completa mide 11 pulgadas de ancho y los 9½ son el
+    <em>ancho útil</em>: lo que queda cuando desprendes las dos tiras perforadas de arrastre. O sea que
+    el papel es más ancho de lo que parece, y el documento real es el que queda después de desprender.
+  </p>
+  <p class="ar-nota">
+    En continuo, SUNAT permite además que <strong>la numeración de las copias se haga por repinte</strong>
+    (por presión), que es como funciona un juego autocopiativo. Está previsto expresamente en el
+    Reglamento de Comprobantes de Pago.
+  </p>
+
+  <h2>Cómo elegir en treinta segundos</h2>
+  <ul class="ar-lista">
+    <li>
+      <strong>Vendes al mostrador, a consumidor final:</strong> ½ oficio. Es la mitad de papel y entra
+      todo lo que necesitas. Si algún día vendes más de S/ 700, la boleta lleva nombre y DNI del
+      comprador, y para eso ya reservamos el espacio.
+    </li>
+    <li>
+      <strong>Vendes a empresas y ellos necesitan crédito fiscal:</strong> A4. La factura tiene más
+      datos obligatorios y el cliente suele archivarla en su carpeta de A4, así que no le des un papel
+      que no calza.
+    </li>
+    <li>
+      <strong>Emitís muchas guías de remisión:</strong> A4 si imprimes en hoja, continuo 9½" × 11" si
+      imprimes con matricial. Las guías llevan bastantes casilleros y la letra pequeña no perdona.
+    </li>
+    <li>
+      <strong>Tienes impresora matricial:</strong> formato continuo y a otra cosa. Además ganas la
+      ventaja de las copias: un triplicado se imprime en una sola pasada.
+    </li>
+  </ul>
+
+  <h2>¿Y si quiero unificar todo en una sola medida?</h2>
+  <p>
+    Es lo que hacen muchos negocios, y tiene sentido: un solo papel, un solo archivo, una sola
+    medida de sobre. Unifica en <strong>A4</strong>.
+  </p>
+  <p>
+    Lo que pierdes es papel. Una boleta en A4 usa casi el doble de superficie que una en ½ oficio, y
+    si emites miles al mes eso se nota en el precio por millar. Si la mayoría de lo que emites son
+    boletas, probablemente te convenga quedarte en ½ oficio para las boletas y usar A4 solo para las
+    facturas.
+  </p>
+</Articulo>

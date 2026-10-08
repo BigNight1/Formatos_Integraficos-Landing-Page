@@ -1,0 +1,91 @@
+---
+/**
+ * Sección FAQ · rediseño v2 — design-refs/diseno/Home.dc.html
+ * Acordeón nativo con <details>/<summary>, sin JavaScript, como el diseño.
+ *
+ * Estas 10 preguntas son las que se declaran también en el schema FAQPage
+ * (ver src/pages/index.astro). El sitio anterior declaraba 2 y mostraba 5.
+ */
+import { faqs } from '../../data/home';
+---
+
+<section class="fi-section fi-faq" id="faq">
+  <div class="fi-narrow fi-faq__inner">
+    <h2 class="fi-h2">Preguntas frecuentes</h2>
+
+    <div class="fi-faq__list">
+      {
+        faqs.map((f) => (
+          <details class="fi-faq__item">
+            <summary>
+              <h3>{f.q}</h3>
+              <span class="fi-faq-plus" aria-hidden="true">
+                +
+              </span>
+            </summary>
+            <p>{f.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-faq__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .fi-faq__list {
+    display: flex;
+    flex-direction: column;
+  }
+  .fi-faq__item {
+    border-top: 1px solid var(--fi-borde-oscuro-2);
+    padding: 4px 0;
+  }
+  .fi-faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    font-size: 18px;
+    font-weight: 700;
+    /* content-box como el diseño: su min-height:44px medía sobre el contenido,
+       así que cada fila ocupa 84px reales. Con border-box quedaban en 68px. */
+    box-sizing: content-box;
+    min-height: 44px;
+  }
+  .fi-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .fi-faq-plus {
+    font-size: 28px;
+    line-height: 1;
+    color: var(--fi-rosa);
+    transition: transform 0.2s;
+    flex: none;
+  }
+  .fi-faq__item p {
+    margin: 0 0 22px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fi-texto-claro-2);
+    max-width: 780px;
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-faq__item summary,
+    .fi-faq__item summary h3 {
+      font-size: 16px;
+    }
+    .fi-faq-plus {
+      font-size: 24px;
+    }
+  }
+</style>

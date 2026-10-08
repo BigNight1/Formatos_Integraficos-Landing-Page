@@ -1,227 +1,220 @@
 ---
-// Componente Header
-const currentPath = Astro.url.pathname;
-const isActive = (path: string) => {
-  if (path === "/" && currentPath === "/") return true;
-  if (path !== "/" && currentPath.startsWith(path)) return true;
-  return false;
-};
-const cotizarHref =
-  currentPath === "/" ||
-  currentPath === "/contacto" ||
-  currentPath === "/contacto/"
-    ? "#cotizar"
-    : "/contacto#cotizar";
+/**
+ * Header unificado del rediseño v2.
+ * Fuente: design-refs/diseno/Header.dc.html
+ *
+ * Decisión del cliente (2026-10-08): una sola navegación para las 13 páginas.
+ * Se usa "Autorización SUNAT" (no "Requisitos SUNAT") y se elimina el <header>
+ * propio que la Home traía embebido.
+ *
+ * El diseño no tenía versión móvil (0 media queries en los 12 archivos): el
+ * menú desplegable de móvil es añadido aquí.
+ *
+ * `active` es opcional para no romper las páginas que aún no se rediseñan.
+ */
+import { WHATSAPP } from '../data/home';
+
+export interface Props {
+  active?: 'inicio' | 'comprobantes' | 'precios' | 'sunat' | 'blog' | 'nosotros';
+}
+
+const { active = 'inicio' } = Astro.props;
+
+const items = [
+  { id: 'comprobantes', label: 'Comprobantes', url: '/#comprobantes' },
+  { id: 'precios', label: 'Precios', url: '/precios' },
+  { id: 'sunat', label: 'Autorización SUNAT', url: '/autorizado-sunat' },
+  { id: 'blog', label: 'Guías', url: '/blog' },
+  { id: 'nosotros', label: 'Nosotros', url: '/nosotros' },
+] as const;
 ---
 
-<header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center py-4">
-      <!-- Logo y título -->
-      <a href="/" class="flex items-center space-x-3 shrink-0">
-        <div class="w-10 h-10 rounded-lg flex items-center justify-center">
-          <img
-            src="/LogoFormatos.webp"
-            alt="Logo de Formatos Intergraficos - Imprenta Autorizada SUNAT"
-            class="w-full h-full object-contain"
-          />
-        </div>
-        <div class="hidden sm:block">
-          <div class="text-xl font-bold text-gray-900 leading-tight">
-            Formatos Impresos SAC
-          </div>
-          <div class="text-xs text-gray-600">Autorizados SUNAT</div>
-        </div>
-      </a>
+<header class="fi-header">
+  <div class="fi-header__inner">
+    <a class="fi-header__logo" href="/">
+      <img
+        src="/LogoFormatos.webp"
+        alt="Logo de Formatos Intergráficos, imprenta autorizada SUNAT en Lima"
+        width="42"
+        height="38"
+        fetchpriority="high"
+      />
+      <span>Formatos Intergráficos</span>
+    </a>
 
-      <!-- Desktop Navigation -->
-      <nav class="hidden lg:flex items-center space-x-6">
-        <a
-          href="/"
-          class={`text-sm font-medium transition-colors ${isActive("/") ? "text-primary-600" : "text-gray-700 hover:text-primary-600"}`}
-          >Inicio</a
-        >
+    <button
+      class="fi-header__toggle"
+      type="button"
+      id="fi-nav-toggle"
+      aria-expanded="false"
+      aria-controls="fi-nav"
+      aria-label="Abrir menú"
+    >
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path>
+      </svg>
+    </button>
 
-        <!-- Dropdown Servicios -->
-        <div class="relative group">
-          <button
-            class={`flex items-center text-sm font-medium transition-colors ${currentPath.includes("/servicios") ? "text-primary-600" : "text-gray-700 hover:text-primary-600"}`}
-          >
-            Servicios
-            <svg
-              class="w-4 h-4 ml-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 9l-7 7-7-7"></path></svg
-            >
-          </button>
-          <div
-            class="absolute left-0 mt-2 w-64 bg-white border border-gray-100 rounded-xl shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
-          >
-            <div class="py-2">
-              <a
-                href="/servicios/formatos-continuos"
-                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
-                >Formatos Continuos</a
-              >
-              <a
-                href="/servicios/vouchers-pos"
-                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
-                >Vouchers POS</a
-              >
+    <nav class="fi-header__nav" id="fi-nav" aria-label="Principal">
+      {
+        items.map((i) => (
           <a
-                href="/servicios/documentos-administrativos"
-                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
-                >Documentos Administrativos</a
-              >
-              <a
-                href="/autorizado-sunat"
-                class="block px-4 py-3 text-sm text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
-                >Autorizado SUNAT</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <a
-          href="/nosotros"
-          class={`text-sm font-medium transition-colors ${isActive("/nosotros") ? "text-primary-600" : "text-gray-700 hover:text-primary-600"}`}
-          >Nosotros</a
-        >
-        <a
-          href="/contacto"
-          class={`text-sm font-medium transition-colors ${isActive("/contacto") ? "text-primary-600" : "text-gray-700 hover:text-primary-600"}`}
-          >Contacto</a
-        >
-
-        <a href={cotizarHref} class="btn-primary text-sm py-2 px-4 ml-2"
-          >Cotizar →</a
-        >
-      </nav>
-
-      <!-- Mobile Button -->
-      <div class="lg:hidden flex items-center gap-3">
-        <a href={cotizarHref} class="btn-primary text-sm py-2 px-4">Cotizar</a>
-        <button
-          id="mobile-menu-button"
-          class="text-gray-600 hover:text-gray-900 focus:outline-none p-1"
-        >
-          <svg
-            class="w-7 h-7"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+            href={i.url}
+            class:list={[{ 'is-active': i.id === active }]}
+            aria-current={i.id === active ? 'page' : undefined}
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M4 6h16M4 12h16M4 18h16"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Mobile Menu -->
-  <div
-    id="mobile-menu"
-    class="lg:hidden hidden bg-white border-t border-gray-200"
-  >
-    <div class="px-4 pt-2 pb-6 space-y-1">
-      <a
-        href="/"
-        class={`block px-3 py-3 rounded-md text-base font-medium ${isActive("/") ? "text-primary-600 bg-primary-50" : "text-gray-700 hover:bg-gray-50"}`}
-        >Inicio</a
-      >
-
-      <div>
-        <button
-          id="mobile-servicios-button"
-          class={`w-full flex justify-between items-center px-3 py-3 rounded-md text-base font-medium ${currentPath.includes("/servicios") ? "text-primary-600 bg-primary-50" : "text-gray-700 hover:bg-gray-50"}`}
-        >
-          Servicios
-          <svg
-            class="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-            ><path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 9l-7 7-7-7"></path></svg
-          >
-        </button>
-        <div
-          id="mobile-servicios-menu"
-          class="hidden pl-4 pr-2 py-2 space-y-1 bg-gray-50 rounded-md mt-1 mb-2"
-        >
-          <a
-            href="/servicios/formatos-continuos"
-            class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white"
-            >Formatos Continuos</a
-          >
-          <a
-            href="/servicios/vouchers-pos"
-            class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white"
-            >Vouchers POS</a
-          >
-          <a
-            href="/servicios/documentos-administrativos"
-            class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white"
-            >Documentos Administrativos</a
-          >
-          <a
-            href="/autorizado-sunat"
-            class="block px-3 py-3 rounded-md text-sm font-medium text-gray-700 hover:text-primary-600 hover:bg-white"
-            >Autorizado SUNAT</a
-          >
-        </div>
-      </div>
-
-      <a
-        href="/nosotros"
-        class={`block px-3 py-3 rounded-md text-base font-medium ${isActive("/nosotros") ? "text-primary-600 bg-primary-50" : "text-gray-700 hover:bg-gray-50"}`}
-        >Nosotros</a
-      >
-      <a
-        href="/contacto"
-        class={`block px-3 py-3 rounded-md text-base font-medium ${isActive("/contacto") ? "text-primary-600 bg-primary-50" : "text-gray-700 hover:bg-gray-50"}`}
-        >Contacto</a
-      >
-    </div>
+            {i.label}
+          </a>
+        ))
+      }
+      <a class="fi-header__cta" href={WHATSAPP} target="_blank" rel="noopener noreferrer">Cotizar</a>
+    </nav>
   </div>
 </header>
 
-<script>
-  // Mobile menu toggle
-  const mobileMenuButton = document.getElementById("mobile-menu-button");
-  const mobileMenu = document.getElementById("mobile-menu");
+<script is:inline>
+  (() => {
+    const toggle = document.getElementById('fi-nav-toggle');
+    const nav = document.getElementById('fi-nav');
+    if (!toggle || !nav) return;
 
-  if (mobileMenuButton && mobileMenu) {
-    mobileMenuButton.addEventListener("click", () => {
-      mobileMenu.classList.toggle("hidden");
+    toggle.addEventListener('click', () => {
+      const open = nav.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
     });
-  }
 
-  // Mobile servicios dropdown toggle
-  const mobileServiciosButton = document.getElementById(
-    "mobile-servicios-button",
-  );
-  const mobileServiciosMenu = document.getElementById("mobile-servicios-menu");
-
-  if (mobileServiciosButton && mobileServiciosMenu) {
-    mobileServiciosButton.addEventListener("click", () => {
-      mobileServiciosMenu.classList.toggle("hidden");
+    nav.addEventListener('click', (e) => {
+      if (e.target instanceof HTMLAnchorElement && nav.classList.contains('is-open')) {
+        nav.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }
     });
-  }
+  })();
 </script>
+
+<style>
+  .fi-header {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    font-family: var(--fi-sans);
+    /* El header lo usan también páginas que no van dentro de .fi-site, así que
+       fija aquí su propia línea base (el diseño no tenía reset: normal). */
+    line-height: normal;
+    padding: 24px clamp(16px, 4vw, 64px);
+    border-bottom: 1px solid var(--fi-borde-oscuro);
+    box-sizing: border-box;
+    position: relative;
+    z-index: 20;
+  }
+
+  .fi-header__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .fi-header__logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: var(--fi-texto-claro);
+  }
+  .fi-header__logo img {
+    width: 42px;
+    height: 38px;
+    object-fit: contain;
+  }
+  .fi-header__logo span {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .fi-header__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .fi-header__nav a {
+    text-decoration: none;
+    padding: 12px 0;
+    color: var(--fi-texto-claro-2);
+  }
+  .fi-header__nav a:hover {
+    color: #ffffff;
+  }
+  .fi-header__nav a.is-active {
+    color: #ffffff;
+    border-bottom: 2px solid var(--fi-rojo);
+    font-weight: 700;
+  }
+
+  /* OJO con la especificidad: `.fi-header__nav a` (0,1,1) gana a `.fi-header__cta`
+     (0,1,0), así que el padding:12px 18px del diseño se perdía y el botón quedaba
+     en 68px con el texto pegado a los bordes. Con el selector de abajo (0,2,0)
+     el botón recupera sus 104px. */
+  .fi-header__nav .fi-header__cta {
+    padding: 12px 18px;
+    background: var(--fi-rojo);
+    color: #ffffff;
+    font-weight: 700;
+  }
+  .fi-header__nav .fi-header__cta:hover {
+    background: var(--fi-rojo-oscuro);
+    color: #ffffff;
+  }
+
+  .fi-header__toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    background: transparent;
+    color: var(--fi-texto-claro);
+    cursor: pointer;
+  }
+
+  /* --- Móvil / tablet: añadido, el diseño no lo traía --- */
+  @media (max-width: 1023px) {
+    .fi-header__toggle {
+      display: flex;
+    }
+    .fi-header__nav {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+    .fi-header__nav.is-open {
+      display: flex;
+    }
+    .fi-header__nav a {
+      padding: 16px 0;
+      border-top: 1px solid var(--fi-borde-oscuro);
+    }
+    .fi-header__nav a.is-active {
+      border-bottom: 0;
+    }
+    .fi-header__nav .fi-header__cta {
+      text-align: center;
+      margin: 16px 0 4px;
+      padding: 14px 18px;
+      border-top: 0;
+    }
+  }
+</style>

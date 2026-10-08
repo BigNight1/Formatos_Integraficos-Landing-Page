@@ -4,6 +4,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ==========================================================================
+   Rediseño v2 · estilo B "Círculo de tinta" — tokens de diseño
+   Extraídos del canvas (design-refs/diseno). El diseño original no tenía
+   design system (`designSystems: []`) y repetía los hex en línea; aquí quedan
+   centralizados para poder retematizar el sitio desde un solo lugar.
+   ========================================================================== */
+:root {
+  /* Superficies oscuras */
+  --fi-carbon: #1a1718;
+  --fi-carbon-2: #242021;
+  --fi-carbon-3: #2a2526;
+  --fi-borde-oscuro: #2e2a2b;
+  --fi-borde-oscuro-2: #3e3839;
+
+  /* Marca */
+  --fi-rojo: #c62f44;
+  --fi-rojo-oscuro: #a3243a;
+  --fi-rosa: #ff8a99;
+  --fi-rosa-claro: #ffb4be;
+
+  /* Papel */
+  --fi-papel: #f2edea;
+  --fi-papel-2: #e4dbd5;
+  --fi-borde-claro: #cfc5bf;
+  --fi-borde-claro-2: #ddd4cf;
+  --fi-input-borde: #a39894;
+
+  /* Texto */
+  --fi-texto-claro: #f2edea;
+  --fi-texto-claro-2: #d8d1ce;
+  --fi-texto-apagado: #a9a2a0;
+  --fi-texto-apagado-2: #8c8482;
+  --fi-texto-oscuro: #1a1718;
+  --fi-texto-oscuro-2: #4a4243;
+
+  /* Tipografías */
+  --fi-display: "Big Shoulders Display", "Arial Narrow", sans-serif;
+  --fi-sans: "DM Sans", system-ui, sans-serif;
+  --fi-serif: "Source Serif 4", Georgia, serif;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -12,9 +53,26 @@
   body {
     font-family: "Inter", system-ui, sans-serif;
   }
+
+  /* Accesibilidad: el diseño no traía estados de foco en ningún elemento. */
+  .fi-site :where(a, button, summary, input, select, textarea):focus-visible {
+    outline: 3px solid var(--fi-rosa);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    .fi-site * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 @layer components {
+  /* Legado: todavía los usan las páginas que no se han rediseñado. */
   .btn-primary {
     @apply bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200;
   }
@@ -25,5 +83,518 @@
 
   .section-padding {
     @apply py-16 px-4 sm:px-6 lg:px-8;
+  }
+}
+
+/* ==========================================================================
+   Rediseño v2 · alcance
+   ========================================================================== */
+.fi-site {
+  background: var(--fi-carbon);
+  color: var(--fi-texto-claro);
+  font-family: var(--fi-sans);
+  min-height: 100vh;
+  /* El diseño se dibujó sin reset CSS, así que su line-height por defecto era
+     `normal`. Tailwind (preflight) pone 1.5 en <html>, lo que hacía más altos
+     todos los textos sin line-height explícito (el FAQ medía 160px menos).
+     Se restaura `normal` para que la línea base coincida con el canvas. */
+  line-height: normal;
+}
+
+/* Enlaces: mismo comportamiento que el diseño (heredan color, rojo al pasar),
+   pero se corrige el fallo del original: sobre fondo rojo el hover rojo
+   desaparecía, así que ahí se fuerza blanco. */
+.fi-site a {
+  color: inherit;
+}
+/* :where() mantiene la especificidad en 0 para que las reglas propias de cada
+   componente (header, nav, footer) puedan sobrescribir el hover sin !important. */
+.fi-site :where(a:hover) {
+  color: var(--fi-rojo);
+}
+.fi-site :where(.fi-sobre-rojo a:hover) {
+  color: #ffffff;
+}
+
+/* FAQ en acordeón nativo (<details>) */
+.fi-faq details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.fi-faq details > summary::-webkit-details-marker {
+  display: none;
+}
+.fi-faq details[open] .fi-faq-plus {
+  transform: rotate(45deg);
+}
+
+/* Campos del formulario: el diseño los dejaba sin ningún estado */
+.fi-form input,
+.fi-form select {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.fi-form input:hover,
+.fi-form select:hover {
+  border-color: var(--fi-texto-oscuro);
+}
+.fi-form input:focus,
+.fi-form select:focus {
+  border-color: var(--fi-rojo);
+  box-shadow: inset 0 0 0 1px var(--fi-rojo);
+  outline: none;
+}
+/* El outline global de :focus-visible se sustituye por el borde rojo */
+.fi-form input:focus-visible,
+.fi-form select:focus-visible {
+  outline: none;
+}
+
+/* ==========================================================================
+   Utilidades del rediseño
+   El diseño repetía estos valores en línea en cada sección. Se centralizan.
+   Los valores de escritorio son idénticos al diseño al 100%.
+   ========================================================================== */
+.fi-section {
+  padding: 112px clamp(16px, 4vw, 64px);
+}
+.fi-wrap {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.fi-h2 {
+  margin: 0;
+  font-family: var(--fi-display);
+  font-weight: 900;
+  font-size: clamp(44px, 5vw, 72px);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.fi-narrow {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Círculos decorativos — capa reutilizable
+   En el canvas cada círculo se ancla al borde de la VENTANA (`right: -180px`,
+   `left: -160px`, `right: -8%`…). A 1440px, que es el ancho del tablero, eso
+   cuadra; en monitores anchos el círculo se queda pegado al borde de la
+   pantalla y se despega del contenido (la foto y el círculo llegaban a
+   separarse 650px en un monitor de 2560px).
+
+   Esta capa mide exactamente lo mismo que el tablero del diseño y se centra,
+   así el círculo conserva su posición RELATIVA AL CONTENIDO en cualquier
+   pantalla. Por debajo de 1440px la capa mide lo mismo que la ventana, o sea
+   que no cambia absolutamente nada.
+
+   Uso:
+     <section class="mi-seccion">           ← debe ser position:relative + overflow:hidden
+       <div class="fi-deco">
+         <div class="mi-seccion__circle"></div>   ← conserva sus offsets del canvas
+       </div>
+       <div class="mi-contenido">…</div>       ← debe ir DESPUÉS para pintar encima
+     </section>
+   ========================================================================== */
+.fi-deco {
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 1440px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* --------------------------------------------------------------------------
+   MÓVIL — el diseño no traía ninguna media query (0 en los 12 archivos).
+   Todo lo de aquí abajo es criterio añadido, no está en el canvas.
+   -------------------------------------------------------------------------- */
+@media (max-width: 767px) {
+  .fi-section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+  .fi-h2 {
+    font-size: clamp(32px, 9vw, 44px);
+  }
+}
+
+/* ==========================================================================
+   ARTÍCULOS DEL BLOG
+   Estilos de la plantilla de artículo (canvas: Articulo.dc.html).
+   Viven aquí y no dentro de un componente porque el cuerpo de cada artículo se
+   escribe en la página (contenido normal, no slot): así el CSS aplica igual a
+   todo, sin tener que envolver cada selector en :global().
+   Los usan las 6 páginas de /blog/*.
+   ========================================================================== */
+.ar {
+  background: var(--fi-papel);
+  color: var(--fi-texto-oscuro);
+}
+/* El diseño usa rojo oscuro para los enlaces y casi negro al pasar.
+   Se sube la especificidad para ganar al hover global de .fi-site. */
+.fi-site.ar :where(a:hover) {
+  color: var(--fi-texto-oscuro);
+}
+
+.ar-main {
+  padding: 48px clamp(16px, 4vw, 64px) 104px;
+}
+.ar-art {
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.ar-head {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.ar-bc {
+  font-size: 13px;
+  color: #6b6365;
+}
+.ar-bc a {
+  color: #6b6365;
+  text-decoration: none;
+}
+.ar-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fi-rojo-oscuro);
+}
+.ar-h1 {
+  margin: 0;
+  font-family: var(--fi-display);
+  font-weight: 900;
+  font-size: clamp(44px, 5.4vw, 80px);
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.ar-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  font-size: 14px;
+  color: var(--fi-texto-oscuro-2);
+}
+.ar-autor {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--fi-carbon);
+  color: var(--fi-papel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex: none;
+}
+
+.ar-respuesta {
+  padding: 28px 32px;
+  background: var(--fi-carbon);
+  color: var(--fi-papel);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.ar-respuesta h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700; /* el diseño usaba el 700 por defecto de <h2> */
+}
+.ar-respuesta p {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.ar-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: var(--fi-serif);
+  font-size: 19px;
+  line-height: 1.7;
+}
+.ar-cuerpo p,
+.ar-lista {
+  margin: 0;
+}
+.ar-cuerpo h2 {
+  margin: 16px 0 0;
+  font-family: var(--fi-display);
+  font-weight: 900;
+  font-size: 44px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.ar-lista {
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ar-tabla__scroll {
+  overflow-x: auto;
+  border: 1px solid var(--fi-borde-claro);
+  font-family: var(--fi-sans);
+}
+.ar-tabla {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 15px;
+  background: #ffffff;
+}
+.ar-tabla thead tr {
+  background: var(--fi-carbon);
+  color: var(--fi-papel);
+  text-align: left;
+}
+.ar-tabla th,
+.ar-tabla td {
+  padding: 14px 18px;
+}
+.ar-tabla tbody tr {
+  border-top: 1px solid var(--fi-papel-2);
+}
+.ar-tabla tbody th {
+  text-align: left;
+}
+
+/* Cita / nota destacada dentro del cuerpo */
+.ar-nota {
+  padding: 22px 26px;
+  background: var(--fi-papel-2);
+  border-left: 5px solid var(--fi-rojo);
+  font-family: var(--fi-sans);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+/* Preguntas frecuentes del artículo. El desplegable en sí lo resuelve `.fi-faq`
+   (global); aquí solo van los tamaños del título y del texto de respuesta. */
+.ar-faq {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.ar-faq__t {
+  margin: 0;
+  font-family: var(--fi-display);
+  font-weight: 900;
+  font-size: 40px;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.ar-faq details {
+  border-bottom: 1px solid var(--fi-borde-claro);
+}
+/* `.fi-faq` (global) solo quita el marcador y pone el cursor: la disposición en
+   fila la define cada página. Sin esto, el signo + cae en su propia línea. */
+.ar-faq details > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+}
+.ar-faq details > summary h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.ar-faq details > p {
+  margin: 0;
+  padding: 0 0 20px;
+  font-family: var(--fi-serif);
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--fi-texto-oscuro-2);
+}
+
+.ar-cta {
+  padding: 32px;
+  background: var(--fi-rojo);
+  color: #ffffff;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+}
+.ar-cta__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 460px;
+}
+.ar-cta__texto strong {
+  font-family: var(--fi-display);
+  font-weight: 900;
+  font-size: 32px;
+  text-transform: uppercase;
+}
+.ar-cta__texto span {
+  font-size: 16px;
+  line-height: 1.5;
+}
+.ar-cta__botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.ar-cta__a,
+.ar-cta__b {
+  padding: 14px 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+/* OJO con la especificidad: `.fi-site a { color: inherit }` (0,1,1) pisa a un
+   selector de una sola clase (0,1,0). Por eso el botón de fondo blanco heredaba
+   el blanco del CTA y el texto quedaba INVISIBLE. Los selectores van con `.fi-site`
+   delante para ganarle, y el color se declara explícitamente en reposo y en hover
+   en vez de confiar en la herencia. */
+.fi-site .ar-cta__a {
+  background: var(--fi-carbon);
+  color: var(--fi-papel);
+}
+.fi-site .ar-cta__b {
+  background: #ffffff;
+  color: var(--fi-texto-oscuro);
+}
+.fi-site .ar-cta__a:hover {
+  background: var(--fi-carbon);
+  color: var(--fi-papel);
+  filter: brightness(1.25);
+}
+.fi-site .ar-cta__b:hover {
+  background: #f4efec;
+  color: var(--fi-texto-oscuro);
+}
+
+.ar-bio {
+  display: flex;
+  gap: 20px;
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid var(--fi-borde-claro-2);
+  align-items: flex-start;
+}
+.ar-bio__avatar {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--fi-carbon);
+  color: var(--fi-papel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+}
+.ar-bio__texto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ar-bio__texto strong {
+  font-size: 17px;
+}
+.ar-bio__texto span {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--fi-texto-oscuro-2);
+}
+
+.ar-relacionadas {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ar-relacionadas strong {
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #6b6365;
+}
+.ar-relacionadas a {
+  font-size: 18px;
+  font-weight: 700;
+}
+.ar-pendiente {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--fi-texto-apagado);
+}
+
+/* ================= MÓVIL (añadido) ================= */
+@media (max-width: 767px) {
+  .ar-main {
+    padding: 32px 20px 64px;
+  }
+  .ar-art {
+    gap: 32px;
+  }
+  .ar-h1 {
+    font-size: clamp(32px, 9.5vw, 48px);
+  }
+  .ar-respuesta {
+    padding: 22px 20px;
+  }
+  .ar-cuerpo {
+    font-size: 17px;
+  }
+  .ar-cuerpo h2 {
+    font-size: 32px;
+  }
+  .ar-tabla th,
+  .ar-tabla td {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+  .ar-cta {
+    padding: 24px 20px;
+  }
+  .ar-cta__texto strong {
+    font-size: 26px;
+  }
+  .ar-cta__botones {
+    width: 100%;
+  }
+  .ar-cta__a,
+  .ar-cta__b {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+  .ar-bio {
+    padding: 20px;
+    gap: 14px;
+  }
+  .ar-bio__avatar {
+    width: 52px;
+    height: 52px;
+    font-size: 17px;
+  }
+  .ar-relacionadas a,
+  .ar-pendiente {
+    font-size: 16px;
   }
 }

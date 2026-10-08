@@ -1,0 +1,319 @@
+---
+/**
+ * Hero de la Home · rediseño v2 (estilo B "Círculo de tinta")
+ * Fuente: design-refs/diseno/Home.dc.html (sección HEADER + HERO)
+ *
+ * Cambios respecto al canvas, todos deliberados:
+ *  1. El <header> que el diseño traía DENTRO de esta sección se sustituye por el
+ *     componente Header unificado. La sección baja su min-height de 860px a 768px
+ *     para que header + hero sigan midiendo igual.
+ *  2. Se quita el botón hamburguesa del raíl: en el diseño no hacía nada.
+ *  3. CORRECCIÓN DE FONDO: en el canvas el círculo rojo está anclado al borde
+ *     DERECHO DE LA VENTANA (`right: -6%`, tope 820px) y la foto se centra en una
+ *     columna elástica. A 1440px coinciden por casualidad, pero en pantallas
+ *     anchas (2560px) el círculo se queda a la derecha y la foto se va a la
+ *     izquierda: se separan y se ve roto.
+ *     Aquí el círculo se ancla a la FOTO: va dentro de la figura, centrado en ella
+ *     y con 1,58× su diámetro, que es la proporción exacta del canvas
+ *     (820px de círculo para 520px de foto). Así quedan concéntricos a cualquier
+ *     ancho. La columna de texto lleva z-index para seguir pintando por encima.
+ *  4. Se acota el ancho del hero a 1600px: el canvas es full-bleed y en monitores
+ *     ultra anchos el texto quedaba pegado al borde izquierdo. Por debajo de
+ *     1600px no cambia absolutamente nada.
+ */
+import { WHATSAPP } from '../../data/home';
+---
+
+<section class="fi-hero">
+  <aside class="fi-hero__rail">
+    <span class="fi-hero__railtext">Autorizados SUNAT</span>
+    <span class="fi-hero__railtext">RUC 20503580030</span>
+  </aside>
+
+  <div class="fi-hero__content">
+    <div class="fi-hero__box">
+      <div class="fi-hero__blob" aria-hidden="true"></div>
+      <div class="fi-hero__main">
+        <div class="fi-hero__copy">
+          <h1 class="fi-hero__h1">
+            Imprenta autorizada SUNAT en Lima: boletas, facturas y guías en formato continuo
+          </h1>
+
+          <p class="fi-hero__claim">Imprimimos<br />la confianza<br />de tu negocio</p>
+
+          <div class="fi-hero__note">
+            <span class="fi-hero__dash" aria-hidden="true"></span>
+            <span>
+              Comprobantes con tu logo, serie y numeración autorizada. Entrega en 24 horas en Lima y
+              envíos a todo el Perú.
+            </span>
+          </div>
+
+          <div class="fi-hero__actions">
+            <a class="fi-hero__wa" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="hero">
+              <span class="fi-hero__wadot" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path>
+                </svg>
+              </span>
+              Cotizar por WhatsApp
+            </a>
+            <a class="fi-hero__link" href="#precios">Ver precios referenciales</a>
+          </div>
+        </div>
+
+        <figure class="fi-hero__figure">
+          <div class="fi-hero__circle" aria-hidden="true"></div>
+          <img
+            src="/hombre_trabajando_formatos.webp"
+            alt="Operario de Formatos Intergráficos cargando tinta en una prensa offset"
+            width="520"
+            height="520"
+            fetchpriority="high"
+          />
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-hero {
+    min-height: 768px;
+    box-sizing: border-box;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    background: var(--fi-carbon);
+  }
+
+  /* Círculo pequeño decorativo del canvas. Va DENTRO de .fi-hero__box para que
+     acompañe al contenido en cualquier ancho (el canvas lo anclaba a la ventana
+     con left:42% y en pantallas anchas se despegaba).
+     Los valores son la conversión exacta de los del canvas a este contenedor,
+     que es más estrecho (72px del raíl + 2×64px de padding):
+       left:  42% de la ventana  →  37,8% de la caja  (coinciden a 1440px)
+       bottom: -90px de la sección → -138px de la caja (48px de padding inferior) */
+  .fi-hero__blob {
+    position: absolute;
+    /* min(): por debajo de 1440px se comporta como el 42% del canvas (que era un
+       porcentaje de la VENTANA); a partir de ahí se queda fijo en los 468px que
+       le corresponden dentro de la caja, para no moverse cuando la caja ya no
+       crece. Un % a secas se desplazaba 131px al ensancharse la caja. */
+    left: min(37.8%, 468px);
+    bottom: -138px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: var(--fi-rojo);
+    opacity: 0.9;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .fi-hero__rail {
+    width: 72px;
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 32px 0;
+    border-right: 1px solid var(--fi-borde-oscuro);
+    position: relative;
+    z-index: 2;
+  }
+  .fi-hero__railtext {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fi-texto-apagado);
+  }
+
+  .fi-hero__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 28px clamp(16px, 4vw, 64px) 48px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .fi-hero__box {
+    width: 100%;
+    /* Guarda para monitores ultra anchos. Por debajo de 1600px no cambia nada. */
+    max-width: 1600px;
+    margin: 0 auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Contenedor de referencia del círculo decorativo */
+    position: relative;
+  }
+
+  .fi-hero__main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .fi-hero__copy {
+    flex: 1 1 420px;
+    max-width: 620px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    /* El círculo vive dentro de la figura, que va después en el DOM: sin esto
+       el rojo taparía la caja de texto cuando se solapan. */
+    position: relative;
+    z-index: 2;
+  }
+
+  /* El H1 es la línea de keyword (pequeña a propósito); el titular visual es un <p>. */
+  .fi-hero__h1 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--fi-texto-claro-2);
+    line-height: 1.6;
+    max-width: 520px;
+  }
+
+  .fi-hero__claim {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(60px, 8vw, 128px);
+    line-height: 0.86;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+  }
+
+  .fi-hero__note {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 18px 22px;
+    border: 3px solid var(--fi-rojo);
+    align-self: flex-start;
+    /* El diseño se dibujó sin reset, así que su max-width:480px medía sobre el
+       contenido: 480 + 44 de padding + 6 de borde = 530px reales. Se declara
+       content-box para conservar el número del canvas y el mismo corte de línea. */
+    box-sizing: content-box;
+    max-width: 480px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--fi-texto-claro-2);
+  }
+  .fi-hero__dash {
+    width: 48px;
+    height: 2px;
+    background: var(--fi-texto-claro);
+    flex: none;
+  }
+
+  .fi-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+  }
+  .fi-hero__wa {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--fi-texto-claro);
+  }
+  .fi-hero__wa:hover {
+    color: var(--fi-rosa);
+  }
+  .fi-hero__wadot {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--fi-texto-claro);
+    color: var(--fi-carbon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+  }
+  .fi-hero__link {
+    font-size: 14px;
+    color: var(--fi-texto-claro-2);
+  }
+
+  .fi-hero__figure {
+    flex: 1 1 360px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 420px;
+    position: relative;
+    z-index: 1;
+  }
+  .fi-hero__figure img {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 520px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    object-position: 30% 50%;
+    border-radius: 50%;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Concéntrico con la foto: 1,58× su diámetro, la proporción del canvas
+     (820px de círculo para 520px de foto). Al ir dentro de la figura sigue
+     centrado en la foto en cualquier ancho de pantalla. */
+  .fi-hero__circle {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(158%, 820px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--fi-rojo);
+    z-index: 0;
+  }
+
+  /* --- Móvil / tablet (añadido) --- */
+  @media (max-width: 1023px) {
+    .fi-hero {
+      min-height: 0;
+    }
+    /* El raíl vertical no tiene sentido en pantallas estrechas */
+    .fi-hero__rail {
+      display: none;
+    }
+    .fi-hero__content {
+      padding: 40px 20px 56px;
+    }
+    /* Un halo rojo alrededor de la foto, sin invadir el texto */
+    .fi-hero__circle {
+      width: min(125%, 460px);
+    }
+    .fi-hero__blob {
+      display: none;
+    }
+    .fi-hero__figure {
+      min-height: 0;
+      flex-basis: 260px;
+    }
+    .fi-hero__note {
+      max-width: 100%;
+    }
+  }
+</style>

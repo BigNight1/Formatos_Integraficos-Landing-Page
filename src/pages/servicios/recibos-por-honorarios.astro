@@ -1,0 +1,607 @@
+---
+/**
+ * /servicios/recibos-por-honorarios · rediseño v2  ·  PÁGINA NUEVA
+ *
+ * Antes el footer enlazaba a `/servicios/documentos-administrativos#honorarios`,
+ * un ancla que no existía. Ahora tiene su página.
+ *
+ * Carácter propio:
+ *
+ *   · BANDA ROSA a todo el ancho — ninguna otra página del sitio usa el rosa como
+ *     fondo de sección. Es lo que la hace reconocible de un vistazo.
+ *   · MAQUETA `Documento` con el acento rosa y el texto en oscuro.
+ *   · Nube de chips con las profesiones que más lo piden.
+ *
+ * ⚠️ TRIBUTARIO — importante y dicho en la propia página:
+ *    el recibo por honorarios VÁLIDO ante SUNAT es el Recibo por Honorarios
+ *    Electrónico (RHE) que el profesional emite desde SOL. Este formato físico
+ *    sirve para control interno, para la representación impresa y para los casos
+ *    en que corresponde. No se afirma que reemplace al RHE.
+ *    La retención de 4.ª categoría la aplica quien paga cuando está designado como
+ *    agente de retención. Que lo revise un contador antes de publicar.
+ */
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Documento from '../../components/Documento.astro';
+import { WHATSAPP } from '../../data/home';
+
+const base = 'https://formatosintergraficos.pe';
+
+const profesiones = [
+  'Médicos',
+  'Odontólogos',
+  'Psicólogos',
+  'Veterinarios',
+  'Abogados',
+  'Contadores',
+  'Arquitectos',
+  'Ingenieros',
+  'Consultores',
+  'Diseñadores',
+  'Capacitadores',
+  'Técnicos independientes',
+];
+
+const formatos = [
+  {
+    t: '½ oficio',
+    d: 'El tamaño clásico del talonario de recibos. Cabe en el bolsillo del maletín y en la guantera, que es donde suele terminar.',
+    nota: 'Desde 1 millar',
+  },
+  {
+    t: 'A4',
+    d: 'Cuando el detalle importa: informes, consultorías por proyecto o servicios con varios conceptos y fechas.',
+    nota: 'Desde 5 millares',
+  },
+];
+
+const faqs = [
+  {
+    q: '¿Este talonario reemplaza al Recibo por Honorarios Electrónico?',
+    a: 'No. El documento válido ante SUNAT es el Recibo por Honorarios Electrónico (RHE) que emites desde SOL. Este formato impreso es para tu control interno, para la representación impresa y para los supuestos en que corresponde usarlo. Te lo decimos claro para que no haya confusión con tu contador.',
+  },
+  {
+    q: '¿Quién retiene el 8 %?',
+    a: 'Cuando quien te paga está designado por SUNAT como agente de retención, es esa empresa la que retiene el porcentaje que corresponda a rentas de cuarta categoría y lo paga a SUNAT. Nosotros solo imprimimos el formato: quien lo llena eres tú, y el cálculo lo confirma tu contador.',
+  },
+  {
+    q: '¿Puedo poner mi número de colegiatura y mi especialidad?',
+    a: 'Sí, y conviene. Añadimos los campos que uses: colegiatura, especialidad, RUC, dirección de consultorio y teléfono. El diseño está incluido, así que armamos la estructura a tu medida.',
+  },
+  {
+    q: '¿Original y copia, o solo original?',
+    a: 'Lo habitual es original y una copia en papel autocopiativo: el original para el cliente y la copia para tu archivo. También los hacemos en hojas sueltas si los imprimes tú.',
+  },
+  {
+    q: '¿Sirve para varias sedes o varios profesionales?',
+    a: 'Sí. Si en tu consultorio o estudio emiten varios profesionales, podemos imprimir series distintas con el nombre de cada uno, o un formato común con espacio para indicar quién atendió.',
+  },
+  {
+    q: '¿Cuánto tardan?',
+    a: 'Entre 24 y 48 horas en Lima metropolitana, una vez aprobada la prueba de diseño. Enviamos a provincia por courier.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Impresión de recibos por honorarios',
+    description:
+      'Formatos y talonarios de recibos por honorarios impresos con el logo del profesional: ½ oficio y A4, con original y copia en papel autocopiativo.',
+    serviceType: 'Impresión de recibos por honorarios',
+    areaServed: { '@type': 'City', name: 'Lima' },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Formatos Intergráficos',
+      url: base,
+      telephone: '+51910500706',
+    },
+    url: `${base}/servicios/recibos-por-honorarios`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Recibos por honorarios',
+        item: `${base}/servicios/recibos-por-honorarios`,
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Recibos por Honorarios en Lima | Talonarios con tu Logo"
+  description="Talonarios de recibos por honorarios personalizados con tu logo, colegiatura y especialidad. ½ oficio y A4, con original y copia. Desde 1 millar en Lima."
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site rh">
+    <Header />
+
+    <main>
+      <!-- HERO -->
+      <section class="rh-hero">
+        <div class="fi-deco">
+          <div class="rh-hero__circle" aria-hidden="true"></div>
+        </div>
+        <div class="fi-wrap rh-hero__inner">
+          <div class="rh-hero__texto">
+            <nav class="rh-bc" aria-label="Ruta de navegación">
+              <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+              <span aria-current="page">Recibos por honorarios</span>
+            </nav>
+            <h1 class="rh-h1">Recibos por honorarios impresos con tu sello</h1>
+            <p class="rh-hero__lead">
+              Talonarios con tu nombre, tu colegiatura y tu especialidad. ½ oficio o A4, con original
+              y copia en autocopiativo. Tu número, tu archivo, tu imagen.
+            </p>
+            <div class="rh-hero__acciones">
+              <a class="rh-btn" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="honorarios-hero">
+                Cotizar por WhatsApp
+              </a>
+              <a class="rh-btn rh-btn--linea" href="/precios">Ver precios</a>
+            </div>
+          </div>
+
+          <div class="rh-hero__figura">
+            <Documento
+              tipo="Recibo por honorarios"
+              numero="E001 - 000087"
+              acento="#C62F44"
+              acentoTexto="#FFFFFF"
+              suave="#FFE4E8"
+              copias={['#FFD1D8']}
+              campos={['Recibí de', 'R.U.C.', 'Por concepto de', 'Fecha']}
+              destino="Original"
+            />
+          </div>
+        </div>
+      </section>
+
+      <!-- QUÉ ES -->
+      <section class="fi-section rh-sec rh-sec--paper">
+        <div class="fi-narrow rh-prosa">
+          <h2 class="fi-h2 rh-h2">Para qué sirve el formato impreso</h2>
+          <p>
+            El documento que vale ante SUNAT es el Recibo por Honorarios Electrónico que emites
+            desde SOL. Lo decimos primero porque es lo que tu contador va a preguntarte: este
+            talonario no reemplaza al RHE.
+          </p>
+          <p>
+            Lo que sí resuelve es todo lo de alrededor. Tener el recibo en papel con tu nombre, tu
+            colegiatura y tu especialidad, con un correlativo propio y una copia que se queda en tu
+            archivo, ordena la relación con el cliente que te paga en efectivo y se lleva algo
+            firmado. Y para los casos en los que corresponde la representación impresa, el formato
+            ya está listo.
+          </p>
+          <p class="rh-prosa__nota">
+            Si tienes dudas sobre cuál te toca según tu actividad y tu régimen, pregúntale a tu
+            contador antes de encargar el talonario. Nosotros imprimimos lo que él te indique.
+          </p>
+        </div>
+      </section>
+
+      <!-- BANDA ROSA: la firma visual -->
+      <section class="rh-banda">
+        <div class="fi-wrap rh-banda__inner">
+          <h2 class="rh-banda__t">Quién nos pide recibos por honorarios</h2>
+          <p class="rh-banda__lead">
+            Profesionales independientes que facturan su trabajo por consulta, por sesión o por
+            proyecto. Si emites recibos, este formato es para ti.
+          </p>
+          <ul class="rh-chips">
+            {profesiones.map((p) => <li class="rh-chip">{p}</li>)}
+          </ul>
+        </div>
+      </section>
+
+      <!-- FORMATOS -->
+      <section class="fi-section rh-sec">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 rh-h2">Dos tamaños</h2>
+          <div class="rh-formatos">
+            {
+              formatos.map((f) => (
+                <article class="rh-formato">
+                  <span class="rh-formato__medida">{f.t}</span>
+                  <p>{f.d}</p>
+                  <span class="rh-formato__nota">{f.nota}</span>
+                </article>
+              ))
+            }
+          </div>
+        </div>
+      </section>
+
+      <!-- TALONARIO O SUELTAS -->
+      <section class="fi-section rh-sec rh-sec--paper">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 rh-h2">Talonario o hojas sueltas</h2>
+          <div class="rh-dos">
+            <article class="rh-opcion">
+              <h3>Talonario</h3>
+              <p>
+                Engomado o con argolla, numerado y con la copia detrás. Es lo que funciona cuando
+                emites en el consultorio o en la obra y necesitas el correlativo a la mano.
+              </p>
+              <ul>
+                <li>Numeración correlativa impresa</li>
+                <li>Original y copia en distintos colores</li>
+                <li>Tapa con tu logo y tus datos</li>
+              </ul>
+            </article>
+            <article class="rh-opcion">
+              <h3>Hojas sueltas</h3>
+              <p>
+                Resmas sin encuadernar, para quien imprime cada recibo desde su computadora y solo
+                necesita el papel con el diseño y los campos ya puestos.
+              </p>
+              <ul>
+                <li>Una o dos tintas</li>
+                <li>Bond 80 g o autocopiativo</li>
+                <li>Ideal si el correlativo lo lleva tu sistema</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="fi-section rh-sec fi-faq">
+        <div class="fi-narrow rh-faq">
+          <h2 class="fi-h2 rh-h2">Preguntas sobre recibos por honorarios</h2>
+          <div>
+            {
+              faqs.map((f) => (
+                <details class="rh-faq__item">
+                  <summary>
+                    <h3>{f.q}</h3>
+                    <span class="fi-faq-plus" aria-hidden="true">
+                      +
+                    </span>
+                  </summary>
+                  <p>{f.a}</p>
+                </details>
+              ))
+            }
+          </div>
+          <a class="rh-cta" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="honorarios-faq">
+            Cotizar mis recibos por WhatsApp
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<style>
+  /* ==========================================================================
+     BANDA ROSA — el rasgo de identidad. Es la única página del sitio que usa el
+     rosa como fondo de sección a todo el ancho.
+     ========================================================================== */
+  .rh-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    padding: 56px clamp(16px, 4vw, 64px) 96px;
+  }
+  .rh-hero__circle {
+    position: absolute;
+    bottom: -260px;
+    left: -140px;
+    width: 520px;
+    height: 520px;
+    background: var(--fi-rosa);
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+  .rh-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .rh-bc {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+    margin-bottom: 24px;
+  }
+  .rh-bc a {
+    color: var(--fi-texto-apagado);
+  }
+  .rh-h1 {
+    margin: 0 0 24px;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 5.2vw, 76px);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .rh-hero__lead {
+    margin: 0 0 32px;
+    max-width: 54ch;
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .rh-hero__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .rh-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 26px;
+    background: var(--fi-rojo);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .rh-btn:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+  .rh-btn--linea {
+    background: transparent;
+    border: 1px solid var(--fi-borde-oscuro-2);
+    color: var(--fi-texto-claro);
+  }
+  .rh-btn--linea:hover {
+    background: var(--fi-carbon-3);
+    border-color: var(--fi-papel);
+  }
+  .rh-hero__figura {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* --- Secciones --- */
+  .rh-sec {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+  }
+  .rh-sec--paper {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .rh-h2 {
+    margin-bottom: 26px;
+  }
+  .rh-prosa p {
+    margin: 0 0 22px;
+    font-size: 19px;
+    line-height: 1.75;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .rh-prosa__nota {
+    padding: 22px 26px;
+    border-left: 5px solid var(--fi-rosa);
+    background: var(--fi-papel-2);
+    font-size: 17px !important;
+  }
+
+  /* --- La banda rosa --- */
+  .rh-banda {
+    background: var(--fi-rosa);
+    color: var(--fi-texto-oscuro);
+    padding: 88px clamp(16px, 4vw, 64px);
+  }
+  .rh-banda__inner {
+    max-width: 1000px;
+  }
+  .rh-banda__t {
+    margin: 0 0 18px;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(36px, 4.4vw, 64px);
+    line-height: 0.94;
+    text-transform: uppercase;
+  }
+  .rh-banda__lead {
+    margin: 0 0 36px;
+    max-width: 62ch;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .rh-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rh-chip {
+    padding: 10px 18px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(26, 23, 24, 0.18);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--fi-texto-oscuro);
+  }
+
+  /* --- Formatos --- */
+  .rh-formatos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .rh-formato {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 36px 32px;
+    border: 1px solid var(--fi-borde-oscuro);
+    background: var(--fi-carbon-2);
+  }
+  .rh-formato__medida {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(48px, 5.5vw, 70px);
+    line-height: 0.9;
+    color: var(--fi-rosa);
+  }
+  .rh-formato p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fi-texto-claro-2);
+  }
+  .rh-formato__nota {
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid var(--fi-borde-oscuro);
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Talonario o sueltas --- */
+  .rh-dos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+  }
+  .rh-opcion {
+    padding: 36px 32px;
+    background: #fff;
+    border-top: 6px solid var(--fi-rosa);
+  }
+  .rh-opcion h3 {
+    margin: 0 0 16px;
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .rh-opcion p {
+    margin: 0 0 20px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .rh-opcion ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .rh-opcion li {
+    position: relative;
+    padding-left: 24px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .rh-opcion li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    background: var(--fi-rosa);
+  }
+
+  /* --- FAQ --- */
+  .rh-faq h2 {
+    margin-bottom: 32px;
+  }
+  .rh-faq__item {
+    border-bottom: 1px solid var(--fi-borde-oscuro);
+  }
+  .rh-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .rh-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .rh-faq__item p {
+    margin: 0;
+    padding: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--fi-texto-apagado);
+  }
+  .rh-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    margin-top: 36px;
+    padding: 0 30px;
+    background: var(--fi-rojo);
+    color: #fff !important;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .rh-cta:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+
+  /* --- Móvil --- */
+  @media (max-width: 900px) {
+    .rh-hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .rh-hero__figura {
+      order: -1;
+    }
+    .rh-hero__circle {
+      width: 300px;
+      height: 300px;
+      bottom: -150px;
+      left: -90px;
+    }
+  }
+  @media (max-width: 600px) {
+    .rh-hero {
+      padding-bottom: 64px;
+    }
+    .rh-banda {
+      padding: 64px 20px;
+    }
+    .rh-btn,
+    .rh-cta {
+      width: 100%;
+    }
+    .rh-formato,
+    .rh-opcion {
+      padding: 26px 22px;
+    }
+  }
+</style>

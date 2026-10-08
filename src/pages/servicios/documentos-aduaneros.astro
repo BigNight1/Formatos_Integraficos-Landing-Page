@@ -1,0 +1,677 @@
+---
+/**
+ * /servicios/documentos-aduaneros · rediseño v2  ·  PÁGINA NUEVA
+ *
+ * Antes el footer enlazaba a `/servicios/documentos-administrativos#aduaneros`,
+ * un ancla que no existía. Ahora tiene su página.
+ *
+ * Carácter propio:
+ *
+ *   · LÍNEA DE TIEMPO HORIZONTAL con los 5 pasos del despacho. Es la única del
+ *     sitio y es lo que define esta página.
+ *   · BANDA ROJA horizontal en el hero, como la franja de un contenedor.
+ *   · FICHERO de documentos (factura, packing, BL/AWB, certificado) en el hero,
+ *     en vez de una maqueta de comprobante.
+ *
+ * ⚠️ ADUANAS: la Declaración Aduanera de Mercancías (DAM) se transmite
+ *    ELECTRÓNICAMENTE a SUNAT Aduanas; lo que se imprime es su representación y
+ *    los documentos que acompañan el expediente. La página lo dice así, sin
+ *    insinuar que imprimimos un formulario que en realidad es digital.
+ *    Que lo revise un agente de aduana o contador antes de publicar.
+ */
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { WHATSAPP } from '../../data/home';
+
+const base = 'https://formatosintergraficos.pe';
+
+const fichero = [
+  { n: '01', t: 'Factura comercial' },
+  { n: '02', t: 'Packing list' },
+  { n: '03', t: 'BL / AWB' },
+  { n: '04', t: 'Certificado de origen' },
+];
+
+const documentos = [
+  {
+    t: 'Factura comercial de exportación',
+    d: 'El documento base del expediente. Se imprime con los datos del exportador e importador, la descripción de la mercancía, el valor FOB y las condiciones de venta (Incoterm).',
+  },
+  {
+    t: 'Packing list',
+    d: 'El detalle del empaque: bultos, pesos neto y bruto, dimensiones y contenido de cada caja. Es lo que el verificador compara con la carga.',
+  },
+  {
+    t: 'Conocimiento de embarque y guía aérea',
+    d: 'La representación impresa del BL marítimo o del AWB aéreo, con el número de documento, el puerto o aeropuerto y el consignatario.',
+  },
+  {
+    t: 'Certificado de origen',
+    d: 'El formato que acredita el origen de la mercancía para acogerse a un arancel preferencial. Suele venir de una entidad certificadora, y lo imprimimos con tu numeración.',
+  },
+  {
+    t: 'Representación de la DAM',
+    d: 'La Declaración Aduanera de Mercancías se transmite electrónicamente. Imprimimos su representación y la liquidación de tributos para el expediente físico del despacho.',
+  },
+  {
+    t: 'Guía de remisión para exportación',
+    d: 'El traslado de la mercancía hacia el terminal portuario o aeroportuario también necesita su guía. La imprimimos en formato continuo o en hojas.',
+  },
+];
+
+const pasos = [
+  {
+    n: '1',
+    t: 'Llega la carga',
+    d: 'El agente de aduana recibe la documentación del exterior y arma el expediente.',
+  },
+  {
+    n: '2',
+    t: 'Se numera la DAM',
+    d: 'La declaración se transmite electrónicamente a SUNAT Aduanas y queda numerada.',
+  },
+  {
+    n: '3',
+    t: 'Se liquidan los tributos',
+    d: 'Según la partida arancelaria y el valor en aduana. Se paga y se adjunta la liquidación.',
+  },
+  {
+    n: '4',
+    t: 'Reconocimiento',
+    d: 'El aforo puede ser documentario o físico, según el canal que asigne la autoridad.',
+  },
+  {
+    n: '5',
+    t: 'Levante y retiro',
+    d: 'Autorizada la salida, la carga se retira del terminal con su guía de remisión.',
+  },
+];
+
+const fichas = [
+  { t: 'Medidas', d: 'A4 y ½ oficio en hojas, o formato continuo si tu sistema lo emite así.' },
+  { t: 'Copias', d: 'Original y hasta tres copias en papel autocopiativo, para el expediente y el archivo.' },
+  { t: 'Idioma', d: 'Español o inglés, según el destino y lo que exija tu cliente del exterior.' },
+  { t: 'Numeración', d: 'Correlativa propia. Los documentos aduaneros no pasan por autorización de SUNAT.' },
+  { t: 'Cantidad', d: 'Desde 1 millar. En expedientes de comercio exterior se suele pedir volúmenes bajos.' },
+  { t: 'Urgencia', d: 'Si la carga está en puerto y el tiempo aprieta, dilo: tiene prioridad en el taller.' },
+];
+
+const faqs = [
+  {
+    q: '¿Imprimen la DAM como formulario?',
+    a: 'No, y conviene aclararlo: la Declaración Aduanera de Mercancías se transmite electrónicamente a SUNAT Aduanas y no existe como formulario para llenar a mano. Lo que imprimimos es su representación impresa y la liquidación de tributos, para que el expediente del despacho quede completo en papel.',
+  },
+  {
+    q: '¿En qué idioma van los documentos?',
+    a: 'Como lo pida tu contraparte. Para importación se usan mucho en inglés; para exportación desde Perú, casi siempre en español, y a veces en los dos idiomas en la misma hoja. Indícanos qué necesitas y lo maquetamos así.',
+  },
+  {
+    q: '¿Puedo imprimir solo el packing list y usar el resto en digital?',
+    a: 'Sí. Cada vez más operaciones llevan el expediente en digital, pero el packing list se sigue pegando en el bulto y la guía se sigue llevando en la unidad. Arma el pedido con lo que de verdad vas a poner en papel.',
+  },
+  {
+    q: '¿Con qué rapidez pueden entregar?',
+    a: 'Si la carga ya está en puerto, ese es el peor momento para descubrir que falta un documento. Cuéntanos el caso y le damos prioridad: en Lima podemos tener el tiraje listo en 24 horas si el arte ya está aprobado.',
+  },
+  {
+    q: '¿Trabajan con agentes de aduana que llevan varios clientes?',
+    a: 'Sí, es buena parte de lo que nos piden. Si manejas varias razones sociales, podemos imprimir series distintas por cliente en un mismo pedido, con el diseño y la numeración de cada uno.',
+  },
+  {
+    q: '¿Incluye el diseño?',
+    a: 'Sí. Armamos la estructura del documento con tu logo, tus datos y los campos que exija el expediente, y te enviamos la prueba antes de imprimir.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Impresión de documentos aduaneros y de comercio exterior',
+    description:
+      'Impresión de factura comercial, packing list, certificado de origen, representación de la DAM y guías de remisión para exportación, personalizados y en papel autocopiativo.',
+    serviceType: 'Impresión de documentos de comercio exterior',
+    areaServed: { '@type': 'City', name: 'Lima' },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Formatos Intergráficos',
+      url: base,
+      telephone: '+51910500706',
+    },
+    url: `${base}/servicios/documentos-aduaneros`,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Documentos aduaneros',
+        item: `${base}/servicios/documentos-aduaneros`,
+      },
+    ],
+  },
+];
+---
+
+<Layout
+  title="Documentos Aduaneros y de Comercio Exterior | Lima"
+  description="Imprimimos factura comercial, packing list, certificado de origen, la DAM y guías de exportación. Expedientes de comercio exterior listos en Lima."
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site ad">
+    <Header />
+
+    <main>
+      <!-- HERO con banda roja y fichero -->
+      <section class="ad-hero">
+        <div class="ad-hero__banda" aria-hidden="true"></div>
+        <div class="fi-wrap ad-hero__inner">
+          <div class="ad-hero__texto">
+            <nav class="ad-bc" aria-label="Ruta de navegación">
+              <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+              <span aria-current="page">Documentos aduaneros</span>
+            </nav>
+            <h1 class="ad-h1">Documentos aduaneros y de comercio exterior</h1>
+            <p class="ad-hero__lead">
+              Factura comercial, packing list, certificado de origen y la representación de la DAM.
+              El expediente completo en papel, con tu logo y en el idioma que te pida tu contraparte.
+            </p>
+            <div class="ad-hero__acciones">
+              <a class="ad-btn" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="aduaneros-hero">
+                Cotizar por WhatsApp
+              </a>
+              <a class="ad-btn ad-btn--linea" href="/precios">Ver precios</a>
+            </div>
+          </div>
+
+          <div class="ad-fichero" role="img" aria-label="Documentos que forman el expediente aduanero">
+            {
+              fichero.map((f) => (
+                <span class="ad-file">
+                  <em>{f.n}</em>
+                  {f.t}
+                </span>
+              ))
+            }
+            <span class="ad-file ad-file--mas">y la representación de la DAM</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUÉ DOCUMENTOS -->
+      <section class="fi-section ad-sec ad-sec--paper">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 ad-h2">Qué documentos imprimimos</h2>
+          <p class="ad-sec__intro">
+            Todo lo que va en la carpeta del despacho y se sigue pidiendo firmado, sellado o pegado
+            en el bulto.
+          </p>
+          <div class="ad-grid">
+            {
+              documentos.map((d) => (
+                <article class="ad-card">
+                  <h3>{d.t}</h3>
+                  <p>{d.d}</p>
+                </article>
+              ))
+            }
+          </div>
+          <p class="ad-nota">
+            <strong>Ojo con la DAM:</strong> se transmite electrónicamente a SUNAT Aduanas, así que
+            no existe como formulario para llenar a mano. Lo que imprimimos es su representación y
+            la liquidación de tributos, para el expediente físico.
+          </p>
+        </div>
+      </section>
+
+      <!-- EL PROCESO: la firma visual -->
+      <section class="fi-section ad-sec">
+        <div class="fi-wrap">
+          <h2 class="fi-h2 ad-h2">El proceso, y dónde entra el papel</h2>
+          <ol class="ad-pasos">
+            {
+              pasos.map((p) => (
+                <li class="ad-paso">
+                  <span class="ad-paso__n" aria-hidden="true">
+                    {p.n}
+                  </span>
+                  <h3>{p.t}</h3>
+                  <p>{p.d}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </section>
+
+      <!-- FICHAS -->
+      <section class="fi-section ad-sec ad-sec--paper">
+        <div class="fi-wrap ad-tira">
+          <h2 class="fi-h2 ad-h2">Cómo lo trabajamos</h2>
+          <dl class="ad-fichas">
+            {
+              fichas.map((f) => (
+                <div>
+                  <dt>{f.t}</dt>
+                  <dd>{f.d}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="fi-section ad-sec fi-faq">
+        <div class="fi-narrow ad-faq">
+          <h2 class="fi-h2 ad-h2">Preguntas sobre documentos aduaneros</h2>
+          <div>
+            {
+              faqs.map((f) => (
+                <details class="ad-faq__item">
+                  <summary>
+                    <h3>{f.q}</h3>
+                    <span class="fi-faq-plus" aria-hidden="true">
+                      +
+                    </span>
+                  </summary>
+                  <p>{f.a}</p>
+                </details>
+              ))
+            }
+          </div>
+          <a class="ad-cta" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="aduaneros-faq">
+            Cotizar mi expediente por WhatsApp
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>
+
+<style>
+  /* ==========================================================================
+     BANDA ROJA + LÍNEA DE TIEMPO — los dos rasgos de identidad de esta página.
+     ========================================================================== */
+  .ad-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+    padding: 56px clamp(16px, 4vw, 64px) 96px;
+  }
+  /* Franja horizontal, como la banda de un contenedor. Cruza por detrás del texto. */
+  .ad-hero__banda {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 42%;
+    height: 88px;
+    background: var(--fi-rojo);
+    opacity: 0.16;
+    transform: skewY(-2.4deg);
+  }
+  .ad-hero__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+  .ad-bc {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+    margin-bottom: 24px;
+  }
+  .ad-bc a {
+    color: var(--fi-texto-apagado);
+  }
+  .ad-h1 {
+    margin: 0 0 24px;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 5.2vw, 76px);
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .ad-hero__lead {
+    margin: 0 0 32px;
+    max-width: 54ch;
+    font-size: clamp(17px, 1.4vw, 20px);
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .ad-hero__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .ad-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 0 26px;
+    background: var(--fi-rojo);
+    color: #fff;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .ad-btn:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+  .ad-btn--linea {
+    background: transparent;
+    border: 1px solid var(--fi-borde-oscuro-2);
+    color: var(--fi-texto-claro);
+  }
+  .ad-btn--linea:hover {
+    background: var(--fi-carbon-3);
+    border-color: var(--fi-papel);
+  }
+
+  /* --- Fichero de documentos --- */
+  .ad-fichero {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ad-file {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--fi-carbon-2);
+    border-left: 4px solid var(--fi-rojo);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--fi-texto-claro);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+  }
+  /* Escalonado: cada hoja un poco más a la derecha, como un fichero abierto */
+  .ad-file:nth-child(1) {
+    transform: translateX(0);
+  }
+  .ad-file:nth-child(2) {
+    transform: translateX(14px);
+  }
+  .ad-file:nth-child(3) {
+    transform: translateX(28px);
+  }
+  .ad-file:nth-child(4) {
+    transform: translateX(42px);
+  }
+  .ad-file em {
+    font-style: normal;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    color: var(--fi-rosa);
+  }
+  .ad-file--mas {
+    transform: translateX(56px);
+    border-left-color: var(--fi-borde-oscuro-2);
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Secciones --- */
+  .ad-sec {
+    background: var(--fi-carbon);
+    color: var(--fi-texto-claro);
+  }
+  .ad-sec--paper {
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+  }
+  .ad-h2 {
+    margin-bottom: 26px;
+  }
+  .ad-sec__intro {
+    max-width: 62ch;
+    margin: 0 0 40px;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .ad-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--fi-borde-claro);
+    border: 1px solid var(--fi-borde-claro);
+  }
+  .ad-card {
+    padding: 32px 28px;
+    background: var(--fi-papel);
+  }
+  .ad-card h3 {
+    margin: 0 0 12px;
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: 25px;
+    line-height: 1.02;
+    text-transform: uppercase;
+  }
+  .ad-card p {
+    margin: 0;
+    font-size: 15.5px;
+    line-height: 1.68;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .ad-nota {
+    margin: 32px 0 0;
+    padding: 22px 26px;
+    border-left: 5px solid var(--fi-rojo);
+    background: var(--fi-papel-2);
+    font-size: 16px;
+    line-height: 1.68;
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* --- Línea de tiempo horizontal --- */
+  .ad-pasos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+  }
+  .ad-paso {
+    position: relative;
+    padding: 0 20px 0 0;
+  }
+  /* La línea que une los pasos: nace del círculo y cruza al siguiente */
+  .ad-paso::before {
+    content: "";
+    position: absolute;
+    top: 21px;
+    left: 42px;
+    right: 0;
+    height: 2px;
+    background: var(--fi-borde-oscuro-2);
+  }
+  .ad-paso:last-child::before {
+    display: none;
+  }
+  .ad-paso__n {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--fi-rojo);
+    color: #fff;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  .ad-paso h3 {
+    margin: 0 0 10px;
+    font-family: var(--fi-display);
+    font-weight: 800;
+    font-size: 23px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .ad-paso p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--fi-texto-apagado);
+  }
+
+  /* --- Fichas --- */
+  .ad-tira {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 0 clamp(28px, 4vw, 64px);
+  }
+  .ad-tira .ad-h2 {
+    grid-column: 1 / -1;
+  }
+  .ad-fichas {
+    display: contents;
+  }
+  .ad-fichas > div {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--fi-borde-claro);
+  }
+  .ad-fichas dt {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--fi-rojo);
+    margin-bottom: 8px;
+  }
+  .ad-fichas dd {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.65;
+    color: var(--fi-texto-oscuro-2);
+  }
+
+  /* --- FAQ --- */
+  .ad-faq h2 {
+    margin-bottom: 32px;
+  }
+  .ad-faq__item {
+    border-bottom: 1px solid var(--fi-borde-oscuro);
+  }
+  .ad-faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px 0;
+    cursor: pointer;
+    list-style: none;
+  }
+  .ad-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .ad-faq__item p {
+    margin: 0;
+    padding: 0 0 22px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--fi-texto-apagado);
+  }
+  .ad-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 54px;
+    margin-top: 36px;
+    padding: 0 30px;
+    background: var(--fi-rojo);
+    color: #fff !important;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .ad-cta:hover {
+    background: var(--fi-rojo-oscuro);
+  }
+
+  /* --- Móvil: la línea de tiempo pasa a vertical --- */
+  @media (max-width: 1024px) {
+    .ad-pasos {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 0;
+    }
+    .ad-paso:nth-child(2n)::before {
+      display: none;
+    }
+  }
+  @media (max-width: 900px) {
+    .ad-hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .ad-fichero {
+      order: -1;
+    }
+    .ad-file,
+    .ad-file--mas {
+      transform: none;
+    }
+  }
+  @media (max-width: 600px) {
+    .ad-hero {
+      padding-bottom: 64px;
+    }
+    .ad-pasos {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .ad-paso {
+      padding: 0 0 28px 0;
+    }
+    /* En vertical la línea baja desde el círculo hasta el paso siguiente */
+    .ad-paso::before {
+      top: 44px;
+      left: 21px;
+      right: auto;
+      width: 2px;
+      height: calc(100% - 44px);
+    }
+    .ad-paso:nth-child(2n)::before,
+    .ad-paso:last-child::before {
+      display: block;
+    }
+    .ad-paso:last-child::before {
+      display: none;
+    }
+    .ad-btn,
+    .ad-cta {
+      width: 100%;
+    }
+    .ad-card {
+      padding: 26px 22px;
+    }
+  }
+</style>

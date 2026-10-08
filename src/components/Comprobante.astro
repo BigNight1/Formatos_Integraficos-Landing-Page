@@ -1,0 +1,1115 @@
+---
+/**
+ * Plantilla de página de comprobante · rediseño v2
+ * Fuente: design-refs/diseno/Comprobante.dc.html
+ *
+ * Una sola plantilla genera las 6 páginas. Cada slug aporta su tema (paleta y
+ * variante de hero) y su contenido desde src/data/comprobantes.ts.
+ *
+ * Los colores del tema se pasan como variables CSS (--cp-*), así el CSS es uno
+ * solo para las 6 páginas.
+ *
+ * RESPONSIVE: el diseño no tiene ni una media query. Cada hero se apila en
+ * columnas en móvil y el círculo decorativo se reancla para no tapar el texto.
+ */
+import Documento from './Documento.astro';
+import { comprobantes, temas, pasos, otrosComprobantes, type Slug } from '../data/comprobantes';
+import { WHATSAPP } from '../data/home';
+
+export interface Props {
+  slug: Slug;
+}
+
+const { slug } = Astro.props;
+
+const c = comprobantes[slug];
+const t = temas[slug];
+const otros = otrosComprobantes(slug);
+const chipsN = c.chips.map((x, i) => ({ n: `0${i + 1}`, t: x }));
+const esCirculo = t.hero === 'circulo';
+const esSplit = t.hero === 'split';
+const esBanda = t.hero === 'banda';
+---
+
+<div
+  class="cp"
+  style={`--cp-dark:${t.dark};--cp-accent:${t.accent};--cp-accent-text:${t.accentText};--cp-hi:${t.hi};--cp-soft:${t.soft};--cp-paper:${t.paper};--cp-ink:${t.ink}`}
+>
+  <!-- ================= HERO · CÍRCULO ================= -->
+  {
+    esCirculo && (
+      <section class:list={['cp-hero', t.flip && 'is-flip']}>
+        <div class="fi-deco">
+          <div class="cp-hero__circle" aria-hidden="true" />
+        </div>
+        <div class="cp-wrap cp-hero__inner">
+          <nav class="cp-bc" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a> <span aria-hidden="true">›</span>{' '}
+            <a href="/#comprobantes">Comprobantes</a> <span aria-hidden="true">›</span>{' '}
+            <span aria-current="page">{c.nombre}</span>
+          </nav>
+
+          <div class:list={['cp-hero__row', t.flip && 'is-flip']}>
+            <div class="cp-hero__copy">
+              <span class="cp-eyebrow">Imprenta autorizada SUNAT · Lima</span>
+              <h1 class="cp-h1">{c.h1}</h1>
+              <p class="cp-intro">{c.intro}</p>
+              <ul class="cp-chips">
+                {c.chips.map((ch) => (
+                  <li>{ch}</li>
+                ))}
+              </ul>
+              <div class="cp-actions">
+                <a class="cp-cta" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="comprobante">
+                  Cotizar {c.corto}
+                </a>
+                <span class="cp-desde">
+                  Desde <strong>{c.desde}</strong> el millar
+                </span>
+              </div>
+            </div>
+
+            <div class="cp-hero__doc">
+              <Documento
+                tipo={c.doc.tipo}
+                numero={c.doc.numero}
+                acento={t.accent}
+                acentoTexto={t.accentText}
+                suave={t.soft}
+                continuo={c.doc.continuo}
+                copias={c.doc.copias}
+                campos={c.doc.campos}
+                destino={c.doc.destino}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ================= HERO · SPLIT ================= -->
+  {
+    esSplit && (
+      <section class:list={['cp-split', t.flip && 'is-flip']}>
+        <div class="cp-split__panel">
+          <span class="cp-split__sigla" aria-hidden="true">
+            {c.doc.sigla}
+          </span>
+          <div class="cp-split__doc">
+            <Documento
+              tipo={c.doc.tipo}
+              numero={c.doc.numero}
+              acento={t.dark}
+              acentoTexto="#FFFFFF"
+              suave={t.soft}
+              continuo={c.doc.continuo}
+              copias={c.doc.copias}
+              campos={c.doc.campos}
+              destino={c.doc.destino}
+            />
+          </div>
+        </div>
+
+        <div class="cp-split__copy">
+          <nav class="cp-bc" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a> <span aria-hidden="true">›</span>{' '}
+            <a href="/#comprobantes">Comprobantes</a> <span aria-hidden="true">›</span>{' '}
+            <span aria-current="page">{c.nombre}</span>
+          </nav>
+          <span class="cp-eyebrow">Imprenta autorizada SUNAT · Lima</span>
+          <h1 class="cp-h1 cp-h1--sm">{c.h1}</h1>
+          <p class="cp-intro cp-intro--sm">{c.intro}</p>
+
+          <dl class="cp-split__stats">
+            {chipsN.map((ch) => (
+              <div>
+                <dt>{ch.n}</dt>
+                <dd>{ch.t}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div class="cp-actions">
+            <a class="cp-cta cp-cta--accent" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="comprobante">
+              Cotizar {c.corto}
+            </a>
+            <span class="cp-desde">
+              Desde <strong>{c.desde}</strong> el millar
+            </span>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ================= HERO · BANDA ================= -->
+  {
+    esBanda && (
+      <section class="cp-banda">
+        <div class="cp-banda__head">
+          <div class="cp-banda__headinner">
+            <nav class="cp-bc" aria-label="Ruta de navegación">
+              <a href="/">Inicio</a> <span aria-hidden="true">›</span>{' '}
+              <a href="/#comprobantes">Comprobantes</a> <span aria-hidden="true">›</span>{' '}
+              <span aria-current="page">{c.nombre}</span>
+            </nav>
+            <span class="cp-eyebrow">Imprenta autorizada SUNAT · Lima</span>
+            <h1 class="cp-h1 cp-h1--xl">{c.h1}</h1>
+            <p class="cp-intro cp-intro--center">{c.intro}</p>
+            <div class="cp-actions cp-actions--center">
+              <a class="cp-cta cp-cta--accent" href={WHATSAPP} target="_blank" rel="noopener noreferrer" data-wa="comprobante">
+                Cotizar {c.corto}
+              </a>
+              <span class="cp-desde">
+                Desde <strong>{c.desde}</strong> el millar
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cp-banda__band">
+          <div class="cp-banda__hline" aria-hidden="true" />
+          <div class="cp-wrap cp-banda__inner">
+            <ul class="cp-banda__chips">
+              {c.chips.map((ch) => (
+                <li>{ch}</li>
+              ))}
+            </ul>
+            <div class="cp-banda__doc">
+              <Documento
+                tipo={c.doc.tipo}
+                numero={c.doc.numero}
+                acento={t.dark}
+                acentoTexto="#FFFFFF"
+                suave={t.soft}
+                continuo={c.doc.continuo}
+                copias={c.doc.copias}
+                campos={c.doc.campos}
+                destino={c.doc.destino}
+              />
+            </div>
+            <div class="cp-banda__dato">
+              <span class="cp-banda__daton">{c.dato.n}</span>
+              <span class="cp-banda__datot">{c.dato.t}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ================= DATO DESTACADO (círculo y split) ================= -->
+  {
+    !esBanda && (
+      <section class="cp-dato">
+        <div class="cp-wrap cp-dato__inner">
+          <span class="cp-dato__n">{c.dato.n}</span>
+          <span class="cp-dato__t">{c.dato.t}</span>
+        </div>
+      </section>
+    )
+  }
+
+  <!-- ================= QUÉ ES ================= -->
+  <section class="cp-sec cp-sec--paper">
+    <div class:list={['cp-wrap', 'cp-que', t.flip && 'is-flip']}>
+      <div class="cp-que__copy">
+        <h2 class="cp-h2">¿Qué es {c.articulo} y cuándo se usa?</h2>
+        {c.queEs.map((pq) => <p class="cp-que__p">{pq}</p>)}
+      </div>
+      <div class="cp-que__cards">
+        <div class="cp-card">
+          <span class="cp-card__k">Quién la emite</span>
+          <span class="cp-card__v">{c.emisor}</span>
+        </div>
+        <div class="cp-card">
+          <span class="cp-card__k">Quién la recibe</span>
+          <span class="cp-card__v">{c.receptor}</span>
+        </div>
+        <div class="cp-card cp-card--dark">
+          <span class="cp-card__k cp-card__k--hi">Ojo</span>
+          <span class="cp-card__v cp-card__v--sm">{c.ojo}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CAMPOS ================= -->
+  <section class="cp-sec">
+    <div class="cp-wrap cp-campos">
+      <div class="cp-campos__head">
+        <h2 class="cp-h2 cp-h2--wide">Datos que lleva impresos {c.articulo}</h2>
+        <p class="cp-campos__lead">
+          Los revisamos en la prueba de diseño para que tu comprobante no sea observado por SUNAT.
+        </p>
+      </div>
+      <ul class="cp-campos__grid">
+        {
+          c.campos.map((cm) => (
+            <li class="cp-campo">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m5 12 5 5L20 7" />
+              </svg>
+              <span>{cm}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ================= SPECS + PRECIOS ================= -->
+  <section class="cp-sec cp-sec--paper">
+    <div class="cp-wrap cp-tablas">
+      <h2 class="cp-h2">Medidas, copias y precios</h2>
+      <div class="cp-tabla__scroll">
+        <table class="cp-tabla">
+          <thead>
+            <tr>
+              <th scope="col">Medida</th>
+              <th scope="col">Copias</th>
+              <th scope="col">Papel</th>
+              <th scope="col">Presentación</th>
+              <th scope="col" class="cp-tabla__num">1 millar</th>
+              <th scope="col" class="cp-tabla__num">10 millares</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              c.specs.map((s) => (
+                <tr>
+                  <th scope="row">{s.medida}</th>
+                  <td>{s.copias}</td>
+                  <td>{s.papel}</td>
+                  <td>{s.pres}</td>
+                  <td class="cp-tabla__num">{s.p1}</td>
+                  <td class="cp-tabla__num cp-tabla__destacado">{s.p10}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="cp-tablas__nota">
+        Precios con IGV, impresión a 1 color en papel autocopiativo.{' '}
+        <a href="/precios">Ver todos los precios</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= PROCESO ================= -->
+  <section class="cp-sec">
+    <div class="cp-wrap cp-proceso">
+      <h2 class="cp-h2">Cómo pedir {c.corto}</h2>
+      <ol class="cp-proceso__grid">
+        {
+          pasos.map((p) => (
+            <li class="cp-paso">
+              <span class="cp-paso__n">{p.n}</span>
+              <strong class="cp-paso__t">{p.t}</strong>
+              <span class="cp-paso__d">{p.d}</span>
+            </li>
+          ))
+        }
+      </ol>
+      <p class="cp-proceso__nota">
+        ¿Primera vez autorizando en SUNAT? <a href="/autorizado-sunat">Lee la guía paso a paso</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ================= FAQ ================= -->
+  <section class="cp-sec cp-sec--paper fi-faq">
+    <div class="cp-narrow cp-faq">
+      <h2 class="cp-h2">Preguntas sobre {c.corto}</h2>
+      <div>
+        {
+          c.faqs.map((f) => (
+            <details class="cp-faq__item">
+              <summary>
+                <h3>{f.q}</h3>
+                <span class="fi-faq-plus" aria-hidden="true">
+                  +
+                </span>
+              </summary>
+              <p>{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= OTROS COMPROBANTES ================= -->
+  <section class="cp-otros">
+    <div class="cp-wrap cp-otros__inner">
+      <h2 class="cp-otros__title">Otros comprobantes que imprimimos</h2>
+      <div class="cp-otros__list">
+        {
+          otros.map((o) => (
+            <a class="cp-otro" href={o.url} style={`--otro-accent:${o.accent}`}>
+              {o.nombre} →
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  .cp {
+    background: var(--cp-dark);
+    color: var(--fi-texto-claro);
+  }
+  .cp-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .cp-narrow {
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  .cp-h2 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(40px, 4.4vw, 64px);
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .cp-sec {
+    padding: 104px clamp(16px, 4vw, 64px);
+  }
+  .cp-sec--paper {
+    background: var(--cp-paper);
+    color: var(--fi-texto-oscuro);
+  }
+
+  .cp-bc {
+    font-size: 13px;
+    color: #b9b1ae;
+  }
+  .cp-bc a {
+    text-decoration: none;
+  }
+  .cp-bc span[aria-current] {
+    color: var(--fi-texto-claro);
+  }
+
+  .cp-eyebrow {
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--cp-hi);
+  }
+
+  .cp-h1 {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: clamp(48px, 5.6vw, 88px);
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+  .cp-h1--sm {
+    font-size: clamp(44px, 4.8vw, 76px);
+    line-height: 0.92;
+    max-width: 600px;
+  }
+  .cp-h1--xl {
+    font-size: clamp(48px, 6.4vw, 104px);
+    line-height: 0.88;
+  }
+
+  .cp-intro {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .cp-intro--sm {
+    font-size: 17px;
+    line-height: 1.65;
+    max-width: 560px;
+  }
+  .cp-intro--center {
+    max-width: 720px;
+  }
+
+  .cp-chips {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .cp-chips li {
+    padding: 8px 14px;
+    border: 1px solid rgba(242, 237, 234, 0.35);
+    font-size: 14px;
+  }
+
+  .cp-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+  }
+  .cp-actions--center {
+    justify-content: center;
+  }
+  .cp-cta {
+    padding: 16px 26px;
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .cp-cta--accent {
+    background: var(--cp-accent);
+    color: var(--cp-accent-text);
+  }
+  .cp-desde {
+    font-size: 15px;
+    color: var(--fi-texto-claro-2);
+  }
+  .cp-desde strong {
+    color: #ffffff;
+    font-size: 22px;
+  }
+
+  /* ---------- HERO CÍRCULO ---------- */
+  .cp-hero {
+    padding: 40px clamp(16px, 4vw, 64px) 96px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cp-hero__circle {
+    position: absolute;
+    top: 60px;
+    width: min(60vw, 760px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: var(--cp-accent);
+    right: -8%;
+  }
+  /* Para notas y liquidaciones el canvas pone el círculo a la IZQUIERDA
+     (van con el layout invertido).
+     OJO: antes este selector era `.cp-hero__row.is-flip .cp-hero__circle`, pero
+     `.cp-hero__row` es HERMANO del círculo, no su ancestro, así que la regla
+     nunca se aplicaba y esas dos páginas tenían el círculo en el lado contrario
+     al del diseño. Ahora la clase `is-flip` va también en la sección. */
+  .cp-hero.is-flip .cp-hero__circle {
+    right: auto;
+    left: -8%;
+  }
+  .cp-hero__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .cp-hero__row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 48px;
+    align-items: center;
+  }
+  .cp-hero__row.is-flip {
+    flex-direction: row-reverse;
+  }
+  .cp-hero__copy {
+    flex: 1 1 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 620px;
+  }
+  .cp-hero__doc {
+    flex: 1 1 420px;
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* ---------- HERO SPLIT ---------- */
+  .cp-split {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: 720px;
+  }
+  .cp-split.is-flip {
+    flex-direction: row-reverse;
+  }
+  .cp-split__panel {
+    flex: 1 1 520px;
+    background: var(--cp-accent);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 56px 16px;
+    box-sizing: border-box;
+  }
+  .cp-split__sigla {
+    position: absolute;
+    left: 24px;
+    bottom: -40px;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 260px;
+    line-height: 1;
+    color: var(--cp-accent-text);
+    opacity: 0.12;
+    white-space: nowrap;
+  }
+  .cp-split__doc {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+  }
+  .cp-split__copy {
+    flex: 1 1 520px;
+    padding: 48px clamp(16px, 4vw, 64px) 64px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+  .cp-split__stats {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid rgba(242, 237, 234, 0.25);
+    max-width: 560px;
+  }
+  .cp-split__stats > div {
+    padding: 16px 12px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .cp-split__stats dt {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1;
+    color: var(--cp-hi);
+  }
+  .cp-split__stats dd {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+
+  /* ---------- HERO BANDA ---------- */
+  .cp-banda {
+    padding-top: 40px;
+  }
+  .cp-banda__head {
+    padding: 0 clamp(16px, 4vw, 64px) 56px;
+  }
+  .cp-banda__headinner {
+    max-width: 1040px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 22px;
+  }
+  .cp-banda__band {
+    background: var(--cp-accent);
+    color: var(--cp-accent-text);
+    padding: 56px clamp(16px, 4vw, 64px);
+    position: relative;
+    overflow: hidden;
+  }
+  .cp-banda__hline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 2px;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.45) 2px, transparent 2.5px);
+    background-size: 18px 4px;
+  }
+  .cp-banda__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    position: relative;
+  }
+  .cp-banda__chips {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1 1 240px;
+  }
+  .cp-banda__chips li {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 30px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .cp-banda__doc {
+    flex: 0 1 480px;
+    max-width: 100%;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+  }
+  .cp-banda__dato {
+    flex: 1 1 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .cp-banda__daton {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 88px;
+    line-height: 0.9;
+  }
+  .cp-banda__datot {
+    font-size: 16px;
+    max-width: 240px;
+    line-height: 1.45;
+  }
+
+  /* ---------- DATO ---------- */
+  .cp-dato {
+    background: var(--cp-accent);
+    color: var(--cp-accent-text);
+    padding: 36px clamp(16px, 4vw, 64px);
+  }
+  .cp-dato__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 28px;
+  }
+  .cp-dato__n {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 0.9;
+  }
+  .cp-dato__t {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 620px;
+  }
+
+  /* ---------- QUÉ ES ---------- */
+  .cp-que {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 56px;
+    flex-direction: row-reverse;
+  }
+  .cp-que.is-flip {
+    flex-direction: row;
+  }
+  .cp-que__copy {
+    flex: 1 1 520px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .cp-que__p {
+    margin: 0;
+    font-size: 17px;
+    line-height: 1.7;
+    color: #3a3334;
+  }
+  .cp-que__cards {
+    flex: 1 1 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .cp-card {
+    padding: 28px;
+    background: #ffffff;
+    border-top: 4px solid var(--cp-accent);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cp-card--dark {
+    background: var(--cp-dark);
+    color: var(--fi-texto-claro);
+    /* El diseño no le pone borde superior a esta tarjeta (las otras sí). */
+    border-top: 0;
+  }
+  .cp-card__k {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cp-ink);
+  }
+  .cp-card__k--hi {
+    color: var(--cp-hi);
+  }
+  .cp-card__v {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .cp-card__v--sm {
+    font-size: 15px;
+  }
+
+  /* ---------- CAMPOS ---------- */
+  .cp-campos {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .cp-campos__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .cp-h2--wide {
+    max-width: 720px;
+  }
+  .cp-campos__lead {
+    margin: 0;
+    max-width: 400px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .cp-campos__grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+  .cp-campo {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(242, 237, 234, 0.16);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .cp-campo svg {
+    flex: none;
+    margin-top: 2px;
+    color: var(--cp-hi);
+  }
+
+  /* ---------- TABLA ---------- */
+  .cp-tablas {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .cp-tabla__scroll {
+    overflow-x: auto;
+    border: 1px solid #d6ccc7;
+    background: #ffffff;
+  }
+  .cp-tabla {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .cp-tabla thead tr {
+    background: var(--cp-dark);
+    color: var(--fi-texto-claro);
+    text-align: left;
+  }
+  .cp-tabla th,
+  .cp-tabla td {
+    padding: 16px 20px;
+  }
+  .cp-tabla tbody tr {
+    border-top: 1px solid #ece4df;
+  }
+  .cp-tabla tbody th {
+    text-align: left;
+  }
+  .cp-tabla__num {
+    text-align: right;
+  }
+  .cp-tabla__destacado {
+    font-weight: 700;
+    color: var(--cp-ink);
+  }
+  .cp-tablas__nota {
+    margin: 0;
+    font-size: 14px;
+    color: var(--fi-texto-oscuro-2);
+  }
+  .cp-tablas__nota a {
+    font-weight: 700;
+    color: var(--cp-ink);
+  }
+
+  /* ---------- PROCESO ---------- */
+  .cp-proceso {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .cp-proceso__grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 28px;
+  }
+  .cp-paso {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 18px;
+    border-top: 3px solid var(--cp-accent);
+  }
+  .cp-paso__n {
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--cp-hi);
+  }
+  .cp-paso__t {
+    font-size: 18px;
+  }
+  .cp-paso__d {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+  .cp-proceso__nota {
+    margin: 0;
+    font-size: 15px;
+    color: var(--fi-texto-claro-2);
+  }
+  .cp-proceso__nota a {
+    color: var(--cp-hi);
+    font-weight: 700;
+  }
+
+  /* ---------- FAQ ---------- */
+  .cp-faq {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .cp-faq__item {
+    border-top: 1px solid #d6ccc7;
+  }
+  .cp-faq__item summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 0;
+    /* content-box como el diseño: min-height:44px medía sobre el contenido */
+    box-sizing: content-box;
+    min-height: 44px;
+  }
+  .cp-faq__item summary h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .cp-faq__item p {
+    margin: 0 0 22px;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #3a3334;
+  }
+  .cp-faq__item summary span {
+    font-size: 28px;
+    line-height: 1;
+    color: var(--cp-ink);
+    flex: none;
+  }
+
+  /* ---------- OTROS ---------- */
+  .cp-otros {
+    padding: 96px clamp(16px, 4vw, 64px);
+  }
+  .cp-otros__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .cp-otros__title {
+    margin: 0;
+    font-family: var(--fi-display);
+    font-weight: 900;
+    font-size: 40px;
+    text-transform: uppercase;
+  }
+  .cp-otros__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .cp-otro {
+    padding: 16px 22px;
+    border: 1px solid var(--otro-accent);
+    border-left: 6px solid var(--otro-accent);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--fi-texto-claro);
+  }
+
+  /* ==========================================================================
+     MÓVIL / TABLET — añadido. El diseño no tenía ninguna media query.
+     ========================================================================== */
+  @media (max-width: 1023px) {
+    .cp-split {
+      min-height: 0;
+    }
+    .cp-split,
+    .cp-split.is-flip {
+      flex-direction: column;
+    }
+    .cp-split__panel {
+      flex: 1 1 auto;
+      padding: 48px 16px;
+    }
+    .cp-split__copy {
+      flex: 1 1 auto;
+      padding: 40px 20px 48px;
+    }
+    .cp-split__sigla {
+      font-size: 180px;
+    }
+    .cp-hero__row,
+    .cp-hero__row.is-flip {
+      flex-direction: column;
+      gap: 40px;
+    }
+    /* El círculo se ancla abajo para no tapar el titular */
+    .cp-hero__circle,
+    .cp-hero.is-flip .cp-hero__circle {
+      right: auto;
+      left: 50%;
+      top: auto;
+      bottom: -8%;
+      transform: translateX(-50%);
+      width: min(120vw, 620px);
+      opacity: 0.55;
+    }
+    .cp-banda__dato {
+      align-items: flex-start;
+      text-align: left;
+    }
+    .cp-banda__daton {
+      font-size: 64px;
+    }
+    .cp-banda__chips li {
+      font-size: 24px;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .cp-sec,
+    .cp-otros {
+      padding-top: 64px;
+      padding-bottom: 64px;
+    }
+    .cp-hero {
+      padding: 32px 20px 64px;
+    }
+    .cp-h1 {
+      font-size: clamp(34px, 10vw, 52px);
+    }
+    .cp-h1--sm,
+    .cp-h1--xl {
+      font-size: clamp(32px, 9.5vw, 48px);
+    }
+    .cp-h2 {
+      font-size: clamp(30px, 8.5vw, 42px);
+    }
+    .cp-intro,
+    .cp-intro--sm {
+      font-size: 16px;
+    }
+    .cp-hero__copy {
+      flex: 1 1 auto;
+      max-width: 100%;
+    }
+    .cp-cta {
+      width: 100%;
+      text-align: center;
+    }
+    .cp-desde {
+      font-size: 14px;
+    }
+    .cp-desde strong {
+      font-size: 19px;
+    }
+    .cp-dato__n {
+      font-size: 52px;
+    }
+    .cp-dato__t {
+      font-size: 16px;
+    }
+    .cp-que,
+    .cp-que.is-flip {
+      flex-direction: column;
+      gap: 32px;
+    }
+    .cp-campos__grid {
+      grid-template-columns: 1fr;
+    }
+    .cp-proceso__grid {
+      grid-template-columns: 1fr;
+    }
+    .cp-tabla th,
+    .cp-tabla td {
+      padding: 14px 16px;
+      font-size: 14px;
+    }
+    .cp-faq__item summary h3 {
+      font-size: 16px;
+    }
+    .cp-faq__item summary span {
+      font-size: 24px;
+    }
+    .cp-split__stats dt {
+      font-size: 24px;
+    }
+    .cp-otros__title {
+      font-size: 30px;
+    }
+    .cp-otro {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

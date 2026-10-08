@@ -1,0 +1,172 @@
+---
+/**
+ * Sección Precios · rediseño v2 — design-refs/diseno/Home.dc.html
+ *
+ * UNIDAD: millar / millares. El diseño original decía "100 / 500 / 1000 juegos"
+ * y se sustituyó por "1 / 5 / 10 millares" (decisión del cliente: nunca "juego").
+ *
+ * ⚠️ Todos los montos son FICTICIOS: reemplazar por los precios reales.
+ */
+import { columnasPrecio, precios } from '../../data/home';
+---
+
+<section class="fi-section fi-precios" id="precios">
+  <div class="fi-wrap fi-precios__inner">
+    <div class="fi-precios__head">
+      <h2 class="fi-h2">Precios referenciales</h2>
+      <p class="fi-precios__lead">
+        Precios por millar, con IGV incluido, impresión a 1 color y papel autocopiativo. El precio
+        final depende del diseño, las copias y la cantidad.
+      </p>
+    </div>
+
+    <div class="fi-precios__scroll">
+      <table class="fi-tabla">
+        <caption class="fi-sr">Precios referenciales por formato y cantidad, en millares</caption>
+        <thead>
+          <tr class="fi-tabla__head">
+            <th scope="col">Formato</th>
+            <th scope="col">Medida</th>
+            <th scope="col">Copias</th>
+            {
+              columnasPrecio.map((c) => (
+                <th scope="col" class="fi-tabla__num">{c}</th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            precios.map((r) => (
+              <tr class="fi-tabla__row">
+                <th scope="row">{r.formato}</th>
+                <td class="fi-tabla__muted">{r.medida}</td>
+                <td class="fi-tabla__muted">{r.copias}</td>
+                <td class="fi-tabla__num">{r.p1}</td>
+                <td class="fi-tabla__num">{r.p5}</td>
+                <td class="fi-tabla__num fi-tabla__destacado">{r.p10}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="fi-precios__actions">
+      <a class="fi-precios__cta" href="#cotizar">Pedir precio exacto</a>
+      <span class="fi-precios__nota">Descuentos por volumen desde 20 millares.</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fi-precios {
+    position: relative;
+  }
+  .fi-precios__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .fi-precios__head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+  }
+  .fi-precios__lead {
+    margin: 0;
+    max-width: 440px;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--fi-texto-claro-2);
+  }
+
+  .fi-precios__scroll {
+    overflow-x: auto;
+    border: 1px solid var(--fi-borde-oscuro-2);
+    /* Pista visual de que la tabla se puede desplazar en móvil */
+    -webkit-overflow-scrolling: touch;
+  }
+  .fi-tabla {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  .fi-tabla__head {
+    background: var(--fi-carbon-3);
+    text-align: left;
+  }
+  .fi-tabla th,
+  .fi-tabla td {
+    padding: 18px 22px;
+  }
+  .fi-tabla__head th {
+    font-weight: 700;
+  }
+  .fi-tabla__row {
+    border-top: 1px solid var(--fi-borde-oscuro-2);
+  }
+  .fi-tabla__row th {
+    text-align: left;
+    font-weight: 700;
+  }
+  .fi-tabla__muted {
+    color: var(--fi-texto-claro-2);
+  }
+  .fi-tabla__num {
+    text-align: right;
+  }
+  .fi-tabla__destacado {
+    font-weight: 700;
+  }
+
+  .fi-precios__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+  }
+  .fi-precios__cta {
+    padding: 16px 26px;
+    background: var(--fi-papel);
+    color: var(--fi-texto-oscuro);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .fi-precios__cta:hover {
+    background: #ffffff;
+    color: var(--fi-texto-oscuro);
+  }
+  .fi-precios__nota {
+    font-size: 14px;
+    color: var(--fi-texto-apagado);
+  }
+
+  .fi-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* --- Móvil (añadido) --- */
+  @media (max-width: 767px) {
+    .fi-tabla th,
+    .fi-tabla td {
+      padding: 14px 16px;
+      font-size: 14px;
+    }
+    .fi-precios__cta {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

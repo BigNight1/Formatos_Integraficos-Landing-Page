@@ -1,0 +1,267 @@
+---
+/**
+ * /blog/autocopiativo-vs-bond · rediseño v2
+ *
+ * FUENTES:
+ *  · Mecanismo CB / CFB / CF y conservación: manual técnico del fabricante
+ *    IDEM/Lecta — https://www.antalis.at/mediashare/g4media/pdf/PU_EN_TECHNICAL_MANUAL_IDEM_PAPERS_00_ISS_01012010.pdf
+ *  · Tabla de copias por método de impresión: mismo manual, págs. 12-13.
+ *  · Hasta 7 copias con matricial: ficha de la Epson DLQ-3500II.
+ *  · Papel químico blanco (sin pliegues de color): compras oficiales del MINDEF
+ *    ("9 7/8"x11x3 blanco químico") — https://www.mindef.gob.pe/informacion/documentos/Bases_Utiles_de_Escritorio-MINDEF.pdf
+ *  · La láser no admite papel químico: manual Sharp MX-C428F/C528F, sección
+ *    "Unacceptable paper" (lista "carbonless papers" y "multiple-part forms").
+ *  · Repinte de la numeración en continuo: RCP, RS 007-99/SUNAT, art. 12.2.7.
+ *
+ * ⚠️ DONDE NO HAY FUENTE, NO SE AFIRMA:
+ *  · No existe cifra publicada de "cuántos años dura un comprobante en bond".
+ *    Se dice que no la hay en vez de inventarla.
+ *  · Los gramajes 60/75/80 g en bond son práctica de mercado peruano (documentos
+ *    de compra), no una norma técnica nacional.
+ */
+
+import Articulo from '../../components/Articulo.astro';
+
+const copias = [
+  { m: 'Lápiz', a: '4', b: '3', c: '3', d: '2' },
+  { m: 'Bolígrafo', a: '5', b: '4', c: '3', d: '3' },
+  { m: 'Máquina de escribir eléctrica', a: '7', b: '6', c: '5', d: '4' },
+  { m: 'Impresora matricial (promedio)', a: '5', b: '5', c: '4', d: '3' },
+];
+
+const faqs = [
+  {
+    q: '¿Puedo imprimir papel autocopiativo en una impresora láser?',
+    a: 'No es recomendable, y los propios fabricantes de impresoras lo dicen: los manuales incluyen el papel químico en la lista de papeles no admitidos, junto con los formularios de varias partes. La razón es física: la láser fija el tóner con calor y presión, y eso revienta las microcápsulas. El resultado es rizado, desregistro y —lo importante— pérdida de copia. Existen grados específicos para láser, pero hay que pedirlos a propósito y seguir condiciones de acondicionamiento.',
+  },
+  {
+    q: '¿Los pliegues tienen que ir en colores?',
+    a: 'No. El color es una convención para identificar de un vistazo qué ejemplar es cada uno (el original para el cliente, la copia para el archivo), pero no es un requisito técnico ni de SUNAT. Existen juegos multicopia enteramente blancos, y hay entidades que los compran así. Si trabajas papel blanco, no estás haciendo nada raro.',
+  },
+  {
+    q: '¿Cuánto dura un comprobante impreso en papel químico?',
+    a: 'El fabricante declara que, en condiciones de archivo normales —oscuridad y sequedad— las copias se mantienen legibles hasta 25 años. Pero hay tres cosas que acortan esa vida: la luz (la capa superior es fotosensible y se oscurece), el calor y el roce, y el contacto prolongado con plásticos que sueltan plastificantes, sobre todo las fundas de PVC. Para archivo largo, usa fundas de polietileno.',
+  },
+  {
+    q: '¿Y el papel bond, cuánto dura?',
+    a: 'No hay una cifra publicada comparable, y prefiero decírtelo antes que darte un número inventado. Lo que sí se puede afirmar es que el bond es un papel estable: no lleva recubrimiento químico, no depende de una reacción para revelarse y se manipula y archiva como cualquier papel. Si tu documento tiene que durar décadas, es la opción conservadora.',
+  },
+  {
+    q: '¿Cuántas copias aguanta un juego autocopiativo?',
+    a: 'Depende del papel y de cómo se imprima. En una tabla de referencia del fabricante, un juego de peso medio imprime 5 copias legibles con bolígrafo, 5 con impresora matricial promedio y 7 con máquina de escribir eléctrica. Los equipos matriciales de gama alta declaran hasta 7 copias en papel químico. Si necesitas más de tres o cuatro, lo definimos con la muestra antes de fabricar.',
+  },
+  {
+    q: '¿Por qué el formato continuo va casi siempre en autocopiativo?',
+    a: 'Porque es el único que saca las copias en la misma pasada de la impresora. En una matricial, un original y dos copias salen de una sola tirada; en bond tendrías que imprimir tres veces y separar las hojas. Y SUNAT permite expresamente que en los formatos continuos la numeración de las copias se haga por repinte, es decir, por presión.',
+  },
+];
+---
+
+<Articulo
+  titulo="Papel autocopiativo vs bond: diferencias y usos"
+  metaTitle="Papel Autocopiativo vs Bond: Diferencias y Usos"
+  metaDescription="Cómo funciona el papel autocopiativo, cuántas copias aguanta de verdad, cuánto dura y por qué no se lleva bien con la impresora láser. Con datos de fabricante."
+  tag="Papel y medidas"
+  slug="autocopiativo-vs-bond"
+  fecha="8 de octubre de 2026"
+  fechaISO="2026-10-08"
+  min={5}
+  schemaDescription="Cómo funciona el papel autocopiativo (CB, CFB, CF), cuántas copias admite según el método de impresión, cuánto dura en archivo y por qué la impresora láser lo desaconseja."
+  respuesta="Usa <strong>autocopiativo</strong> cuando el documento necesite varias copias de una sola impresión: un original y dos copias salen en la misma pasada. Usa <strong>bond</strong> cuando solo haya un ejemplar, cuando lo imprimas en láser o cuando el papel tenga que durar muchos años en archivo. Ninguno es mejor: son para cosas distintas."
+  faqs={faqs}
+  cta={{
+    titulo: 'Te decimos cuál te toca',
+    texto: 'Cuéntanos qué comprobante imprimes, cuántas copias necesitas y con qué impresora, y te decimos qué papel y qué cantidad.',
+    botones: [
+      { label: 'Ver formatos continuos', url: '/servicios/formatos-continuos' },
+      { label: 'Ver precios', url: '/precios' },
+    ],
+  }}
+  relacionadas={[
+    { label: '½ oficio o A4: qué medida de boleta elegir', url: '/blog/medidas-de-boleta' },
+    { label: 'Factura o boleta: cuál emitir y cuándo', url: '/blog/factura-o-boleta' },
+    { label: 'Qué es el pie de imprenta y por qué tu comprobante lo necesita', url: '/blog/pie-de-imprenta' },
+  ]}
+>
+  <p>
+    Cada semana alguien nos pide "una factura en papel químico" sin saber exactamente qué está
+    pidiendo, y a veces lo que necesita es bond. La diferencia importa porque decide tres cosas:
+    cuántas copias salen, con qué impresora se puede usar y cuánto va a durar el documento.
+  </p>
+
+  <h2>Cómo funciona el autocopiativo</h2>
+  <p>
+    El papel autocopiativo —también llamado químico, o NCR por sus siglas en inglés— no lleva papel
+    carbón. La magia está en un recubrimiento:
+  </p>
+  <ul class="ar-lista">
+    <li>
+      <strong>CB (original):</strong> la cara de atrás lleva <em>microcápsulas</em> llenas de un tinte
+      incoloro. Al escribir o al golpear la aguja de la impresora, las cápsulas se rompen.
+    </li>
+    <li>
+      <strong>CFB (intermedia):</strong> recibe el tinte por arriba y lo transmite por abajo. Es la
+      hoja más delicada del juego.
+    </li>
+    <li>
+      <strong>CF (última copia):</strong> su cara frontal tiene una capa de arcilla que revela el
+      color cuando el tinte la toca. No es sensible a la presión: se manipula como papel normal.
+    </li>
+  </ul>
+  <p>
+    Dicho de otra forma: el original no "copia" nada hacia abajo, sino que revienta cápsulas que
+    tiñen la hoja siguiente. Y así, en cadena, hasta la última.
+  </p>
+
+  <h2>Cuántas copias aguanta de verdad</h2>
+  <p>
+    Depende del peso del papel y, sobre todo, de con qué se imprime. Esta es la tabla de referencia
+    de un fabricante de papel químico, para un juego de peso medio, contando las copias sin incluir
+    el original:
+  </p>
+  <div class="ar-tabla__scroll">
+    <table class="ar-tabla">
+      <thead>
+        <tr>
+          <th scope="col">Se imprime con…</th>
+          <th scope="col">Juego ligero</th>
+          <th scope="col">Juego medio</th>
+          <th scope="col">Juego pesado</th>
+          <th scope="col">Juego muy pesado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          copias.map((c) => (
+            <tr>
+              <th scope="row">{c.m}</th>
+              <td>{c.a}</td>
+              <td>{c.b}</td>
+              <td>{c.c}</td>
+              <td>{c.d}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Lo que dice la tabla, en corto: <strong>con bolígrafo o con matricial, entre 3 y 5 copias</strong>.
+    Y si el equipo es de gama alta, más: hay impresoras matriciales cuyos fabricantes declaran
+    <strong>hasta 7 copias</strong> sobre papel químico.
+  </p>
+  <p class="ar-nota">
+    Fíjate en la primera fila. Un juego que aguanta 5 copias a bolígrafo aguanta solo 3 a lápiz,
+    porque el lápiz presiona menos y rompe menos cápsulas. Si tus documentos se llenan a mano con
+    lápiz, dilo al hacer el pedido: cambia el papel que te conviene.
+  </p>
+
+  <h2>El asunto de los colores</h2>
+  <p>
+    Aquí conviene deshacer un mito: <strong>los pliegues de color no son un requisito</strong>. La
+    costumbre de poner el original en blanco, la primera copia en amarillo y las siguientes en rosa o
+    celeste es una <em>convención para identificar destinos</em> —saber de un vistazo cuál se queda el
+    cliente y cuál va al archivo—, no una exigencia técnica ni de SUNAT.
+  </p>
+  <p>
+    Existen juegos multicopia enteramente blancos y hay entidades que compran así: en documentos
+    oficiales de compras del Estado peruano se pide, literalmente, <em>"formas continuas 9 7/8" × 11
+    × 3 blanco químico"</em>. Es decir, tres pliegues y los tres blancos.
+  </p>
+  <p>
+    Si trabajas con papel blanco, no estás haciendo nada raro. Lo que sí aporta el color es rapidez
+    en el archivo: cuando tienes que separar el original de las copias cientos de veces al día, el
+    color ahorra segundos que suman.
+  </p>
+
+  <h2>Cuánto dura un comprobante</h2>
+  <p>
+    El fabricante de papel químico declara que, en condiciones de archivo normales —oscuridad y
+    sequedad—, las copias se mantienen legibles <strong>hasta 25 años</strong>. Es un dato útil, pero
+    viene con letra pequeña, y la letra pequeña es lo que importa:
+  </p>
+  <ul class="ar-lista">
+    <li>
+      <strong>La luz lo estropea.</strong> La capa del original es fotosensible: expuesta mucho tiempo
+      a luz natural o artificial, va desarrollando color por su cuenta y ensuciando el documento.
+    </li>
+    <li>
+      <strong>El plástico lo borra.</strong> El enemigo clásico son las fundas de PVC: sus
+      plastificantes migran al papel y se comen la imagen. Para archivo, fundas de polietileno.
+    </li>
+    <li>
+      <strong>El papel sin usar también caduca.</strong> El propio fabricante recomienda no almacenarlo
+      más de cinco años en su envase original. Si compras para dos años, perfecto; si compras para
+      diez, no.
+    </li>
+    <li>
+      <strong>La presión y la humedad lo marcan.</strong> Un legajo apretado o un almacén húmedo
+      ondulan el papel.
+    </li>
+  </ul>
+  <p>
+    ¿Y el bond? Aquí prefiero no darte un número: <strong>no existe una cifra publicada comparable</strong>
+    de cuántos años dura un comprobante en bond. Lo que sí se puede afirmar es que el bond no lleva
+    recubrimiento químico, no depende de una reacción para revelarse y se archiva como cualquier
+    papel. Si el documento tiene que durar décadas, es la opción conservadora.
+  </p>
+
+  <h2>Dónde NO va el autocopiativo</h2>
+  <p>
+    Esta es la parte que más problemas evita, y casi nadie la cuenta al vender el papel.
+  </p>
+  <p>
+    <strong>En una impresora láser, no.</strong> Los manuales de las propias impresoras incluyen el
+    papel químico en la lista de papeles no admitidos, junto con los formularios de varias partes. La
+    razón es física: la láser fija el tóner con <em>calor y presión</em> en el fusor, y eso es
+    exactamente lo que revienta las microcápsulas. El fabricante del papel lo describe sin rodeos:
+    cuando la temperatura de fusión es demasiado alta aparecen rizado, desregistro,
+    <strong>pérdida de copia</strong> y olor.
+  </p>
+  <p>
+    Existen grados fabricados específicamente para láser, pero hay que pedirlos a propósito y
+    respetar condiciones de acondicionamiento. Si tu plan es imprimir en láser, dínoslo antes.
+  </p>
+  <p>
+    <strong>En inyección de tinta, con matices.</strong> Las caras que reciben tinta (la intermedia y
+    la última) dan buen resultado. La cara del original no está diseñada para todas las tintas: el
+    propio fabricante no garantiza la impresión inkjet sobre esa cara. Si se usa, con tintas de
+    secado rápido.
+  </p>
+  <p>
+    <strong>Donde sí funciona, y es su terreno natural: la impresora matricial.</strong> Es para lo
+    que se diseñó el formato continuo, y es la única tecnología que saca varias copias simultáneas en
+    una sola pasada. Además SUNAT lo reconoce expresamente: en los formatos continuos la numeración
+    de las copias puede hacerse por presión (repinte).
+  </p>
+
+  <h2>Entonces, ¿cuál te conviene?</h2>
+  <ul class="ar-lista">
+    <li>
+      <strong>Necesitas un original y copias, y tienes matricial:</strong> autocopiativo. Las copias
+      salen en la misma pasada y la numeración se repite por presión.
+    </li>
+    <li>
+      <strong>Solo necesitas un ejemplar:</strong> bond. No tiene sentido pagar un químico que no vas
+      a aprovechar.
+    </li>
+    <li>
+      <strong>Imprimes en láser o en inyección:</strong> bond, salvo que pidamos el grado específico
+      para láser.
+    </li>
+    <li>
+      <strong>El documento se va a archivar por años:</strong> bond si tienes la opción, y si va en
+      químico, guárdalo en oscuro, seco y en funda de polietileno.
+    </li>
+    <li>
+      <strong>Se llena a mano con lápiz:</strong> avísanos, porque el lápiz presiona menos y reduce el
+      número de copias legibles.
+    </li>
+  </ul>
+  <p>
+    Y una nota final sobre los gramajes, porque es otra pregunta frecuente: en el mercado peruano el
+    bond se trabaja en 60, 75 y 80 gramos, y el papel químico viene en grados nominales propios. Son
+    prácticas de mercado, no una norma técnica nacional que fije esos valores. Lo que hacemos es
+    confirmar el papel exacto con la muestra antes de fabricar.
+  </p>
+</Articulo>

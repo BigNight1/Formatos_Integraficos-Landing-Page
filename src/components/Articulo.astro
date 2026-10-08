@@ -1,0 +1,223 @@
+---
+/**
+ * Plantilla de artículo del blog · rediseño v2
+ * Fuente: design-refs/diseno/Articulo.dc.html
+ *
+ * La usan las 6 páginas de /blog/*. El CUERPO del artículo se escribe dentro del
+ * componente (contenido normal, no slot con estilos aislados), y los estilos de
+ * toda la plantilla viven en `src/styles/global.css`, bloque "ARTÍCULOS DEL BLOG".
+ *
+ * CAMBIOS respecto al canvas:
+ *  1. El autor era "Carlos Ramírez" (FICTICIO). Se usa el nombre real del fundador
+ *     que ya declaraba el sitio anterior.
+ *  2. Se QUITÓ "Revisado por un contador colegiado": era una credencial inventada.
+ *     Si un contador revisa un artículo de verdad, se añade con su nombre y número
+ *     de colegiatura.
+ *  3. Se AÑADIÓ el bloque de preguntas frecuentes + su schema `FAQPage`. El canvas
+ *     no lo traía, pero es lo que hace que Google pueda mostrar el desplegable en
+ *     los resultados. Las preguntas son reales, no de relleno.
+ *
+ * ⚠️ Fechas literales ("8 de octubre de 2026"): se pasan a mano, no se calculan.
+ * ⚠️ Los artículos de tema tributario deben pasar por un contador antes de publicar.
+ *
+ * Source Serif 4 se pide por el slot "head" del Layout: solo la cargan las páginas
+ * que la usan (los artículos y otras 3).
+ */
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+export interface Props {
+  /** el <h1> y el nombre en las migas */
+  titulo: string;
+  /** el <title> de la pestaña */
+  metaTitle: string;
+  /** la meta description */
+  metaDescription: string;
+  /** etiqueta de categoría, encima del h1 */
+  tag: string;
+  /** slug: la URL queda en /blog/<slug> */
+  slug: string;
+  /** fecha legible, literal: "8 de octubre de 2026" */
+  fecha: string;
+  /** fecha ISO para el schema: "2026-10-08" */
+  fechaISO: string;
+  /** minutos de lectura */
+  min: number;
+  /** resumen para el schema Article */
+  schemaDescription: string;
+  /** la "respuesta corta". Admite HTML (<strong>, <em>, enlaces) */
+  respuesta: string;
+  /** preguntas frecuentes: bloque visible + schema FAQPage */
+  faqs?: { q: string; a: string }[];
+  /** llamada a la acción del final */
+  cta: { titulo: string; texto: string; botones: { label: string; url: string }[] };
+  /** guías relacionadas. Sin `url` salen como "En preparación" y sin enlace */
+  relacionadas: { label: string; url?: string }[];
+}
+
+const {
+  titulo,
+  metaTitle,
+  metaDescription,
+  tag,
+  slug,
+  fecha,
+  fechaISO,
+  min,
+  schemaDescription,
+  respuesta,
+  faqs,
+  cta,
+  relacionadas,
+} = Astro.props;
+
+const FUNDADOR = 'Zenón Walter Armas Quispialaya';
+const INICIALES = 'ZA';
+const base = 'https://formatosintergraficos.pe';
+const url = `${base}/blog/${slug}`;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: titulo,
+    description: schemaDescription,
+    inLanguage: 'es-PE',
+    mainEntityOfPage: url,
+    author: { '@type': 'Person', name: FUNDADOR },
+    publisher: { '@type': 'Organization', name: 'Formatos Intergráficos', url: base },
+    datePublished: fechaISO,
+    dateModified: fechaISO,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: `${base}/` },
+      { '@type': 'ListItem', position: 2, name: 'Guías', item: `${base}/blog` },
+      { '@type': 'ListItem', position: 3, name: titulo, item: url },
+    ],
+  },
+  ...(faqs?.length
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faqs.map((f) => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
+        },
+      ]
+    : []),
+];
+---
+
+<Layout title={metaTitle} description={metaDescription}>
+  <Fragment slot="head">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"
+      rel="stylesheet"
+    />
+  </Fragment>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+
+  <div class="fi-site ar">
+    <Header active="blog" />
+
+    <main class="ar-main">
+      <article class="ar-art">
+        <header class="ar-head">
+          <nav class="ar-bc" aria-label="Ruta de navegación">
+            <a href="/">Inicio</a> <span aria-hidden="true">›</span>
+            <a href="/blog">Guías</a> <span aria-hidden="true">›</span>
+            <span aria-current="page">{titulo}</span>
+          </nav>
+          <span class="ar-tag">{tag}</span>
+          <h1 class="ar-h1">{titulo}</h1>
+          <div class="ar-meta">
+            <span class="ar-autor">
+              <span class="ar-avatar" aria-hidden="true">{INICIALES}</span>
+              {FUNDADOR} · Formatos Intergráficos
+            </span>
+            <span>{fecha} · {min} min</span>
+          </div>
+        </header>
+
+        <section class="ar-respuesta">
+          <h2>Respuesta corta</h2>
+          <p set:html={respuesta} />
+        </section>
+
+        <div class="ar-cuerpo">
+          <slot />
+        </div>
+
+        {
+          faqs?.length ? (
+            <section class="ar-faq fi-faq">
+              <h2 class="ar-faq__t">Preguntas frecuentes</h2>
+              <div>
+                {faqs.map((f) => (
+                  <details>
+                    <summary>
+                      <h3>{f.q}</h3>
+                      <span class="fi-faq-plus" aria-hidden="true">
+                        +
+                      </span>
+                    </summary>
+                    <p>{f.a}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          ) : null
+        }
+
+        <aside class="ar-cta ns-sobre-rojo">
+          <span class="ar-cta__texto">
+            <strong>{cta.titulo}</strong>
+            <span>{cta.texto}</span>
+          </span>
+          <span class="ar-cta__botones">
+            {
+              cta.botones.map((b, i) => (
+                <a class={i === 0 ? 'ar-cta__a' : 'ar-cta__b'} href={b.url}>
+                  {b.label}
+                </a>
+              ))
+            }
+          </span>
+        </aside>
+
+        <section class="ar-bio">
+          <span class="ar-bio__avatar" aria-hidden="true">{INICIALES}</span>
+          <span class="ar-bio__texto">
+            <strong>{FUNDADOR}</strong>
+            <span>
+              Fundador de Formatos Intergráficos. Más de 20 años imprimiendo comprobantes autorizados
+              para negocios de Lima y provincias.
+            </span>
+          </span>
+        </section>
+
+        <nav class="ar-relacionadas" aria-label="Guías relacionadas">
+          <strong>Sigue leyendo</strong>
+          {
+            relacionadas.map((r) =>
+              r.url ? (
+                <a href={r.url}>{r.label} →</a>
+              ) : (
+                <span class="ar-pendiente">{r.label} · En preparación</span>
+              )
+            )
+          }
+        </nav>
+      </article>
+    </main>
+
+    <Footer />
+  </div>
+</Layout>

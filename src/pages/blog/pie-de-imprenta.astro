@@ -1,0 +1,279 @@
+---
+/**
+ * /blog/pie-de-imprenta · rediseño v2
+ *
+ * FUENTES:
+ *  · Reglamento de Comprobantes de Pago, RS 007-99/SUNAT, textos consolidados:
+ *    https://cdn.www.gob.pe/uploads/document/file/3052447/Reglamento%20de%20Comprobantes%20de%20Pago.pdf
+ *    · arts. 8 (información impresa de facturas, liquidaciones y boletas)
+ *    · art. 9 (ubicación del recuadro de RUC/denominación/numeración y destino de
+ *      original y copias)
+ *    · art. 12 (autorización de impresión y obligaciones de la imprenta)
+ *    · art. 16-A (solo son comprobantes los impresos por imprentas del Registro)
+ *    · art. 19 (guías de remisión)
+ *  · Derogación del literal que exigía el nombre/razón social de la imprenta:
+ *    RS 245-2013/SUNAT, Única Disposición Complementaria Derogatoria, vigente
+ *    desde el 16.08.2013.
+ *  · Trámite del número de autorización: Formulario Virtual N.° 816 en SOL —
+ *    https://www.gob.pe/390-autorizacion-de-impresion-de-comprobantes-de-pago
+ *  · Sanciones: Código Tributario, art. 174, y Tabla III de infracciones.
+ *
+ * ⚠️ PENDIENTE DE CONTADOR (declarado también en el texto):
+ *  1. El RCP NO usa el término "pie de imprenta" ni fija la ubicación de ese bloque.
+ *     En el artículo se explica esto con precisión en vez de repetir la creencia
+ *     extendida de que "va al pie". Lo único con ubicación normada es el recuadro
+ *     del RUC (extremo superior derecho) y el destino de original y copias
+ *     (extremo inferior derecho).
+ *  2. Conviene contrastar los datos con el formato autorizado real del taller.
+ */
+
+import Articulo from '../../components/Articulo.astro';
+
+const obligatorios = [
+  {
+    t: 'Número de RUC de la imprenta',
+    d: 'El RUC de la empresa gráfica que imprimió el formato. Antes también se exigía su nombre o razón social, pero ese requisito se derogó en 2013: hoy la norma pide el RUC.',
+  },
+  {
+    t: 'Fecha de impresión',
+    d: 'La fecha en que se imprimió el tiraje, no la fecha de emisión del comprobante. Son dos cosas distintas y suelen confundirse.',
+  },
+  {
+    t: 'Número de autorización de impresión',
+    d: 'El número que genera SUNAT cuando la imprenta acepta el pedido. La norma pide que se consigne junto a los datos de la imprenta.',
+  },
+];
+
+const fijos = [
+  {
+    t: 'El recuadro del RUC, arriba a la derecha',
+    d: 'Mínimo 4 cm de alto por 8 cm de ancho, con el RUC, la denominación del comprobante y la numeración. La numeración, de al menos 4 mm de altura. Este sí tiene ubicación obligatoria.',
+  },
+  {
+    t: 'El destino de original y copias, abajo a la derecha',
+    d: 'Cada ejemplar dice a quién corresponde: adquirente, emisor, SUNAT. Es el único dato al que la norma le fija un lugar: el extremo inferior derecho.',
+  },
+  {
+    t: 'Las leyendas del tipo de comprobante',
+    d: 'Cada documento tiene las suyas (por ejemplo, la leyenda de contingencia o el espacio para nombre y DNI en boletas sobre cierto importe).',
+  },
+];
+
+const faqs = [
+  {
+    q: '¿El pie de imprenta lleva el nombre de la imprenta?',
+    a: 'Hoy no es exigible. El Reglamento de Comprobantes de Pago pedía el nombre o razón social de la imprenta, pero ese requisito se derogó en 2013. Lo que exige actualmente son dos datos: el RUC de la imprenta y la fecha de impresión. Muchos formatos siguen poniendo el nombre por costumbre comercial, y no está mal, pero no es lo que la norma pide.',
+  },
+  {
+    q: '¿Dónde va exactamente el pie de imprenta?',
+    a: 'Aquí conviene ser precisos: la norma no usa la expresión "pie de imprenta" ni fija un lugar para ese bloque de datos. Lo que sí tiene ubicación obligatoria es el recuadro del RUC, la denominación y la numeración, que va en el extremo superior derecho. Que el bloque de la imprenta termine al pie es una convención de diseño, no una exigencia que hayamos podido verificar.',
+  },
+  {
+    q: '¿Qué pasa si mi comprobante no lleva esos datos?',
+    a: 'Que no es un comprobante de pago válido. Y hay una regla más tajante: solo se consideran comprobantes de pago los documentos impresos o importados por imprentas inscritas en el Registro de Imprentas de SUNAT. Un formato impreso por cualquiera no adquiere esa condición por el hecho de estar bien diseñado.',
+  },
+  {
+    q: '¿Cómo consigo el número de autorización?',
+    a: 'Tú no lo generas: lo genera SUNAT. El trámite es el Formulario Virtual N.° 816 en SUNAT Operaciones en Línea. Ahí llenas los datos del comprobante y designas la imprenta; la solicitud llega a nuestra bandeja, la aceptamos y en ese momento el sistema genera el número. Para solicitarlo necesitas el RUC activo y habido, los registros de ventas y compras al día de los últimos doce meses y las declaraciones mensuales al día de los últimos seis.',
+  },
+  {
+    q: '¿Cuánto demora?',
+    a: 'El número se genera en cuanto la imprenta acepta la solicitud, así que el cuello de botella no suele ser SUNAT sino la aprobación del arte. Por eso te pedimos que revises la prueba de diseño el mismo día: el tiraje no puede entrar a máquina con el número generado y el arte sin aprobar.',
+  },
+  {
+    q: '¿La representación impresa de una factura electrónica lleva pie de imprenta?',
+    a: 'No. Y tiene sentido: la representación impresa la imprime el propio emisor, no una imprenta autorizada, así que no hay autorización de impresión que consignar ni RUC de imprenta que poner. En un comprobante electrónico la validez está en el documento electrónico y en su constancia de recepción, no en el papel.',
+  },
+];
+---
+
+<Articulo
+  titulo="Qué es el pie de imprenta y por qué tu comprobante lo necesita"
+  metaTitle="Pie de Imprenta: Qué Datos Lleva y Por Qué Importa"
+  metaDescription="Qué datos exige SUNAT en la información impresa de tu comprobante, quién los pone, de dónde sale el número de autorización y qué pasa si faltan."
+  tag="SUNAT"
+  slug="pie-de-imprenta"
+  fecha="8 de octubre de 2026"
+  fechaISO="2026-10-08"
+  min={5}
+  schemaDescription="Qué es el pie de imprenta de un comprobante de pago, qué datos exige el Reglamento de Comprobantes de Pago, de dónde sale el número de autorización y qué ocurre si falta."
+  respuesta="El pie de imprenta es el bloque de datos de quien imprimió el formato. La norma no lo llama así: pide <strong>el RUC de la imprenta</strong>, la <strong>fecha de impresión</strong> y el <strong>número de autorización</strong> que genera SUNAT cuando la imprenta acepta el pedido. Sin esos datos, y sin que la imprenta esté inscrita en el Registro de Imprentas, el documento <strong>no es un comprobante de pago válido</strong>."
+  faqs={faqs}
+  cta={{
+    titulo: 'Nosotros lo ponemos',
+    texto: 'Como imprenta inscrita, gestionamos la autorización, imprimimos el pie de imprenta y llevamos el registro de cada trabajo.',
+    botones: [
+      { label: 'Cómo autorizar tu impresión', url: '/autorizado-sunat' },
+      { label: 'Ver comprobantes', url: '/precios' },
+    ],
+  }}
+  relacionadas={[
+    { label: 'Cómo llenar una guía de remisión sin errores', url: '/blog/como-llenar-guia-de-remision' },
+    { label: 'Comprobante físico o electrónico: cuándo te sigue sirviendo el físico', url: '/blog/comprobante-fisico-o-electronico' },
+    { label: 'Factura o boleta: cuál emitir y cuándo', url: '/blog/factura-o-boleta' },
+  ]}
+>
+  <p>
+    Es la parte del comprobante que nadie mira hasta que alguien la mira. Un bloque pequeño de datos
+    de la imprenta, casi siempre en una esquina, que decide si el papel que tienes en la mano es un
+    comprobante de pago o un impreso bonito.
+  </p>
+
+  <h2>Primero, una precisión de nombre</h2>
+  <p>
+    En el taller y en la calle todo el mundo dice "pie de imprenta". Pero si vas a la norma, esa
+    expresión no aparece: el Reglamento de Comprobantes de Pago habla de los <strong>datos de la
+    imprenta o empresa gráfica</strong>, dentro de lo que llama la <em>información impresa</em> del
+    documento.
+  </p>
+  <p>
+    Lo aclaro porque tiene una consecuencia práctica: como la norma no usa el término, tampoco fija
+    dónde va ese bloque. Lo que sí fija es dónde van otros datos, y de eso hablamos más abajo.
+  </p>
+
+  <h2>Los tres datos que exige</h2>
+  <ul class="ar-lista">
+    {
+      obligatorios.map((o) => (
+        <li>
+          <strong>{o.t}:</strong> {o.d}
+        </li>
+      ))
+    }
+  </ul>
+  <p class="ar-nota">
+    <strong>El dato que sorprende:</strong> el nombre o razón social de la imprenta ya no es exigible.
+    El reglamento lo pedía, pero ese literal se derogó en 2013 y hoy la norma pide el RUC. Muchos
+    formatos siguen imprimiendo el nombre por costumbre —y nosotros lo hacemos— pero si te dicen que
+    es obligatorio, no lo es.
+  </p>
+
+  <h2>Dónde va, y qué es lo que sí tiene ubicación obligatoria</h2>
+  <p>
+    Como el bloque de la imprenta no tiene ubicación normada, aquí va lo que <em>sí</em> la tiene, que
+    es lo que tu diseñador necesita saber:
+  </p>
+  <ul class="ar-lista">
+    {
+      fijos.map((f) => (
+        <li>
+          <strong>{f.t}:</strong> {f.d}
+        </li>
+      ))
+    }
+  </ul>
+  <p>
+    Nuestros formatos ponen el bloque de la imprenta al pie, que es donde se ha hecho siempre y donde
+    no estorba. Simplemente conviene saber que esa ubicación es una convención, no una obligación
+    escrita.
+  </p>
+
+  <h2>De dónde sale el número de autorización</h2>
+  <p>
+    Este es el dato que más dudas genera, y la respuesta es cómoda: <strong>no lo generas tú, lo
+    genera SUNAT</strong>. El circuito es este:
+  </p>
+  <ul class="ar-lista">
+    <li>
+      <strong>Tú entras a SUNAT Operaciones en Línea</strong> y llenas el Formulario Virtual N.° 816
+      con los datos del comprobante que necesitas.
+    </li>
+    <li>
+      <strong>Designas la imprenta.</strong> Nosotros tenemos que estar inscritos en el Registro de
+      Imprentas de SUNAT; si no lo estuviéramos, el sistema no nos dejaría aparecer como opción.
+    </li>
+    <li>
+      <strong>La solicitud llega a nuestra bandeja y la aceptamos.</strong> En ese momento SUNAT genera
+      el número de autorización, y con él se puede imprimir.
+    </li>
+  </ul>
+  <p>
+    Para poder presentar la solicitud necesitas el RUC activo y habido, los registros electrónicos de
+    ventas y compras al día de los últimos doce meses, las declaraciones mensuales al día de los
+    últimos seis meses y la declaración anual de tercera categoría presentada. Si algo de eso está
+    pendiente, el trámite se cae ahí y no en la imprenta.
+  </p>
+
+  <h2>Por qué importa tanto</h2>
+  <p>
+    Porque la consecuencia no es una multa por un dato mal puesto: es que el documento
+    <strong>no vale como comprobante de pago</strong>. Y hay una regla todavía más tajante:
+  </p>
+  <p class="ar-nota">
+    Solo se consideran comprobantes de pago —y también notas de crédito, notas de débito y guías de
+    remisión— los documentos <strong>impresos o importados por imprentas inscritas en el Registro de
+    Imprentas</strong> de SUNAT. Un formato impreso por cualquiera no adquiere esa condición por estar
+    bien diseñado.
+  </p>
+  <p>
+    Si el documento no reúne los requisitos, las infracciones están tipificadas: emitir u otorgar
+    documentos cuya impresión no cumplió las normas, y emitir documentos que no reúnen los requisitos
+    para ser considerados comprobantes de pago. La sanción es una multa equivalente al 0,3 % de los
+    ingresos netos, o cierre temporal, según la tabla de infracciones.
+  </p>
+  <p>
+    Y tu cliente también tiene un recurso: SUNAT permite consultar la validez de un comprobante de
+    pago físico con el RUC del emisor, el tipo, la serie, el número y la fecha de emisión. Si algo no
+    cuadra, el comprobante que le entregaste no le sirve para su contabilidad.
+  </p>
+
+  <h2>No es lo mismo que la representación impresa</h2>
+  <p>
+    Conviene no mezclarlas, porque se parecen en la forma y son opuestas en el fondo:
+  </p>
+  <div class="ar-tabla__scroll">
+    <table class="ar-tabla">
+      <thead>
+        <tr>
+          <th scope="col" />
+          <th scope="col">Comprobante impreso (físico)</th>
+          <th scope="col">Representación impresa de un electrónico</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Quién lo imprime</th>
+          <td>Una imprenta inscrita en el Registro de Imprentas</td>
+          <td>El propio emisor del comprobante</td>
+        </tr>
+        <tr>
+          <th scope="row">Lleva pie de imprenta</th>
+          <td>Sí: RUC, fecha de impresión y N.° de autorización</td>
+          <td>No: no hay autorización de impresión que consignar</td>
+        </tr>
+        <tr>
+          <th scope="row">De qué depende su validez</th>
+          <td>Del propio documento impreso y de la autorización</td>
+          <td>Del comprobante electrónico y de su constancia de recepción</td>
+        </tr>
+        <tr>
+          <th scope="row">Para qué sirve el papel</th>
+          <td>Es el comprobante</td>
+          <td>Entregarlo al cliente, sustentar el traslado y portarlo en el transporte</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Y las imprentas también tenemos obligaciones</h2>
+  <p>
+    Vale la pena que lo sepas, porque protege tu pedido: para estar en el Registro de Imprentas hay
+    que inscribirse con los formularios correspondientes, mantener condiciones de permanencia y llevar
+    un registro interno por cada trabajo con su comprobante de información registrada. Y se sale del
+    registro si se imprime sin autorización, si se usan los mismos datos para más de un trabajo o si
+    se declaran datos falsos.
+  </p>
+  <p>
+    Un formato legal es, entonces, la prueba de que las dos partes hicieron su parte: tú presentaste
+    la solicitud, y la imprenta está en regla para aceptarla.
+  </p>
+
+  <p class="ar-nota">
+    <strong>Información general, no asesoría tributaria.</strong> Este artículo se basa en el
+    Reglamento de Comprobantes de Pago y en las resoluciones que lo modifican, incluida la que derogó
+    el requisito del nombre de la imprenta. Dos precisiones de honestidad: la norma no fija la
+    ubicación del bloque de la imprenta (lo que explicamos arriba es lo único con ubicación normada) y
+    conviene contrastar estos datos con el formato autorizado real antes de rediseñar uno. Tu contador
+    o el área de autorizaciones de SUNAT pueden confirmarlo.
+  </p>
+</Articulo>

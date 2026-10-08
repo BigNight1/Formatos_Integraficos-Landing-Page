@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Material de trabajo del rediseño: canvas fuente, renders de referencia,
+# capturas y originales de las fotos. NO se despliega (está fuera de public/),
+# así que no hace falta versionarlo. Son ~75 MB.
+design-refs/
