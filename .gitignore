@@ -27,3 +27,6 @@ pnpm-debug.log*
 # capturas y originales de las fotos. NO se despliega (está fuera de public/),
 # así que no hace falta versionarlo. Son ~75 MB.
 design-refs/
+
+# Caché del registro de skills del agente (herramienta local, no del proyecto)
+.atl/
