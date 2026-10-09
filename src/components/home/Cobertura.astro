@@ -2,25 +2,20 @@
 /**
  * Sección Cobertura · rediseño v2 — design-refs/diseno/Home.dc.html
  *
- * ⚠️ FICTICIO: la lista de distritos debe corresponder a los distritos donde
- * realmente entregan. El mapa queda como placeholder: falta el embed de la ficha
- * de Google Business.
+ * Decisión del dueño: se quitó la lista de distritos (era ficticia). El mensaje es
+ * "Hacemos envíos a todo el Perú" con la entrega real: 24 h en Lima y de 3 a 5
+ * días a provincias. El mapa es el embed de la ficha de Google Business.
  */
-import { distritos } from '../../data/home';
 ---
 
 <section class="fi-section fi-cob">
   <div class="fi-wrap fi-cob__inner">
     <div class="fi-cob__copy">
-      <h2 class="fi-h2">Entregamos en Lima y todo el Perú</h2>
+      <h2 class="fi-h2">Hacemos envíos a todo el Perú</h2>
       <p class="fi-cob__text">
-        Nuestro taller está en Villa María del Triunfo. En Lima Metropolitana entregamos en 24 a 48
-        horas; a provincia enviamos por agencia en 3 a 5 días hábiles.
+        Nuestro taller está en Villa María del Triunfo. Entrega en 24 h en Lima y de 3 a 5 días a
+        provincias, por la agencia de transporte que prefieras.
       </p>
-
-      <ul class="fi-cob__distritos">
-        {distritos.map((d) => <li>{d}</li>)}
-      </ul>
 
       <address class="fi-cob__address">
         <strong>Formatos Intergráficos</strong><br />
@@ -66,19 +61,6 @@ import { distritos } from '../../data/home';
     font-size: 16px;
     line-height: 1.6;
     color: var(--fi-texto-oscuro-2);
-  }
-  .fi-cob__distritos {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .fi-cob__distritos li {
-    padding: 8px 14px;
-    border: 1px solid var(--fi-borde-claro);
-    font-size: 14px;
   }
   .fi-cob__address {
     font-style: normal;

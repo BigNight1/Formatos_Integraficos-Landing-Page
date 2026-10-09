@@ -9,8 +9,10 @@
  * ⚠️ Falta que el dueño confirme el CARGO exacto (aquí se pone "Fundador", que es
  *    lo que declaraba el sitio anterior; el diseño decía "Gerente general").
  *
- * ⚠️ FICTICIO / A CONFIRMAR: el texto de la carta, los hitos de 2008/2014/2021,
- *    "12 personas en el equipo" y "3 M formatos al año".
+ * Fundación: 11/01/2002 (decisión del dueño; foundingDate '2002-01-11').
+ * Se quitó la cifra "3 M formatos al año" y se sustituyó por "Perú · envíos a todo
+ * el país". El texto de la carta, "12 personas" y los demás hitos se mantienen.
+ * ⚠️ A CONFIRMAR: los hitos de 2008/2014/2021.
  *    OJO: el sitio anterior declaraba 1–10 empleados y "5000+ clientes"; el diseño
  *    dice 12 personas y "500+ empresas". Hay que unificar las cifras.
  * FOTOS: ya no queda ningún placeholder.
@@ -32,15 +34,14 @@ const FUNDADOR = 'Zenón Walter Armas Quispialaya';
 const base = 'https://formatosintergraficos.pe';
 
 const stats = [
-  { n: '2004', t: 'año de fundación' },
+  { n: '2002', t: 'año de fundación' },
   { n: '500+', t: 'empresas atendidas' },
   { n: '12', t: 'personas en el equipo' },
-  // "juegos impresos al año" → formatos (3 M = 3 000 millares)
-  { n: '3 M', t: 'formatos impresos al año' },
+  { n: 'Perú', t: 'envíos a todo el país' },
 ];
 
 const hitos = [
-  { y: '2004', t: 'Abrimos el taller en Villa María del Triunfo con una prensa offset.' },
+  { y: '2002', t: 'Abrimos el taller en Villa María del Triunfo con una prensa offset.' },
   { y: '2008', t: 'Nos inscribimos en el registro de imprentas autorizadas por SUNAT.' },
   { y: '2014', t: 'Sumamos la línea de formatos continuos para impresoras matriciales.' },
   { y: '2021', t: 'Empezamos a imprimir vouchers POS y rollos de papel térmico.' },
@@ -64,7 +65,7 @@ const schema = [
     mainEntity: {
       '@type': 'Organization',
       name: 'Formatos Intergráficos',
-      foundingDate: '2004',
+      foundingDate: '2002-01-11',
       taxID: '20503580030',
       url: base,
       founder: { '@type': 'Person', name: FUNDADOR },
@@ -163,7 +164,7 @@ const schema = [
           <div class="ns-carta__texto">
             <h2 class="ns-h2">Una carta de quien imprime tus comprobantes</h2>
             <p>
-              Empezamos en 2004 con una sola máquina y un compromiso: que ningún cliente tenga
+              Empezamos en 2002 con una sola máquina y un compromiso: que ningún cliente tenga
               problemas con SUNAT por un comprobante mal impreso. Veinte años después seguimos
               revisando cada prueba de diseño como el primer día.
             </p>

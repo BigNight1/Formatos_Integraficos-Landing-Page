@@ -8,8 +8,8 @@
  * una foto falsa de un comprobante real.
  *
  * ⚠️ FICTICIO en la maqueta: "R.U.C. N.º 20XXXXXXXXX", "TU EMPRESA S.A.C.",
- * "Av. Principal 123" y "Aut. SUNAT N.º 0458-2026" (el número real va en el
- * footer; aquí es un ejemplo).
+ * "Av. Principal 123" y "Aut. SUNAT N.º 0000000000" (número de ejemplo: SUNAT
+ * emite uno por cada pedido de impresión del cliente).
  *
  * RESPONSIVE: el diseño no tenía móvil. La maqueta mide 480×560 fijos, así que
  * se escala completa con transform (no se reflowea por dentro): así las
@@ -118,7 +118,7 @@ const agujeros = Array.from({ length: 14 }, (_, i) => i);
 
         <div class="fi-doc__pie">
           <span class="fi-doc__legal">
-            FORMATOS INTERGRÁFICOS · RUC 20503580030<br />Aut. SUNAT N.º 0458-2026 · F. Imp. 10/2026
+            FORMATOS INTERGRÁFICOS · RUC 20503580030<br />Aut. SUNAT N.º 0000000000 · F. Imp. 10/2026
           </span>
           <span class="fi-doc__destino">{destino}</span>
         </div>

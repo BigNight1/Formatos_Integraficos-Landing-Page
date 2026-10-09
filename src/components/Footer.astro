@@ -4,9 +4,11 @@
  * Fuente: design-refs/diseno/Footer.dc.html (el componente completo, no el
  * footer reducido que la Home traía embebido).
  *
+ * Resuelto: una imprenta no tiene un único número de autorización (SUNAT emite
+ * uno por cada pedido de impresión del cliente), así que el pie dice "Imprenta
+ * inscrita en SUNAT" junto al RUC y enlaza a la consulta de RUC de SUNAT.
+ *
  * ⚠️ FICTICIO pendiente de reemplazo (ver formatos-intergraficos-rediseno-seo.md):
- *   - "Autorización SUNAT N.º 0458-2026" → número/código real, y el enlace debe
- *     apuntar a la consulta exacta de imprentas autorizadas, no a sunat.gob.pe.
  *   - "Garantía: si hay un error nuestro, reimprimimos sin costo" → solo si es real.
  *   - "Pago contra entrega para clientes recurrentes" → condiciones reales.
  */
@@ -84,8 +86,8 @@ const anio = new Date().getFullYear();
         </p>
         <p class="fi-footer__legal">
           RUC 20503580030<br />
-          Autorización SUNAT N.º 0458-2026 ·
-          <a href="https://www.sunat.gob.pe" target="_blank" rel="noopener noreferrer">verificar en SUNAT</a>
+          Imprenta inscrita en SUNAT ·
+          <a href="https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/FrameCriterioBusquedaWeb.jsp" target="_blank" rel="noopener noreferrer">verificar en SUNAT</a>
         </p>
       </div>
 

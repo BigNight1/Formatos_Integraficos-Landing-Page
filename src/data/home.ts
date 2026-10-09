@@ -2,14 +2,14 @@
  * Contenido de la Home · rediseño v2 (estilo B)
  * Fuente: design-refs/diseno/Home.dc.html (renderVals) y design-refs/INVENTARIO.md
  *
- * ⚠️ DATOS FICTICIOS PENDIENTES DE REEMPLAZO (ver formatos-intergraficos-rediseno-seo.md):
- *  - precios (todos los montos)
- *  - testimonios (Rosa Mendoza, Jorge Quispe, Lucía Huamán)
- *  - calificación "4.9 ★ en Google (120 reseñas)"
- *  - "Autorización SUNAT N.º 0458-2026" (está en el Footer)
- *  - mínimos, formas de pago, modelos de impresora, distritos de cobertura
+ * Decisiones del dueño (ver formatos-intergraficos-rediseno-seo.md):
+ *  - precios: se mantienen como montos referenciales de ejemplo
+ *  - testimonios, formas de pago y modelos de impresora: se mantienen
+ *  - se quitó la calificación de Google (ahora "Perú · envíos a todo el país")
+ *  - sin número de autorización SUNAT propio: el Footer dice "Imprenta inscrita en SUNAT"
+ *  - mínimo de pedido: 1 millar
  *
- * Unidad de venta: MILLAR / MILLARES (nunca "juegos").
+ * Unidad de venta: MILLAR / MILLARES.
  */
 
 export const confianza = [
@@ -17,7 +17,7 @@ export const confianza = [
   { valor: '500+', texto: 'empresas atendidas' },
   { valor: '24 h', texto: 'entrega en Lima' },
   { valor: '100%', texto: 'formatos autorizados SUNAT' },
-  { valor: '4.9 ★', texto: 'en Google (120 reseñas)' }, // 🟥 ficticio
+  { valor: 'Perú', texto: 'envíos a todo el país' },
 ];
 
 export const productos = [
@@ -71,7 +71,7 @@ export const productos = [
   },
 ];
 
-/** Encabezados de la tabla de precios. Antes decían "100 / 500 / 1000 juegos". */
+/** Encabezados de la tabla de precios (escalones en millares). */
 export const columnasPrecio = ['1 millar', '5 millares', '10 millares'];
 
 export const precios = [
@@ -122,19 +122,6 @@ export const testimonios = [
   },
 ];
 
-export const distritos = [
-  'Villa María del Triunfo',
-  'San Juan de Miraflores',
-  'Villa El Salvador',
-  'Chorrillos',
-  'Surco',
-  'Lima Cercado',
-  'Ate',
-  'San Juan de Lurigancho',
-  'Los Olivos',
-  'Callao',
-];
-
 export const faqs = [
   {
     q: '¿Qué necesito para imprimir boletas autorizadas por SUNAT?',
@@ -151,7 +138,7 @@ export const faqs = [
   },
   {
     q: '¿Cuál es la cantidad mínima?',
-    a: 'Desde 1 millar en talonario y desde 5 millares en formato continuo.', // 🟥 confirmar mínimos reales
+    a: 'El pedido mínimo es de 1 millar.',
   },
   {
     q: '¿Qué diferencia hay entre papel bond y autocopiativo?',

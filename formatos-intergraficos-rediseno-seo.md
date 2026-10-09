@@ -44,19 +44,20 @@ Diseño (canvas privado): https://claude.ai/artifact/MAbvgDcuzcqnnoHa7SqSrE → 
 
 | Dónde | Dato ficticio | Qué poner |
 |---|---|---|
-| Testimonios (sección 9) | 🟥 Rosa Mendoza, Jorge Quispe, Lucía Huamán y sus textos | 3 reseñas **reales** de Google Business (con permiso) y quitar la etiqueta "Ejemplo" |
-| Barra de confianza | 🟥 "4.9 ★ en Google (120 reseñas)" | Tu calificación y número reales, o quitar el bloque |
-| Footer | 🟥 "Autorización SUNAT N.º 0458-2026" | Tu número/código real de imprenta autorizada (y enlazarlo a la consulta de SUNAT) |
-| Precios (sección 4) | 🟥 Todos los montos (S/ 85, S/ 125…) | Tus precios reales por formato y volumen |
-| Precios | 🟥 "Descuentos por volumen desde 2000 juegos" | Tu umbral real |
-| Especificaciones (sección 7) | 🟥 Colores de papel, "hasta 5 copias", offset 1–4 colores, acabados | Lo que realmente ofrecen |
-| FAQ | 🟥 Cantidad mínima (100 / 500 juegos) | Mínimos reales |
-| FAQ | 🟥 Formas de pago (Yape, Plin, 50% adelanto) | Condiciones reales |
-| FAQ | 🟥 Modelos de impresora (Epson LX, FX) | Confirmar compatibilidad |
-| Cobertura | 🟥 Lista de distritos | Distritos donde realmente entregan |
+| Testimonios (sección 9) | ✅ Rosa Mendoza, Jorge Quispe, Lucía Huamán y sus textos | Decisión del dueño (8 oct 2026): se mantienen tal cual |
+| Barra de confianza | ✅ "4.9 ★ en Google (120 reseñas)" | Quitada. Ahora: "Perú · envíos a todo el país". No queda ninguna calificación con estrellas en el sitio (tampoco AggregateRating en el JSON-LD) |
+| Footer | ✅ "Autorización SUNAT N.º 0458-2026" | Quitado: una imprenta no tiene un único número (SUNAT emite uno por cada pedido de impresión del cliente). Ahora: "Imprenta inscrita en SUNAT" + RUC, con enlace a la consulta de RUC de SUNAT. Igual en `/autorizado-sunat`; en las maquetas de comprobante el pie usa el número de ejemplo `0000000000` |
+| Precios (sección 4) | ✅ Todos los montos (S/ 85, S/ 125…) | Se mantienen como **referenciales de ejemplo**; aviso visible junto a cada tabla: "Precios referenciales de ejemplo. El precio final varía según el costo del papel: pide tu cotización sin compromiso." |
+| Precios | 🟥 "Descuentos por volumen desde 20 millares" | Confirmar el umbral real (la unidad ya está en millares) |
+| Especificaciones (sección 7) | ✅ Colores de papel, "hasta 5 copias", offset 1–4 colores | Decisión del dueño: se mantienen. Acabados: sin confirmar |
+| FAQ | ✅ Cantidad mínima (100 / 500 juegos) | Ahora: "El pedido mínimo es de 1 millar" (FAQ de Home y /precios; también `formatos-continuos`, `documentos-administrativos`, `recibos-por-honorarios`) |
+| FAQ | ✅ Formas de pago (Yape, Plin, 50% adelanto) | Decisión del dueño: se mantienen |
+| FAQ | ✅ Modelos de impresora (Epson LX, FX) | Decisión del dueño: se mantienen |
+| Cobertura | ✅ Lista de distritos | Quitada. Ahora: "Hacemos envíos a todo el Perú" + "Entrega en 24 h en Lima y de 3 a 5 días a provincias" |
 | Proceso | 🟥 "prueba de diseño el mismo día" | Tiempo real de respuesta |
-| Trabajos | 🟥 Placeholder "talonario de guías de remisión" | Foto real |
-| Mapa | 🟥 Placeholder | Embed de Google Maps de tu ficha |
+| Trabajos | ✅ Placeholder "talonario de guías de remisión" | Ya es una foto real de la galería (`Sarepta-GuiaRemisionRemitente-FC-crop.webp`) |
+| Mapa | ✅ Placeholder | Ya es el embed de Google Maps de la ficha |
+| Unidad de venta | ✅ "juegos" | Se vende por **millar**: ninguna aparición de "juego/juegos" como unidad en `src/` |
 
 ### Datos REALES ya usados (del sitio actual)
 RUC 20503580030 · +51 910 500 706 · Pasaje 8 de Octubre 252, Parque Interno Hogar Policial, VMT · Lun–Sáb 8:00–20:00 · +20 años · 500+ clientes · entrega 24 h Lima / 3–5 días provincia.
@@ -160,17 +161,19 @@ En Astro: un `theme` por página (variables CSS) + 3 variantes del componente `H
 
 | Dónde | Dato ficticio | Qué poner |
 |---|---|---|
-| Todas las páginas de comprobante + /precios | 🟥 Todos los precios por medida y cantidad | Precios reales |
-| Comprobantes | 🟥 "Talonario de 50 juegos", "caja de 1000 juegos" | Presentación real |
-| /precios | 🟥 Precios de letras, recibos por honorarios, proformas y rollos POS | Precios reales |
-| /precios, Footer | 🟥 "Pago contra entrega para clientes recurrentes", "50% de adelanto" | Condiciones reales |
+| Todas las páginas de comprobante + /precios | ✅ Todos los precios por medida y cantidad | Se mantienen como referenciales de ejemplo, con el aviso junto a las tablas (Home, `/precios` y las 6 páginas de comprobante) |
+| Comprobantes | ✅ "Talonario de 50 juegos", "caja de 1000 juegos" | Ahora: "Talonario de 50 formatos" y "Caja de 10 millares" |
+| /precios | ✅ Precios de letras, recibos por honorarios, proformas y rollos POS | Se mantienen como referenciales de ejemplo |
+| /precios, Footer | ✅ "Pago contra entrega para clientes recurrentes", "50% de adelanto" | Decisión del dueño: se mantienen |
 | Footer, /precios, /nosotros | 🟥 "Garantía de reimpresión sin costo" | Solo si realmente la ofrecen |
-| /autorizado-sunat, artículo, /nosotros | 🟥 **Carlos Ramírez**, gerente | Nombre real del gerente o dueño + foto |
-| /autorizado-sunat, artículo | 🟥 "Revisado por un contador colegiado" | Nombre y número de colegiatura del contador real, o quitarlo |
-| /nosotros | 🟥 Fundación 2004, hitos 2008 / 2014 / 2021, 12 personas, 3 M juegos al año | Historia y cifras reales |
-| /nosotros | 🟥 Texto de la carta del gerente | Que la escriba o apruebe el dueño |
+| /autorizado-sunat, artículo, /nosotros | 🟥 **Carlos Ramírez**, gerente | Ya se usa el nombre real del fundador (Zenón Walter Armas Quispialaya); falta confirmar el cargo exacto |
+| /autorizado-sunat, artículo | ✅ "Revisado por un contador colegiado" | Decisión del dueño: se mantiene la mención "revisadas por un contador" (índice del blog). Falta, si se quiere, nombre y colegiatura del contador |
+| /nosotros | ✅ Fundación 2004 | Corregida: **11/01/2002** (cifra "año de fundación", primer hito, carta y `foundingDate: '2002-01-11'`) |
+| /nosotros | ✅ "3 M juegos al año" | Quitada; sustituida por "Perú · envíos a todo el país". "12 personas" se mantiene |
+| /nosotros | 🟥 Hitos 2008 / 2014 / 2021 | Confirmar con el dueño (se mantienen por ahora) |
+| /nosotros | ✅ Texto de la carta del gerente | Decisión del dueño: se mantiene |
 | /galeria | 🟥 6 placeholders de trabajos | Fotos reales con permiso de cada cliente |
-| /autorizado-sunat | 🟥 5 placeholders de capturas de SUNAT SOL | Capturas reales del trámite (con datos tapados) |
+| /autorizado-sunat | ✅ 5 placeholders de capturas de SUNAT SOL | Ya son capturas reales (`public/sunat-sol/`) con el nombre del contribuyente oculto |
 
 ## 5c. Contenido técnico/legal a VALIDAR con un contador
 
@@ -182,7 +185,7 @@ Redacté el contenido tributario con información general. **Antes de publicar, 
 - Definiciones de nota de crédito/débito, liquidación de compra, retención y percepción.
 - Campos obligatorios de la guía de remisión (remitente vs transportista).
 - Uso de comprobantes físicos como contingencia frente a la emisión electrónica.
-- Enlace "verificar en SUNAT": hoy apunta a sunat.gob.pe genérico → reemplazar por la URL exacta de consulta de imprentas autorizadas.
+- ✅ Enlace "verificar en SUNAT": ahora apunta a la consulta de RUC de SUNAT (`e-consultaruc.sunat.gob.pe`), en el Footer y en `/autorizado-sunat`.
 
 ---
 

@@ -3,21 +3,17 @@
  * Fuente: design-refs/diseno/Comprobante.dc.html (renderVals)
  *
  * ─────────────────────────────────────────────────────────────────────────────
- * UNIDAD DE VENTA: millar / millares. NUNCA "juego".
- * Equivalencias aplicadas (decisión del cliente, 8 oct 2026):
- *   "100 juegos"  → "1 millar"      (escalón base de la tabla)
- *   "1000 juegos" → "10 millares"
- *   "Talonario de 50 juegos" → "Talonario de 50 formatos"
- *   "Caja de 1000 juegos"    → "Caja de 10 millares"
- * Los MONTOS no se tocaron: son los del diseño y coinciden con la tabla de la
- * Home (½ oficio boleta: 1 millar S/ 85 … 10 millares S/ 160).
- *
- * ⚠️ El dueño debe definir qué es exactamente "1 millar" en su tarifa y
- *    reemplazar todos los precios: son FICTICIOS.
+ * UNIDAD DE VENTA: millar / millares (pedido mínimo: 1 millar).
+ * Presentación: "Talonario de 50 formatos" y "Caja de 10 millares".
+ * Los MONTOS se mantienen como precios REFERENCIALES de ejemplo (decisión del
+ * dueño, 8 oct 2026); la página lo avisa junto a la tabla ("Precios referenciales
+ * de ejemplo...") y coinciden con la tabla de la Home (½ oficio boleta: 1 millar
+ * S/ 85 … 10 millares S/ 160).
  * ─────────────────────────────────────────────────────────────────────────────
  *
- * ⚠️ OTROS DATOS FICTICIOS: mínimos, formas de pago, "50 formatos por talonario",
- *    "Original + hasta 5 copias", colores de papel, "Aut. SUNAT N.º 0458-2026".
+ * Decisiones del dueño: formas de pago, "Original + hasta 5 copias" y colores de
+ * papel se mantienen. Sin número de autorización SUNAT propio: el pie de imprenta
+ * de las maquetas usa un número de ejemplo (0000000000).
  * ⚠️ CONTENIDO TRIBUTARIO A VALIDAR CON UN CONTADOR antes de publicar:
  *    la regla de los S/ 700, los destinos de cada ejemplar, y las definiciones
  *    de nota de crédito/débito, liquidación de compra, retención y percepción.
@@ -110,7 +106,7 @@ export const comprobantes: Record<Slug, Contenido> = {
       n: 'S/ 700',
       t: 'Desde este monto la boleta debe llevar el nombre y DNI del comprador. Nuestras boletas ya traen el espacio.',
     },
-    doc: { tipo: 'Boleta de venta', sigla: 'BV', numero: 'B001 - 000458', continuo: false, copias: ['#F7C7CF'], campos: ['Señor(es)', 'DNI', 'Dirección', 'Fecha'], destino: 'Adquirente' },
+    doc: { tipo: 'Boleta de venta', sigla: 'BV', numero: 'B001 - 000321', continuo: false, copias: ['#F7C7CF'], campos: ['Señor(es)', 'DNI', 'Dirección', 'Fecha'], destino: 'Adquirente' },
     queEs: [
       'La boleta de venta se emite en operaciones con consumidores o usuarios finales: bodegas, restaurantes, tiendas, servicios a personas. No otorga derecho a crédito fiscal al comprador.',
       'Cuando el importe supera S/ 700, debe consignarse el nombre y el documento de identidad del comprador. Por eso la diseñamos con espacio para esos datos.',

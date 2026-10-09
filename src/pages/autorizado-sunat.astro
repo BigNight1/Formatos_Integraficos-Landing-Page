@@ -12,9 +12,10 @@
  *     canvas, al ser un tablero estático, no define el comportamiento al hacer
  *     scroll. Es una mejora añadida, no del diseño.
  *
- * ⚠️ FICTICIO: "Autorización SUNAT N.º 0458-2026".
- * ⚠️ El botón "Verificar en SUNAT" apunta a sunat.gob.pe genérico: el brief pide la
- *    URL exacta de consulta de imprentas autorizadas.
+ * Resuelto: la imprenta no tiene un único número de autorización (SUNAT emite uno
+ *    por cada pedido de impresión del cliente), así que "Nuestros datos" muestra el
+ *    RUC y "Imprenta inscrita en SUNAT". El botón "Verificar en SUNAT" apunta a la
+ *    consulta de RUC de SUNAT.
  * ⚠️ CONTENIDO A VALIDAR CON UN CONTADOR: la regla de los S/ 700, el nombre del
  *    Formulario Virtual N.º 816 y la ruta del menú en SUNAT SOL.
  * Las capturas de los 5 pasos están en public/sunat-sol/ (SUNAT SOL real, 08/10/2026,
@@ -333,9 +334,9 @@ const schema = [
                 <span class="gs-datos__texto">
                   <span class="gs-datos__k">Nuestros datos</span>
                   <strong>RUC 20503580030</strong>
-                  <span>Autorización SUNAT N.º 0458-2026</span>
+                  <span>Imprenta inscrita en SUNAT</span>
                 </span>
-                <a class="gs-datos__cta" href="https://www.sunat.gob.pe" target="_blank" rel="noopener noreferrer">
+                <a class="gs-datos__cta" href="https://e-consultaruc.sunat.gob.pe/cl-ti-itmrconsruc/FrameCriterioBusquedaWeb.jsp" target="_blank" rel="noopener noreferrer">
                   Verificar en SUNAT
                 </a>
               </div>

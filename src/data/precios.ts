@@ -2,16 +2,15 @@
  * Datos de /precios
  * Fuente: design-refs/diseno/Precios.dc.html (renderVals)
  *
- * UNIDAD: millar / millares. El diseño decía "juegos" y sus columnas eran
- * 100 / 500 / 1000. Se aplica la misma equivalencia que en el resto del sitio:
- *   100 → 1 millar   ·   500 → 5 millares   ·   1000 → 10 millares
- * Los MONTOS no se tocaron y coinciden con los de la Home y de las 6 páginas de
- * comprobante.
+ * UNIDAD: millar / millares. Columnas: 1 millar · 5 millares · 10 millares.
+ * Pedido mínimo: 1 millar.
+ * Los MONTOS se mantienen como precios REFERENCIALES de ejemplo (decisión del
+ * dueño) y coinciden con los de la Home y de las 6 páginas de comprobante; las
+ * páginas lo avisan junto a las tablas.
  *
- * ⚠️ PRECIOS FICTICIOS: reemplazar todos.
- * ⚠️ FICTICIO: "50% de adelanto y saldo contra entrega", "pago contra entrega para
- *    recurrentes", garantía de reimpresión, formas de pago (Yape, Plin), mínimos
- *    y umbral de descuento por volumen.
+ * Decisión del dueño: formas de pago (Yape, Plin), 50% de adelanto y pago contra
+ * entrega se mantienen.
+ * ⚠️ Pendiente de confirmar: garantía de reimpresión y umbral de descuento por volumen.
  */
 
 export interface Fila {
@@ -70,9 +69,9 @@ export const condiciones = [
 ];
 
 export const faqs = [
-  { q: '¿Los precios incluyen IGV?', a: 'Sí, todos los precios publicados incluyen IGV.' },
+  { q: '¿Los precios incluyen IGV?', a: 'Sí, todos los precios referenciales publicados incluyen IGV. El precio final varía según el costo del papel: pide tu cotización sin compromiso.' },
   { q: '¿El diseño tiene costo?', a: 'No. El diseño con tu logo y la prueba digital están incluidos en el precio.' },
-  { q: '¿Cuál es el pedido mínimo?', a: '1 millar en talonario y 5 millares en formato continuo.' },
+  { q: '¿Cuál es el pedido mínimo?', a: 'El pedido mínimo es de 1 millar.' },
   { q: '¿Hacen descuentos por volumen?', a: 'Sí, desde 20 millares o en pedidos recurrentes. Escríbenos para una tarifa especial.' },
   { q: '¿El envío tiene costo?', a: 'La entrega en Lima Metropolitana se cotiza según el distrito; a provincia se envía por la agencia que elijas.' },
 ];

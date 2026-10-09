@@ -2,10 +2,10 @@
 /**
  * Sección Precios · rediseño v2 — design-refs/diseno/Home.dc.html
  *
- * UNIDAD: millar / millares. El diseño original decía "100 / 500 / 1000 juegos"
- * y se sustituyó por "1 / 5 / 10 millares" (decisión del cliente: nunca "juego").
+ * UNIDAD: millar / millares (escalones de 1 / 5 / 10 millares).
  *
- * ⚠️ Todos los montos son FICTICIOS: reemplazar por los precios reales.
+ * Los montos se mantienen como precios REFERENCIALES de ejemplo (decisión del
+ * dueño); el texto junto a la tabla lo avisa.
  */
 import { columnasPrecio, precios } from '../../data/home';
 ---
@@ -15,8 +15,9 @@ import { columnasPrecio, precios } from '../../data/home';
     <div class="fi-precios__head">
       <h2 class="fi-h2">Precios referenciales</h2>
       <p class="fi-precios__lead">
-        Precios por millar, con IGV incluido, impresión a 1 color y papel autocopiativo. El precio
-        final depende del diseño, las copias y la cantidad.
+        Precios referenciales de ejemplo, con IGV incluido, impresión a 1 color y papel
+        autocopiativo. El precio final varía según el costo del papel: pide tu cotización sin
+        compromiso.
       </p>
     </div>
 
