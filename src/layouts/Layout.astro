@@ -47,8 +47,8 @@ const schema = [
     },
     geo: {
       '@type': 'GeoCoordinates',
-      latitude: -12.1611,
-      longitude: -76.9422,
+      latitude: -12.1741774,
+      longitude: -76.9451488,
     },
     openingHoursSpecification: {
       '@type': 'OpeningHoursSpecification',
@@ -57,6 +57,9 @@ const schema = [
       closes: '20:00',
     },
     taxID: '20503580030',
+    priceRange: 'S/',
+    areaServed: { '@type': 'Country', name: 'Perú' },
+    sameAs: ['https://www.google.com/maps?cid=12265246218305393796'],
   },
   {
     '@context': 'https://schema.org',
@@ -75,7 +78,7 @@ const schema = [
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="google-site-verification" content="yGbiXEjgzPGKiFddoCGN-8Qujk6GOmfHSostRQRjBKc" />
 		<link rel="icon" type="image/png" href="/LogoFormatos.webp" />
-		<link rel="sitemap" href="/sitemap.xml" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
 		<meta name="theme-color" content="#1A1718" />
 		<meta name="generator" content={Astro.generator} />
 

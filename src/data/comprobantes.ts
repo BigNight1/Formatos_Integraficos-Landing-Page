@@ -94,7 +94,7 @@ export const comprobantes: Record<Slug, Contenido> = {
     corto: 'boletas',
     articulo: 'la boleta de venta',
     url: '/boletas-de-venta',
-    title: 'Boletas de Venta SUNAT en Lima | Desde S/ 85 el millar',
+    title: 'Boletas de Venta SUNAT en Lima | Imprenta Autorizada',
     description:
       'Impresión de boletas de venta autorizadas SUNAT en ½ oficio, A4 y formato continuo. Con tu logo y numeración. Entrega en 24 h en Lima. Cotiza gratis.',
     h1: 'Impresión de boletas de venta autorizadas SUNAT en Lima',
